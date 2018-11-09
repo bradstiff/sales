@@ -8,26 +8,18 @@ namespace Proposing.API.Application.Commands.UpdateProposalProductScope
 {
     public class UpdateHrProductScopeCommand : IRequest<bool>
     {
-        private readonly List<HrCountryScopeDTO> _countryScopes;
-
         public UpdateHrProductScopeCommand()
         {
-            _countryScopes = new List<HrCountryScopeDTO>();
         }
 
-        public UpdateHrProductScopeCommand(List<HrCountryScopeDTO> countryScopes, short levelId)
+        public UpdateHrProductScopeCommand(List<int> countryIds, short levelId)
         {
-            _countryScopes = countryScopes;
+            CountryIds = countryIds;
             LevelId = levelId;
         }
 
         public short LevelId { get; set; }
 
-        public IReadOnlyCollection<HrCountryScopeDTO> CountryScopes => _countryScopes;
-
-        public class HrCountryScopeDTO
-        {
-            public int CountryId { get; set; }
-        }
+        public List<int> CountryIds { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Proposing.API.Infrastructure.Context;
 using Proposing.Domain.Core;
 using Proposing.Domain.Model.ProposalAggregate;
+using Proposing.Domain.Model.ProposalAggregate.HR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,33 +29,16 @@ namespace Proposing.API.Application.Commands.UpdateProposalProductScope
             var hasLevel = command.LevelId > 0;
             var proposal = await _context.Proposals.FindByIdAsync(request.ResourceId, cancellationToken);
 
-            foreach (var proposalCountry in proposal.ProposalCountries)
+            var productScope = new HrProductScopeDto
             {
-                var country = command.CountryScopes.FirstOrDefault(c => c.CountryId == proposalCountry.CountryId);
-                if (country != null)
+                LevelId = command.LevelId,
+                CountryScopes = command.CountryIds.Select(id => new HrProductCountryScopeDto
                 {
-                    proposalCountry.SetHrProductScope(new HrProductCountryScope(command.LevelId));
-                    if (hasLevel)
-                    {
-                        proposalCountry.AddProductType(ProductType.HR);
-                    }
-                }
-                else
-                {
-                    proposalCountry.SetHrProductScope(new HrProductCountryScope());
-                    proposalCountry.RemoveProductType(ProductType.HR);
-                }
-            }
+                    CountryId = id
+                })
+            };
 
-            proposal.SetHrProductScope(new HrProductGlobalScope(command.LevelId));
-            if (hasLevel && proposal.ProposalCountries.Any(c => c.HasProductType(ProductType.HR)))
-            {
-                proposal.AddProductType(ProductType.HR);
-            }
-            else
-            {
-                proposal.RemoveProductType(ProductType.HR);
-            }
+            proposal.SetProductScope(ProductType.HR, productScope);
 
             await _context.SaveChangesAsync(cancellationToken);
             return true;

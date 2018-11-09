@@ -10,8 +10,6 @@ namespace Proposing.Domain.Model.ProposalAggregate
         public ProposalCountry(int countryId)
         {
             CountryId = countryId;
-            PayrollProductScope = new PayrollProductCountryScope();
-            HrProductScope = new HrProductCountryScope();
         }
 
         private ProposalCountry()
@@ -20,8 +18,6 @@ namespace Proposing.Domain.Model.ProposalAggregate
 
         public int CountryId { get; private set; }
         public long ProductTypeIds { get; private set; }
-        public PayrollProductCountryScope PayrollProductScope { get; private set; }
-        public HrProductCountryScope HrProductScope { get; private set; }
 
         public bool HasProductType(ProductType productType)
         {
@@ -41,14 +37,6 @@ namespace Proposing.Domain.Model.ProposalAggregate
             if (this.HasProductType(productType))
             {
                 this.ProductTypeIds &= ~productType.Value;
-            }
-        }
-
-        public void SetHrProductScope(HrProductCountryScope scope)
-        {
-            if (this.HrProductScope != scope)
-            {
-                this.HrProductScope = scope;
             }
         }
     }

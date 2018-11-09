@@ -5,13 +5,15 @@ using System.Text;
 
 namespace Proposing.Domain.Model.ProposalAggregate
 {
-    public class PayrollProductCountryScope: ValueObject
+    public class PayrollProductCountry : Entity, IProductCountry
     {
-        public PayrollProductCountryScope()
+        public int CountryId { get; private set; }
+
+        public PayrollProductCountry()
         {
         }
 
-        public PayrollProductCountryScope(short? levelId, int? weeklyPayees, int? biWeeklyPayees, int? semiMonthlyPayees, int? monthlyPayees, bool? reporting, bool? payslipStorage)
+        public PayrollProductCountry(short? levelId, int? weeklyPayees, int? biWeeklyPayees, int? semiMonthlyPayees, int? monthlyPayees, bool? reporting, bool? payslipStorage)
         {
             LevelId = levelId;
             WeeklyPayees = weeklyPayees;
@@ -29,10 +31,5 @@ namespace Proposing.Domain.Model.ProposalAggregate
         public int? MonthlyPayees { get; private set; }
         public bool? Reporting { get; private set; }
         public bool? PayslipStorage { get; private set; }
-
-        protected override IEnumerable<object> GetAtomicValues()
-        {
-            yield return LevelId;
-        }
     }
 }

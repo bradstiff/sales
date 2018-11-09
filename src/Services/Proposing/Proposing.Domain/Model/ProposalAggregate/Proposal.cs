@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using MoreLinq;
 using Proposing.Domain.Core;
+using Proposing.Domain.Model.ProposalAggregate.Payroll;
 
 namespace Proposing.Domain.Model.ProposalAggregate
 {
@@ -15,27 +16,34 @@ namespace Proposing.Domain.Model.ProposalAggregate
         public int ProductModelVersionId { get; private set; }
         public int PriceModelVersionId { get; private set; }
         public long ProductTypeIds { get; private set; }
-
-        public PayrollProductGlobalScope PayrollProductScope { get; private set; }
-        public HrProductGlobalScope HrProductScope { get; private set; }
-
+        public PayrollProduct PayrollProduct { get; private set; }
+        public HrProduct HrProduct { get; private set; }
         private readonly List<ProposalCountry> _proposalCountries;
         public IReadOnlyCollection<ProposalCountry> ProposalCountries => _proposalCountries;
 
+        private List<IProduct> _products;
+        public IReadOnlyCollection<IProduct> Products => _products = _products ?? this.TheProducts.ToList();
+
+        IEnumerable<IProduct> TheProducts
+        {
+            get
+            {
+                if (this.PayrollProduct != null)
+                    yield return this.PayrollProduct;
+                if (this.HrProduct != null)
+                    yield return this.HrProduct;
+            }
+        }
         private Proposal()
         {
             _proposalCountries = new List<ProposalCountry>();
+            _products = new List<IProduct>();
         }
 
         public Proposal(IEnumerable<int> countryIds) : this()
         {
             ProductModelVersionId = 1; //todo
             PriceModelVersionId = 1;
-
-            //EF Core 2.1 does not allow owned types to be null, so we have to initialize them.
-            //Logic uses InScopeProductTypeIds rather than ProductScope properties to determine if a product is in scope.
-            PayrollProductScope = new PayrollProductGlobalScope();
-            HrProductScope = new HrProductGlobalScope();
 
             if (countryIds != null)
             {
@@ -68,11 +76,6 @@ namespace Proposing.Domain.Model.ProposalAggregate
             }
         }
 
-        public bool HasProductType(ProductType productType)
-        {
-            return ProductType.IsFlagSet(this.ProductTypeIds, productType);
-        }
-
         public void SetGeneralProperties(string name, string clientName, string comments)
         {
             Name = name;
@@ -80,37 +83,64 @@ namespace Proposing.Domain.Model.ProposalAggregate
             Comments = comments;
         }
 
-        public void AddProductType(ProductType productType)
+        public bool HasProduct(ProductType productType)
         {
-            if (!this.HasProductType(productType))
+            return ProductType.IsFlagSet(this.ProductTypeIds, productType);
+        }
+
+        public void SetProductScope<T>(ProductType productType, T scopeData) where T: ProductScopeDto
+        {
+            //validate that a ProposalCountry exists for every ProductCountry and that there are no duplicates
+            var productCountries = (from countryScope in scopeData.CountryScopes
+                             join proposalCountry in this.ProposalCountries on countryScope.CountryId equals proposalCountry.CountryId into joinedProposalCountries
+                             from proposalCountry in joinedProposalCountries.DefaultIfEmpty()
+                             select new
+                             {
+                                 countryScope.CountryId,
+                                 ProposalCountry = proposalCountry ?? throw new ArgumentOutOfRangeException($"Country {countryScope.CountryId} is not in scope for Proposal {this.Id}")
+                             }).ToDictionary(c => c.CountryId);
+                            
+            if (this.HasProduct(productType))
             {
+                var product = this.Products.FirstOrDefault(p => p.ProductType == productType);
+                product.Update(scopeData);
+            }
+            else
+            {
+                var product = productType.NewProductScopeInstance(scopeData);
+                _products.Add(product);
+                if (productType == ProductType.Payroll)
+                    this.PayrollProduct = (PayrollProduct)product;
+                else if (productType == ProductType.HR)
+                    this.HrProduct = (HrProduct)product;
                 this.ProductTypeIds |= productType.Value;
             }
+
+            //adjust the ProposalCountry.ProductTypeIds
+            this.ProposalCountries.ForEach(proposalCountry =>
+            {
+                var countryHasProduct = productCountries.Keys.Contains(proposalCountry.CountryId);
+                var countryHadProduct = proposalCountry.HasProductType(productType);
+                if (countryHasProduct && !countryHadProduct)
+                {
+                    proposalCountry.AddProductType(productType);
+                }
+                else if (countryHadProduct && !countryHasProduct)
+                {
+                    proposalCountry.RemoveProductType(productType);
+                }
+            });
         }
 
-        public void RemoveProductType(ProductType productType)
+        public void RemoveProduct(ProductType productType) 
         {
-            if (this.HasProductType(productType))
-            {
-                this.ProductTypeIds &= ~productType.Value;
-            }
-        }
-
-        //todo: might be better to move to services (open-closed principle)
-        public void SetPayrollProductScope(PayrollProductGlobalScope scope)
-        {
-            if (this.PayrollProductScope != scope)
-            {
-                this.PayrollProductScope = scope;
-            }
-        }
-
-        public void SetHrProductScope(HrProductGlobalScope scope)
-        {
-            if (this.HrProductScope != scope)
-            {
-                this.HrProductScope = scope;
-            }
+            var product = this.Products.FirstOrDefault(p => p.ProductType == productType);
+            _products.Remove(product);
+            if (productType == ProductType.Payroll)
+                this.PayrollProduct = null;
+            else if (productType == ProductType.HR)
+                this.HrProduct = null;
+            this.ProductTypeIds &= ~productType.Value;
         }
     }
 }

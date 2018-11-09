@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Proposing.Domain.Model.ProposalAggregate;
 using MediatR;
 using System.Threading;
+using Proposing.Domain.Model.ProposalAggregate.Payroll;
 
 namespace Proposing.API.Infrastructure.Context
 {
@@ -14,10 +15,25 @@ namespace Proposing.API.Infrastructure.Context
     {
         public DbSet<Proposal> Proposals { get; set; }
         public DbSet<ProposalCountry> ProposalCountries { get; set; }
+        public DbSet<PayrollProduct> PayrollProducts { get; set; }
+        public DbSet<PayrollProductCountry> PayrollProductCountries { get; set; }
+        public DbSet<HrProduct> HrProducts { get; set; }
+        public DbSet<HrProductCountry> HrProductCountries { get; set; }
 
         private readonly IMediator _mediator;
 
-        private ProposingContext(DbContextOptions<ProposingContext> options) : base(options) { }
+        private ProposingContext(DbContextOptions<ProposingContext> options) : base(options)
+        {
+            this.ChangeTracker.Tracked += ChangeTracker_Tracked;
+        }
+
+        private void ChangeTracker_Tracked(object sender, Microsoft.EntityFrameworkCore.ChangeTracking.EntityTrackedEventArgs e)
+        {
+            if (e.FromQuery && e.Entry.Entity is Proposal proposal)
+            {
+
+            }
+        }
 
         public ProposingContext(DbContextOptions<ProposingContext> options, IMediator mediator) : base(options)
         {
@@ -28,6 +44,12 @@ namespace Proposing.API.Infrastructure.Context
         {
             modelBuilder.ApplyConfiguration(new ProposalConfiguration());
             modelBuilder.ApplyConfiguration(new ProposalCountryConfiguration());
+
+            modelBuilder.ApplyConfiguration(new ProductConfiguration<PayrollProduct>("PayrollProduct", p => p.PayrollProduct));
+            modelBuilder.ApplyConfiguration(new ProductCountryConfiguration<PayrollProductCountry, PayrollProduct>("PayrollProductCountry"));
+
+            modelBuilder.ApplyConfiguration(new ProductConfiguration<HrProduct>("HrProduct", p => p.HrProduct));
+            modelBuilder.ApplyConfiguration(new ProductCountryConfiguration<HrProductCountry, HrProduct>("HrProductCountry"));
         }
 
         public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
