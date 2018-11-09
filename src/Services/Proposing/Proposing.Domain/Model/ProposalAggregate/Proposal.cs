@@ -16,28 +16,22 @@ namespace Proposing.Domain.Model.ProposalAggregate
         public int ProductModelVersionId { get; private set; }
         public int PriceModelVersionId { get; private set; }
         public long ProductTypeIds { get; private set; }
+
         public PayrollProduct PayrollProduct { get; private set; }
         public HrProduct HrProduct { get; private set; }
+
         private readonly List<ProposalCountry> _proposalCountries;
         public IReadOnlyCollection<ProposalCountry> ProposalCountries => _proposalCountries;
 
-        private List<IProduct> _products;
-        public IReadOnlyCollection<IProduct> Products => _products = _products ?? this.TheProducts.ToList();
+        private Dictionary<ProductType, Func<IProduct>> _productConstructors;
+        private Dictionary<ProductType, Func<Proposal, IProduct>> _productGetters;
+        private Dictionary<ProductType, Action<Proposal, IProduct>> _productSetters;
 
-        IEnumerable<IProduct> TheProducts
-        {
-            get
-            {
-                if (this.PayrollProduct != null)
-                    yield return this.PayrollProduct;
-                if (this.HrProduct != null)
-                    yield return this.HrProduct;
-            }
-        }
         private Proposal()
         {
             _proposalCountries = new List<ProposalCountry>();
-            _products = new List<IProduct>();
+            this.PayrollProduct = new PayrollProduct();
+            this.HrProduct = new HrProduct();
         }
 
         public Proposal(IEnumerable<int> countryIds) : this()
@@ -53,6 +47,56 @@ namespace Proposing.Domain.Model.ProposalAggregate
                 }
             }
         }
+
+        #region Product Generalization Methods
+        private IProduct NewProduct(ProductType productType)
+        {
+            if (_productConstructors == null)
+            {
+                _productConstructors = ProductType
+                    .GetAll<ProductType>()
+                    .Select(pt => new
+                    {
+                        ProductType = pt,
+                        Constructor = ExpressionUtils.CreateDefaultConstructor<IProduct>(pt.Type)
+                    })
+                    .ToDictionary(x => x.ProductType, x => x.Constructor);
+            }
+            return _productConstructors[productType]();
+        }
+
+        private IProduct GetProduct(ProductType productType)
+        {
+            if (_productGetters == null)
+            {
+                _productGetters = ProductType
+                    .GetAll<ProductType>()
+                    .Select(pt => new
+                    {
+                        ProductType = pt,
+                        Getter = pt.Selector.ToGetter()
+                    })
+                    .ToDictionary(x => x.ProductType, x => x.Getter);
+            }
+            return _productGetters[productType](this);
+        }
+
+        private void SetProduct(ProductType productType, IProduct product)
+        {
+            if (_productSetters == null)
+            {
+                _productSetters = ProductType
+                    .GetAll<ProductType>()
+                    .Select(pt => new
+                    {
+                        ProductType = pt,
+                        Setter = pt.Selector.ToSetter()
+                    })
+                    .ToDictionary(x => x.ProductType, x => x.Setter);
+            }
+            _productSetters[productType](this, product);
+        }
+        #endregion
 
         public void UpdateCountries(IEnumerable<int> countryIds)
         {
@@ -102,17 +146,14 @@ namespace Proposing.Domain.Model.ProposalAggregate
                             
             if (this.HasProduct(productType))
             {
-                var product = this.Products.FirstOrDefault(p => p.ProductType == productType);
+                var product = this.GetProduct(productType);
                 product.Update(scopeData);
             }
             else
             {
-                var product = productType.NewProductScopeInstance(scopeData);
-                _products.Add(product);
-                if (productType == ProductType.Payroll)
-                    this.PayrollProduct = (PayrollProduct)product;
-                else if (productType == ProductType.HR)
-                    this.HrProduct = (HrProduct)product;
+                var product = this.NewProduct(productType);
+                product.Update(scopeData);
+                this.SetProduct(productType, product);
                 this.ProductTypeIds |= productType.Value;
             }
 
@@ -132,14 +173,9 @@ namespace Proposing.Domain.Model.ProposalAggregate
             });
         }
 
-        public void RemoveProduct(ProductType productType) 
+        private void RemoveProduct(ProductType productType) 
         {
-            var product = this.Products.FirstOrDefault(p => p.ProductType == productType);
-            _products.Remove(product);
-            if (productType == ProductType.Payroll)
-                this.PayrollProduct = null;
-            else if (productType == ProductType.HR)
-                this.HrProduct = null;
+            this.SetProduct(productType, null);
             this.ProductTypeIds &= ~productType.Value;
         }
     }

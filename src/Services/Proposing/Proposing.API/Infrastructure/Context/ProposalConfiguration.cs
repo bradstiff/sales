@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Proposing.Domain.Model.ProposalAggregate;
+using Proposing.Domain.Model.ProposalAggregate.Payroll;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,9 @@ namespace Proposing.API.Infrastructure.Context
             builder.Metadata
                 .FindNavigation(nameof(Proposal.ProposalCountries))
                 .SetPropertyAccessMode(PropertyAccessMode.Field);
+
+            //builder.OwnsOne(p => p.PayrollProduct);
+            //builder.OwnsOne(p => p.HrProduct);
         }
     }
 }

@@ -7,7 +7,6 @@ namespace Proposing.Domain.Model.ProposalAggregate
 {
     public interface IProduct
     {
-        ProductType ProductType { get; }
         void Update(ProductScopeDto scope);
         void AddCountry();
         void DeleteCountry();

@@ -25,15 +25,13 @@ namespace Proposing.API.Infrastructure.Context
         {
             builder.ToTable(_tableName);
             builder.HasKey(p => p.Id);
-            builder.Property<int>("ProposalId").IsRequired();
-            builder.HasOne<Proposal>().WithOne(_property).HasForeignKey<T>("ProposalId");
+            //builder.Property<int>("ProposalId").IsRequired();
+            builder.HasOne<Proposal>().WithOne(_property).HasForeignKey<T>("Id");
             builder.Ignore(p => p.DomainEvents);
 
             builder.Metadata
                 .FindNavigation("ProductCountries")
                 .SetPropertyAccessMode(PropertyAccessMode.Field);
-
-            //builder.HasMany("ProductCountries").WithOne().OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

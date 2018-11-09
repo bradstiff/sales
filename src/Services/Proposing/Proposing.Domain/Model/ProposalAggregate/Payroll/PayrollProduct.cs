@@ -10,18 +10,11 @@ namespace Proposing.Domain.Model.ProposalAggregate.Payroll
         public bool? Reporting { get; private set; }
         public bool? PayslipStorage { get; private set; }
 
-        public ProductType ProductType => ProductType.Payroll;
-
         private readonly List<PayrollProductCountry> _productCountries;
         public IReadOnlyCollection<PayrollProductCountry> ProductCountries => _productCountries;
 
         public PayrollProduct()
         {
-        }
-
-        public PayrollProduct(ProductScopeDto scope)
-        {
-            this.SetScopeValues(scope);
         }
 
         public void Update(ProductScopeDto scope)

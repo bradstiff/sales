@@ -21,11 +21,6 @@ namespace Proposing.Domain.Model.ProposalAggregate
             _productCountries = new List<HrProductCountry>();
         }
 
-        public HrProduct(ProductScopeDto scope): this()
-        {
-            this.SetScopeValues(scope);
-        }
-
         public void Update(ProductScopeDto scope)
         {
             this.SetScopeValues(scope);

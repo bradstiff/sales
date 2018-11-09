@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Linq.Expressions;
 using Proposing.Domain.Exceptions;
 using Proposing.Domain.Model.ProposalAggregate;
 using Proposing.Domain.Model.ProposalAggregate.HR;
@@ -11,25 +11,27 @@ namespace Proposing.Domain.Core
 {
     public class ProductType : Enumeration<long>
     {
-        public static ProductType Payroll = new ProductType(1, nameof(Payroll).ToLowerInvariant(), scopeData => new PayrollProduct((PayrollProductScopeDto)scopeData));
-        public static ProductType HR = new ProductType(1 << 1, nameof(HR).ToLowerInvariant(), scopeData => new HrProduct((HrProductScopeDto)scopeData));
-        public static ProductType Time = new ProductType(1 << 2, nameof(Time).ToLowerInvariant(), null);
-        public static ProductType Benefits = new ProductType(1 << 3, nameof(Benefits).ToLowerInvariant(), null);
+        public static ProductType Payroll = new ProductType(1, nameof(Payroll).ToLowerInvariant(), typeof(PayrollProduct), p => p.PayrollProduct);
+        public static ProductType HR = new ProductType(1 << 1, nameof(HR).ToLowerInvariant(), typeof(HrProduct), p => p.HrProduct);
+        //public static ProductType Time = new ProductType(1 << 2, nameof(Time).ToLowerInvariant(), null);
+        //public static ProductType Benefits = new ProductType(1 << 3, nameof(Benefits).ToLowerInvariant(), null);
 
-        public Func<ProductScopeDto, IProduct> NewProductScopeInstance { get; private set; }
+        public Type Type { get; private set; }
+        public Expression<Func<Proposal,IProduct>> Selector { get; private set; }
 
         public ProductType()
         {
         }
 
-        public ProductType(long value, string name, Func<ProductScopeDto, IProduct> newProductScopeInstance) : base(value, name)
+        public ProductType(long value, string name, Type product, Expression<Func<Proposal,IProduct>> selector) : base(value, name)
         {
-            this.NewProductScopeInstance = newProductScopeInstance;
+            this.Selector = selector;
+            this.Type = product;
         }
 
         public static ProductType From(long value)
         {
-            return ProductType.FromValue<ProductType>(value);
+            return FromValue<ProductType>(value);
         }
     }
 }
