@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Proposing.Domain.Model.ProposalAggregate.Payroll
 {
-    public class PayrollProduct : Entity, IProduct
+    public class PayrollProduct : Entity, IProduct, IProductScopeUpdater<PayrollProductScopeDto>
     {
         public bool? Reporting { get; private set; }
         public bool? PayslipStorage { get; private set; }
@@ -15,16 +15,11 @@ namespace Proposing.Domain.Model.ProposalAggregate.Payroll
 
         public PayrollProduct()
         {
+            _productCountries = new List<PayrollProductCountry>();
         }
 
-        public void Update(ProductScopeDto scope)
+        public void Update(PayrollProductScopeDto scope)
         {
-            this.SetScopeValues(scope);
-        }
-
-        private void SetScopeValues(ProductScopeDto productScope)
-        {
-            var scope = (PayrollProductScopeDto)productScope;
             Reporting = scope.Reporting;
             PayslipStorage = scope.PayslipStorage;
         }

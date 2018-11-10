@@ -36,10 +36,10 @@ namespace Proposing.API.Infrastructure.Context
             modelBuilder.ApplyConfiguration(new ProposalConfiguration());
             modelBuilder.ApplyConfiguration(new ProposalCountryConfiguration());
 
-            modelBuilder.ApplyConfiguration(new ProductConfiguration<PayrollProduct>("Proposal", p => p.PayrollProduct));
+            modelBuilder.ApplyConfiguration(new ProductConfiguration<PayrollProduct>("PayrollProduct", p => p.PayrollProduct));
             modelBuilder.ApplyConfiguration(new ProductCountryConfiguration<PayrollProductCountry, PayrollProduct>("PayrollProductCountry"));
 
-            modelBuilder.ApplyConfiguration(new ProductConfiguration<HrProduct>("Proposal", p => p.HrProduct));
+            modelBuilder.ApplyConfiguration(new ProductConfiguration<HrProduct>("HrProduct", p => p.HrProduct));
             modelBuilder.ApplyConfiguration(new ProductCountryConfiguration<HrProductCountry, HrProduct>("HrProductCountry"));
         }
 

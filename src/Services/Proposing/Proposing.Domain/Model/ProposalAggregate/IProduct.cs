@@ -7,10 +7,14 @@ namespace Proposing.Domain.Model.ProposalAggregate
 {
     public interface IProduct
     {
-        void Update(ProductScopeDto scope);
         void AddCountry();
         void DeleteCountry();
         void ChangeModelVersion();
         void GetStuffForPriceModel();
+    }
+
+    public interface IProductScopeUpdater<T> : IProduct where T:ProductScopeDto
+    {
+        void Update(T scope);
     }
 }

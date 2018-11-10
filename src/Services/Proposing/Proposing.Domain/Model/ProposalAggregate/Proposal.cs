@@ -30,8 +30,6 @@ namespace Proposing.Domain.Model.ProposalAggregate
         private Proposal()
         {
             _proposalCountries = new List<ProposalCountry>();
-            this.PayrollProduct = new PayrollProduct();
-            this.HrProduct = new HrProduct();
         }
 
         public Proposal(IEnumerable<int> countryIds) : this()
@@ -129,7 +127,10 @@ namespace Proposing.Domain.Model.ProposalAggregate
 
         public bool HasProduct(ProductType productType)
         {
-            return ProductType.IsFlagSet(this.ProductTypeIds, productType);
+            //check entity or check flags? 
+            //flags would surface cases where the product was not included in the query
+            //entity is vulnerable to flags getting out of sync
+            return this.GetProduct(productType) != null;
         }
 
         public void SetProductScope<T>(ProductType productType, T scopeData) where T: ProductScopeDto
@@ -146,12 +147,12 @@ namespace Proposing.Domain.Model.ProposalAggregate
                             
             if (this.HasProduct(productType))
             {
-                var product = this.GetProduct(productType);
+                var product = (IProductScopeUpdater<T>)this.GetProduct(productType);
                 product.Update(scopeData);
             }
             else
             {
-                var product = this.NewProduct(productType);
+                var product = (IProductScopeUpdater<T>)this.NewProduct(productType);
                 product.Update(scopeData);
                 this.SetProduct(productType, product);
                 this.ProductTypeIds |= productType.Value;

@@ -25,8 +25,7 @@ namespace Proposing.API.Infrastructure.Context
             builder.HasKey(p => p.Id);
             builder.Property<int>("ProposalId").IsRequired();
             builder.HasAlternateKey(new[] { nameof(IProductCountry.CountryId), "ProposalId" });
-            //builder.HasOne<TParent>().WithMany("ProductCountries").HasForeignKey("ProposalId").HasPrincipalKey("ProposalId").OnDelete(DeleteBehavior.Cascade);
-            builder.HasOne<TParent>().WithMany("ProductCountries").HasForeignKey("ProposalId").HasPrincipalKey("Id").OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne<TParent>().WithMany("ProductCountries").HasForeignKey("ProposalId").HasPrincipalKey("ProposalId").OnDelete(DeleteBehavior.Cascade);
             builder.Ignore(p => p.DomainEvents);
         }
     }

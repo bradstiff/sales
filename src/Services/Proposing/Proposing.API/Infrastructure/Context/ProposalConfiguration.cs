@@ -20,9 +20,6 @@ namespace Proposing.API.Infrastructure.Context
             builder.Metadata
                 .FindNavigation(nameof(Proposal.ProposalCountries))
                 .SetPropertyAccessMode(PropertyAccessMode.Field);
-
-            //builder.OwnsOne(p => p.PayrollProduct);
-            //builder.OwnsOne(p => p.HrProduct);
         }
     }
 }

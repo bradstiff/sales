@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Proposing.Domain.Model.ProposalAggregate
 {
-    public class HrProduct : Entity, IProduct
+    public class HrProduct : Entity, IProduct, IProductScopeUpdater<HrProductScopeDto>
     {
         public short? LevelId { get; private set; }
 
@@ -21,14 +21,8 @@ namespace Proposing.Domain.Model.ProposalAggregate
             _productCountries = new List<HrProductCountry>();
         }
 
-        public void Update(ProductScopeDto scope)
+        public void Update(HrProductScopeDto scope)
         {
-            this.SetScopeValues(scope);
-        }
-
-        private void SetScopeValues(ProductScopeDto productScope)
-        {
-            var scope = (HrProductScopeDto)productScope;
             LevelId = scope.LevelId;
             this.ProductCountries
                 .Where(pc => !scope.CountryScopes.Any(countryScope => pc.CountryId == countryScope.CountryId))

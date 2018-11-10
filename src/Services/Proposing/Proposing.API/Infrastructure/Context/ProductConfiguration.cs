@@ -25,8 +25,8 @@ namespace Proposing.API.Infrastructure.Context
         {
             builder.ToTable(_tableName);
             builder.HasKey(p => p.Id);
-            //builder.Property<int>("ProposalId").IsRequired();
-            builder.HasOne<Proposal>().WithOne(_property).HasForeignKey<T>("Id");
+            builder.Property<int>("ProposalId").IsRequired();
+            builder.HasOne<Proposal>().WithOne(_property).HasForeignKey<T>("ProposalId");
             builder.Ignore(p => p.DomainEvents);
 
             builder.Metadata
