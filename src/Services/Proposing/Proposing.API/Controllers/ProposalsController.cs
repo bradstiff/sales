@@ -7,8 +7,9 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Proposing.API.Application.Commands;
-using Proposing.API.Application.Commands.UpdateProposalProductScope;
+using Proposing.API.Application.Commands.UpdateProductScope;
 using Proposing.API.Application.Exceptions;
+using Proposing.API.Application.Queries;
 
 namespace Proposing.API.Controllers
 {
@@ -17,20 +18,23 @@ namespace Proposing.API.Controllers
     public class ProposalsController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly ProposingQueries _proposingQueries;
 
-        public ProposalsController(IMediator mediator)
+        public ProposalsController(IMediator mediator, ProposingQueries proposingQueries)
         {
             _mediator = mediator;
+            _proposingQueries = proposingQueries;
         }
 
         [Route("{proposalId:int}", Name = "GetProposal")]
         [HttpGet]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Proposal), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public IActionResult GetProposal(int proposalId)
+        public async Task<IActionResult> GetProposal(int proposalId)
         {
-            return Ok();
+            var proposal = await _proposingQueries.GetProposalAsync(proposalId);
+            return Ok(proposal);
         }
 
         [Route("")]

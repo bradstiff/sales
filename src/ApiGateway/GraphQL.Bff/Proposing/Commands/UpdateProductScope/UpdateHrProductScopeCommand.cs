@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Proposing.API.Application.Commands.UpdateProposalProductScope
+namespace Proposing.API.Application.Commands.UpdateProductScope
 {
     public class UpdateHrProductScopeCommand : IRequest<bool>
     {

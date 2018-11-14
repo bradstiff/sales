@@ -10,7 +10,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Proposing.API.Application.Commands.UpdateProposalProductScope
+namespace Proposing.API.Application.Commands.UpdateProductScope
 {
     public class UpdateHrProductScopeCommandHandler : IRequestHandler<CommandWithResourceId<int, UpdateHrProductScopeCommand, bool>, bool>
     {

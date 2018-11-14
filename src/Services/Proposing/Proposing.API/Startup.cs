@@ -19,6 +19,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Proposing.API.Application.Exceptions;
+using Proposing.API.Application.Queries;
 using Proposing.API.Infrastructure.AutofacModules;
 using Proposing.API.Infrastructure.Context;
 
@@ -41,6 +42,8 @@ namespace Proposing.API
             //configure autofac
             var container = new ContainerBuilder();
             container.Populate(services);
+
+            container.Register((c) => new ProposingQueries(Configuration["connectionString"])).InstancePerLifetimeScope();
 
             container.RegisterModule(new MediatorModule());
 
@@ -97,9 +100,9 @@ namespace Proposing.API
 
         public static void UseCustomExceptionHandler(this IApplicationBuilder app)
         {
-            app.UseExceptionHandler(appError =>
+            app.UseExceptionHandler(builder =>
             {
-                appError.Run(async context =>
+                builder.Run(async context =>
                 {
                     var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
                     if (exception is ResourceNotFoundException)
