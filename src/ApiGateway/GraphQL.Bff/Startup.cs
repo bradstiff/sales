@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using GraphiQl;
-using GraphQL.Bff.Proposing;
-using GraphQL.Bff.Proposing.SchemaTypes;
+using GraphQL;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -14,10 +15,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Proposing.API.Application.Queries;
 using Proposing.API.Client;
+using Sales.Bff.Infrastructure;
+using Sales.Bff.Proposing.SchemaTypes;
+using Sales.Bff.Schema;
 
-namespace GraphQL.Bff
+namespace Sales.Bff
 {
     public class Startup
     {
@@ -29,19 +32,30 @@ namespace GraphQL.Bff
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
-            services.AddSingleton<ISchema, ProposingSchema>(sp => new ProposingSchema(new FuncDependencyResolver(sp.GetRequiredService)));
-            services.AddSingleton<ProposingSchemaQueryRoot>();
-            services.AddSingleton<ProposalType>();
-            services.AddSingleton<ProposalCountryType>();
-            services.AddSingleton<HrProductType>();
-            services.AddSingleton<HrProductCountryType>();
+            services.AddSingleton<ISchema, SalesSchema>(sp => new SalesSchema(new FuncDependencyResolver(sp.GetRequiredService)));
+            services.AddSingleton<SalesSchemaQueryRoot>();
+            services.AddSingleton<SalesSchemaMutationRoot>();
 
+            //services.AddSingleton<ProposalType>();
+            //services.AddSingleton<ProposalCountryType>();
+            //services.AddSingleton<HrProductType>();
+            //services.AddSingleton<HrProductCountryType>();
+            services.AddSingleton(typeof(ObjectGraphType<>));
+            services.AddSingleton(typeof(InputObjectGraphType<>));
             services.AddHttpClient<ProposalsClient>(c => c.BaseAddress = new Uri("http://localhost:10598"));
+
+            //configure autofac
+            var container = new ContainerBuilder();
+            container.Populate(services);
+
+            container.RegisterModule(new GraphQLAutofacModule());
+
+            return new AutofacServiceProvider(container.Build());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

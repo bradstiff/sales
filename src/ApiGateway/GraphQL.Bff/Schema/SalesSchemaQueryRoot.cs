@@ -1,16 +1,16 @@
-﻿using GraphQL.Bff.Proposing.SchemaTypes;
-using GraphQL.Types;
+﻿using GraphQL.Types;
 using Proposing.API.Client;
+using Sales.Bff.Proposing.SchemaTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GraphQL.Bff.Proposing
+namespace Sales.Bff.Schema
 {
-    public class ProposingSchemaQueryRoot : ObjectGraphType
+    public class SalesSchemaQueryRoot : ObjectGraphType
     {
-        public ProposingSchemaQueryRoot(ProposalsClient client)
+        public SalesSchemaQueryRoot(ProposalsClient client)
         {
             Field<ProposalType>(
                 "Proposal",

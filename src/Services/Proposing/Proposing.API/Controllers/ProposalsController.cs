@@ -49,7 +49,7 @@ namespace Proposing.API.Controllers
 
         [Route("")]
         [HttpPost]
-        [ProducesResponseType((int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(Proposal), (int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> CreateProposal([FromBody] CreateProposalCommand command)
         {
@@ -58,7 +58,8 @@ namespace Proposing.API.Controllers
             {
                 return BadRequest();
             }
-            return Created(Url.Link("GetProposal", new { proposalId }), new { });
+            var proposal = await _proposingQueries.GetProposalAsync(proposalId);
+            return Created(Url.Link("GetProposal", new { proposalId }), proposal);
         }
 
         [Route("{proposalId:int}")]

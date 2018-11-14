@@ -283,14 +283,14 @@ namespace Proposing.API.Client
         }
     
         /// <exception cref="ProposalsException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task CreateProposalAsync(CreateProposalCommand command)
+        public System.Threading.Tasks.Task<Proposal> CreateProposalAsync(CreateProposalCommand command)
         {
             return CreateProposalAsync(command, System.Threading.CancellationToken.None);
         }
     
         /// <exception cref="ProposalsException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task CreateProposalAsync(CreateProposalCommand command, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Proposal> CreateProposalAsync(CreateProposalCommand command, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/Proposals");
@@ -304,6 +304,7 @@ namespace Proposing.API.Client
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
     
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
@@ -325,7 +326,17 @@ namespace Proposing.API.Client
                         var status_ = ((int)response_.StatusCode).ToString();
                         if (status_ == "201") 
                         {
-                            return;
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Proposal); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Proposal>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new ProposalsException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
                         }
                         else
                         if (status_ == "400") 
@@ -339,6 +350,8 @@ namespace Proposing.API.Client
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new ProposalsException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
+            
+                        return default(Proposal);
                     }
                     finally
                     {

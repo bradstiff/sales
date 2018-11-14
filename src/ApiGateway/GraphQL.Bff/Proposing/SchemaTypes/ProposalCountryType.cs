@@ -1,12 +1,11 @@
 ﻿using GraphQL.Types;
-using Proposing.API.Application.Queries;
 using Proposing.API.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GraphQL.Bff.Proposing.SchemaTypes
+namespace Sales.Bff.Proposing.SchemaTypes
 {
     public class ProposalCountryType : ObjectGraphType<ProposalCountry>
     {
