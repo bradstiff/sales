@@ -1,5 +1,6 @@
 ﻿using GraphQL.Types;
 using Proposing.API.Application.Queries;
+using Proposing.API.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace GraphQL.Bff.Proposing.SchemaTypes
 {
     public class HrProductType : ObjectGraphType<HrProduct>
     {
-        public HrProductType()
+        public HrProductType(ProposalsClient client)
         {
             Name = "HRProduct";
             Field(x => x.LevelId);

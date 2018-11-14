@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Proposing.API.Application.Queries;
+using Proposing.API.Client;
 
 namespace GraphQL.Bff
 {
@@ -36,10 +37,11 @@ namespace GraphQL.Bff
             services.AddSingleton<ISchema, ProposingSchema>(sp => new ProposingSchema(new FuncDependencyResolver(sp.GetRequiredService)));
             services.AddSingleton<ProposingSchemaQueryRoot>();
             services.AddSingleton<ProposalType>();
+            services.AddSingleton<ProposalCountryType>();
             services.AddSingleton<HrProductType>();
             services.AddSingleton<HrProductCountryType>();
 
-            services.AddHttpClient<ProposingApiClient>();
+            services.AddHttpClient<ProposalsClient>(c => c.BaseAddress = new Uri("http://localhost:10598"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

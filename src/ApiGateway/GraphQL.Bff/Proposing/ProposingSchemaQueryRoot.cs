@@ -1,5 +1,6 @@
 ﻿using GraphQL.Bff.Proposing.SchemaTypes;
 using GraphQL.Types;
+using Proposing.API.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,12 @@ namespace GraphQL.Bff.Proposing
 {
     public class ProposingSchemaQueryRoot : ObjectGraphType
     {
-        public ProposingSchemaQueryRoot(ProposingApiClient client)
+        public ProposingSchemaQueryRoot(ProposalsClient client)
         {
             Field<ProposalType>(
                 "Proposal",
                 arguments: new QueryArguments(new QueryArgument<IntGraphType> { Name = "id" }),
-                resolve: context => client.GetProposal(context.GetArgument<int>("id"))
+                resolve: context => client.GetProposalAsync(context.GetArgument<int>("id"))
             );
 
             Field<ListGraphType<ProposalType>>(
@@ -24,7 +25,7 @@ namespace GraphQL.Bff.Proposing
                     new QueryArgument<IntGraphType> { Name = "hasProduct" },
                     new QueryArgument<IntGraphType> { Name = "hasAnyProduct" }
                     ),
-                resolve: context => client.GetProposals()
+                resolve: context => client.GetProposalsAsync()
             );
         }
     }

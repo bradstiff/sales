@@ -1,14 +1,13 @@
-﻿using GraphQL.Types;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Proposing.API.Application.Queries
 {
-    public class HrProductCountry
+    public class ProposalCountry
     {
+        public int Id { get; set; }
         public int CountryId { get; set; }
-        public int LevelId { get; set; }
     }
 }

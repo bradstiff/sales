@@ -25,11 +25,13 @@ namespace Proposing.API.Application.Queries
         {
             using (var conn = this.NewConnection())
             {
-                return await conn.QueryFirstOrDefaultAsync<Proposal>(
-                        @"select *
-                        from Proposal
-                        where Id = @id"
+                var results = await conn.QueryMultipleAsync(@"
+                    select * from Proposal where Id = @id;
+                    select * from ProposalCountry where ProposalId = @id"
                     , new { id });
+                var proposal = await results.ReadSingleAsync<Proposal>();
+                proposal.Countries = await results.ReadAsync<ProposalCountry>();
+                return proposal;
             }
         }
 

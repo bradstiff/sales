@@ -38,6 +38,16 @@ namespace Proposing.API.Controllers
         }
 
         [Route("")]
+        [HttpGet]
+        [ProducesResponseType(typeof(List<Proposal>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> GetProposals()
+        {
+            var proposals = await _proposingQueries.GetProposalsAsync(new Dictionary<string, object>());
+            return Ok(proposals);
+        }
+
+        [Route("")]
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
@@ -79,6 +89,17 @@ namespace Proposing.API.Controllers
                 return BadRequest();
             }
             return Ok();
+        }
+
+        [Route("{proposalId:int}/hr")]
+        [HttpGet]
+        [ProducesResponseType(typeof(HrProduct), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> GetHrProductScope(int proposalId)
+        {
+            var result = await _proposingQueries.GetHrProduct(proposalId);
+            return Ok(result);
         }
 
         [Route("{proposalId:int}/hr")]

@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace GraphQL.Bff.Proposing.SchemaTypes
 {
-    public class HrProductCountryType : ObjectGraphType<HrProductCountry>
+    public class ProposalCountryType : ObjectGraphType<ProposalCountry>
     {
-        public HrProductCountryType(ProposalsClient client)
+        public ProposalCountryType(ProposalsClient client)
         {
-            Name = "HRProductCountry";
+            Name = "ProposalCountry";
+            Field(x => x.Id, type: typeof(IdGraphType));
             Field(x => x.CountryId);
-            Field(x => x.LevelId);
         }
     }
 }
