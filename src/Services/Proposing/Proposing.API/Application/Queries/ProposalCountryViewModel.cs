@@ -5,11 +5,9 @@ using System.Threading.Tasks;
 
 namespace Proposing.API.Application.Queries
 {
-    public class Proposal
+    public class ProposalCountryViewModel
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string ClientName { get; set; }
-        public IEnumerable<ProposalCountry> Countries { get; set; }
+        public int CountryId { get; set; }
     }
 }

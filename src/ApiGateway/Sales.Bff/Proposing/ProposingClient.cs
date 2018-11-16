@@ -9,12 +9,12 @@ namespace Proposing.API.Client
     #pragma warning disable // Disable all warnings
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.20.1.0 (NJsonSchema v9.11.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class ProposalsClient 
+    public partial class ProposingClient 
     {
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     
-        public ProposalsClient(System.Net.Http.HttpClient httpClient)
+        public ProposingClient(System.Net.Http.HttpClient httpClient)
         {
             _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
@@ -32,15 +32,15 @@ namespace Proposing.API.Client
         partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
     
-        /// <exception cref="ProposalsException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Proposal> GetProposalAsync(int proposalId)
+        /// <exception cref="Exception">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<ProposalViewModel> Proposals_GetProposalAsync(int proposalId)
         {
-            return GetProposalAsync(proposalId, System.Threading.CancellationToken.None);
+            return Proposals_GetProposalAsync(proposalId, System.Threading.CancellationToken.None);
         }
     
-        /// <exception cref="ProposalsException">A server side error occurred.</exception>
+        /// <exception cref="Exception">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Proposal> GetProposalAsync(int proposalId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ProposalViewModel> Proposals_GetProposalAsync(int proposalId, System.Threading.CancellationToken cancellationToken)
         {
             if (proposalId == null)
                 throw new System.ArgumentNullException("proposalId");
@@ -78,37 +78,37 @@ namespace Proposing.API.Client
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Proposal); 
+                            var result_ = default(ProposalViewModel); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Proposal>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<ProposalViewModel>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
                             {
-                                throw new ProposalsException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                                throw new Exception("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
                             }
                         }
                         else
                         if (status_ == "400") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new ProposalsException("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new Exception("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                         else
                         if (status_ == "404") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new ProposalsException("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new Exception("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new ProposalsException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new Exception("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(Proposal);
+                        return default(ProposalViewModel);
                     }
                     finally
                     {
@@ -122,15 +122,15 @@ namespace Proposing.API.Client
             }
         }
     
-        /// <exception cref="ProposalsException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task UpdateProposalAsync(int proposalId, UpdateProposalCommand command)
+        /// <exception cref="Exception">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task Proposals_UpdateProposalAsync(int proposalId, UpdateProposalCommand command)
         {
-            return UpdateProposalAsync(proposalId, command, System.Threading.CancellationToken.None);
+            return Proposals_UpdateProposalAsync(proposalId, command, System.Threading.CancellationToken.None);
         }
     
-        /// <exception cref="ProposalsException">A server side error occurred.</exception>
+        /// <exception cref="Exception">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task UpdateProposalAsync(int proposalId, UpdateProposalCommand command, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task Proposals_UpdateProposalAsync(int proposalId, UpdateProposalCommand command, System.Threading.CancellationToken cancellationToken)
         {
             if (proposalId == null)
                 throw new System.ArgumentNullException("proposalId");
@@ -175,19 +175,19 @@ namespace Proposing.API.Client
                         if (status_ == "400") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new ProposalsException("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new Exception("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                         else
                         if (status_ == "404") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new ProposalsException("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new Exception("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new ProposalsException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new Exception("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -202,15 +202,15 @@ namespace Proposing.API.Client
             }
         }
     
-        /// <exception cref="ProposalsException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Proposal>> GetProposalsAsync()
+        /// <exception cref="Exception">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ProposalViewModel>> Proposals_GetProposalsAsync()
         {
-            return GetProposalsAsync(System.Threading.CancellationToken.None);
+            return Proposals_GetProposalsAsync(System.Threading.CancellationToken.None);
         }
     
-        /// <exception cref="ProposalsException">A server side error occurred.</exception>
+        /// <exception cref="Exception">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Proposal>> GetProposalsAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ProposalViewModel>> Proposals_GetProposalsAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/Proposals");
@@ -244,31 +244,31 @@ namespace Proposing.API.Client
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(System.Collections.ObjectModel.ObservableCollection<Proposal>); 
+                            var result_ = default(System.Collections.Generic.IEnumerable<ProposalViewModel>); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.ObjectModel.ObservableCollection<Proposal>>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.Generic.IEnumerable<ProposalViewModel>>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
                             {
-                                throw new ProposalsException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                                throw new Exception("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
                             }
                         }
                         else
                         if (status_ == "400") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new ProposalsException("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new Exception("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new ProposalsException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new Exception("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(System.Collections.ObjectModel.ObservableCollection<Proposal>);
+                        return default(System.Collections.Generic.IEnumerable<ProposalViewModel>);
                     }
                     finally
                     {
@@ -282,15 +282,15 @@ namespace Proposing.API.Client
             }
         }
     
-        /// <exception cref="ProposalsException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Proposal> CreateProposalAsync(CreateProposalCommand command)
+        /// <exception cref="Exception">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<ProposalViewModel> Proposals_CreateProposalAsync(CreateProposalCommand command)
         {
-            return CreateProposalAsync(command, System.Threading.CancellationToken.None);
+            return Proposals_CreateProposalAsync(command, System.Threading.CancellationToken.None);
         }
     
-        /// <exception cref="ProposalsException">A server side error occurred.</exception>
+        /// <exception cref="Exception">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Proposal> CreateProposalAsync(CreateProposalCommand command, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ProposalViewModel> Proposals_CreateProposalAsync(CreateProposalCommand command, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/Proposals");
@@ -327,31 +327,31 @@ namespace Proposing.API.Client
                         if (status_ == "201") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Proposal); 
+                            var result_ = default(ProposalViewModel); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Proposal>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<ProposalViewModel>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
                             {
-                                throw new ProposalsException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                                throw new Exception("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
                             }
                         }
                         else
                         if (status_ == "400") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new ProposalsException("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new Exception("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new ProposalsException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new Exception("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(Proposal);
+                        return default(ProposalViewModel);
                     }
                     finally
                     {
@@ -365,15 +365,15 @@ namespace Proposing.API.Client
             }
         }
     
-        /// <exception cref="ProposalsException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task UpdateCountriesAsync(int proposalId, UpdateProposalCountriesCommand command)
+        /// <exception cref="Exception">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task Proposals_UpdateCountriesAsync(int proposalId, UpdateProposalCountriesCommand command)
         {
-            return UpdateCountriesAsync(proposalId, command, System.Threading.CancellationToken.None);
+            return Proposals_UpdateCountriesAsync(proposalId, command, System.Threading.CancellationToken.None);
         }
     
-        /// <exception cref="ProposalsException">A server side error occurred.</exception>
+        /// <exception cref="Exception">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task UpdateCountriesAsync(int proposalId, UpdateProposalCountriesCommand command, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task Proposals_UpdateCountriesAsync(int proposalId, UpdateProposalCountriesCommand command, System.Threading.CancellationToken cancellationToken)
         {
             if (proposalId == null)
                 throw new System.ArgumentNullException("proposalId");
@@ -418,19 +418,19 @@ namespace Proposing.API.Client
                         if (status_ == "400") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new ProposalsException("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new Exception("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                         else
                         if (status_ == "404") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new ProposalsException("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new Exception("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new ProposalsException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new Exception("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -445,15 +445,15 @@ namespace Proposing.API.Client
             }
         }
     
-        /// <exception cref="ProposalsException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<HrProduct> GetHrProductScopeAsync(int proposalId)
+        /// <exception cref="Exception">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<HrProductViewModel> Proposals_GetHrProductScopeAsync(int proposalId)
         {
-            return GetHrProductScopeAsync(proposalId, System.Threading.CancellationToken.None);
+            return Proposals_GetHrProductScopeAsync(proposalId, System.Threading.CancellationToken.None);
         }
     
-        /// <exception cref="ProposalsException">A server side error occurred.</exception>
+        /// <exception cref="Exception">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<HrProduct> GetHrProductScopeAsync(int proposalId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<HrProductViewModel> Proposals_GetHrProductScopeAsync(int proposalId, System.Threading.CancellationToken cancellationToken)
         {
             if (proposalId == null)
                 throw new System.ArgumentNullException("proposalId");
@@ -491,37 +491,37 @@ namespace Proposing.API.Client
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(HrProduct); 
+                            var result_ = default(HrProductViewModel); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<HrProduct>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<HrProductViewModel>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
                             {
-                                throw new ProposalsException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                                throw new Exception("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
                             }
                         }
                         else
                         if (status_ == "400") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new ProposalsException("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new Exception("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                         else
                         if (status_ == "404") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new ProposalsException("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new Exception("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new ProposalsException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new Exception("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(HrProduct);
+                        return default(HrProductViewModel);
                     }
                     finally
                     {
@@ -535,15 +535,15 @@ namespace Proposing.API.Client
             }
         }
     
-        /// <exception cref="ProposalsException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task UpdateHrProductScopeAsync(int proposalId, UpdateHrProductScopeCommand command)
+        /// <exception cref="Exception">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task Proposals_UpdateHrProductScopeAsync(int proposalId, UpdateHrProductScopeCommand command)
         {
-            return UpdateHrProductScopeAsync(proposalId, command, System.Threading.CancellationToken.None);
+            return Proposals_UpdateHrProductScopeAsync(proposalId, command, System.Threading.CancellationToken.None);
         }
     
-        /// <exception cref="ProposalsException">A server side error occurred.</exception>
+        /// <exception cref="Exception">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task UpdateHrProductScopeAsync(int proposalId, UpdateHrProductScopeCommand command, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task Proposals_UpdateHrProductScopeAsync(int proposalId, UpdateHrProductScopeCommand command, System.Threading.CancellationToken cancellationToken)
         {
             if (proposalId == null)
                 throw new System.ArgumentNullException("proposalId");
@@ -588,19 +588,19 @@ namespace Proposing.API.Client
                         if (status_ == "400") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new ProposalsException("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new Exception("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                         else
                         if (status_ == "404") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new ProposalsException("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new Exception("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new ProposalsException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new Exception("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -651,208 +651,70 @@ namespace Proposing.API.Client
     
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class Proposal : System.ComponentModel.INotifyPropertyChanged
+    public partial class ProposalViewModel 
     {
-        private int _id;
-        private string _name;
-        private string _clientName;
-        private System.Collections.ObjectModel.ObservableCollection<ProposalCountry> _countries;
-    
         [Newtonsoft.Json.JsonProperty("Id", Required = Newtonsoft.Json.Required.Always)]
-        public int Id
-        {
-            get { return _id; }
-            set 
-            {
-                if (_id != value)
-                {
-                    _id = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public int Id { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Name
-        {
-            get { return _name; }
-            set 
-            {
-                if (_name != value)
-                {
-                    _name = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public string Name { get; set; }
     
         [Newtonsoft.Json.JsonProperty("ClientName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string ClientName
-        {
-            get { return _clientName; }
-            set 
-            {
-                if (_clientName != value)
-                {
-                    _clientName = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public string ClientName { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Countries", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.ObjectModel.ObservableCollection<ProposalCountry> Countries
-        {
-            get { return _countries; }
-            set 
-            {
-                if (_countries != value)
-                {
-                    _countries = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public System.Collections.Generic.List<ProposalCountryViewModel> Countries { get; set; }
     
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
         
-        public static Proposal FromJson(string data)
+        public static ProposalViewModel FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Proposal>(data);
-        }
-    
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) 
-                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProposalViewModel>(data);
         }
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class ProposalCountry : System.ComponentModel.INotifyPropertyChanged
+    public partial class ProposalCountryViewModel 
     {
-        private int _id;
-        private int _countryId;
-    
         [Newtonsoft.Json.JsonProperty("Id", Required = Newtonsoft.Json.Required.Always)]
-        public int Id
-        {
-            get { return _id; }
-            set 
-            {
-                if (_id != value)
-                {
-                    _id = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public int Id { get; set; }
     
         [Newtonsoft.Json.JsonProperty("CountryId", Required = Newtonsoft.Json.Required.Always)]
-        public int CountryId
-        {
-            get { return _countryId; }
-            set 
-            {
-                if (_countryId != value)
-                {
-                    _countryId = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public int CountryId { get; set; }
     
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
         
-        public static ProposalCountry FromJson(string data)
+        public static ProposalCountryViewModel FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProposalCountry>(data);
-        }
-    
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) 
-                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProposalCountryViewModel>(data);
         }
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class CreateProposalCommand : System.ComponentModel.INotifyPropertyChanged
+    public partial class CreateProposalCommand 
     {
-        private string _name;
-        private string _clientName;
-        private string _comments;
-        private System.Collections.ObjectModel.ObservableCollection<int> _countryIds;
+        [Newtonsoft.Json.JsonProperty("Name", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Name { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("Name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Name
-        {
-            get { return _name; }
-            set 
-            {
-                if (_name != value)
-                {
-                    _name = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("ClientName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string ClientName
-        {
-            get { return _clientName; }
-            set 
-            {
-                if (_clientName != value)
-                {
-                    _clientName = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        [Newtonsoft.Json.JsonProperty("ClientName", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string ClientName { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Comments", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Comments
-        {
-            get { return _comments; }
-            set 
-            {
-                if (_comments != value)
-                {
-                    _comments = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public string Comments { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("CountryIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.ObjectModel.ObservableCollection<int> CountryIds
-        {
-            get { return _countryIds; }
-            set 
-            {
-                if (_countryIds != value)
-                {
-                    _countryIds = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        [Newtonsoft.Json.JsonProperty("CountryIds", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.List<int> CountryIds { get; set; } = new System.Collections.Generic.List<int>();
     
         public string ToJson() 
         {
@@ -864,80 +726,22 @@ namespace Proposing.API.Client
             return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateProposalCommand>(data);
         }
     
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) 
-                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-        }
-    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class UpdateProposalCommand : System.ComponentModel.INotifyPropertyChanged
+    public partial class UpdateProposalCommand 
     {
-        private int _proposalId;
-        private string _name;
-        private string _clientName;
-        private string _comments;
-    
         [Newtonsoft.Json.JsonProperty("ProposalId", Required = Newtonsoft.Json.Required.Always)]
-        public int ProposalId
-        {
-            get { return _proposalId; }
-            set 
-            {
-                if (_proposalId != value)
-                {
-                    _proposalId = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public int ProposalId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Name
-        {
-            get { return _name; }
-            set 
-            {
-                if (_name != value)
-                {
-                    _name = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public string Name { get; set; }
     
         [Newtonsoft.Json.JsonProperty("ClientName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string ClientName
-        {
-            get { return _clientName; }
-            set 
-            {
-                if (_clientName != value)
-                {
-                    _clientName = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public string ClientName { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Comments", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Comments
-        {
-            get { return _comments; }
-            set 
-            {
-                if (_comments != value)
-                {
-                    _comments = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public string Comments { get; set; }
     
         public string ToJson() 
         {
@@ -949,50 +753,16 @@ namespace Proposing.API.Client
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateProposalCommand>(data);
         }
     
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) 
-                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-        }
-    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class UpdateProposalCountriesCommand : System.ComponentModel.INotifyPropertyChanged
+    public partial class UpdateProposalCountriesCommand 
     {
-        private int _proposalId;
-        private System.Collections.ObjectModel.ObservableCollection<int> _countryIds;
-    
         [Newtonsoft.Json.JsonProperty("ProposalId", Required = Newtonsoft.Json.Required.Always)]
-        public int ProposalId
-        {
-            get { return _proposalId; }
-            set 
-            {
-                if (_proposalId != value)
-                {
-                    _proposalId = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public int ProposalId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("CountryIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.ObjectModel.ObservableCollection<int> CountryIds
-        {
-            get { return _countryIds; }
-            set 
-            {
-                if (_countryIds != value)
-                {
-                    _countryIds = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public System.Collections.Generic.List<int> CountryIds { get; set; }
     
         public string ToJson() 
         {
@@ -1004,175 +774,61 @@ namespace Proposing.API.Client
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateProposalCountriesCommand>(data);
         }
     
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) 
-                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-        }
-    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class HrProduct : System.ComponentModel.INotifyPropertyChanged
+    public partial class HrProductViewModel 
     {
-        private int _proposalId;
-        private int _levelId;
-        private System.Collections.ObjectModel.ObservableCollection<HrProductCountry> _countries;
-    
         [Newtonsoft.Json.JsonProperty("ProposalId", Required = Newtonsoft.Json.Required.Always)]
-        public int ProposalId
-        {
-            get { return _proposalId; }
-            set 
-            {
-                if (_proposalId != value)
-                {
-                    _proposalId = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public int ProposalId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("LevelId", Required = Newtonsoft.Json.Required.Always)]
-        public int LevelId
-        {
-            get { return _levelId; }
-            set 
-            {
-                if (_levelId != value)
-                {
-                    _levelId = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public int LevelId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Countries", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.ObjectModel.ObservableCollection<HrProductCountry> Countries
-        {
-            get { return _countries; }
-            set 
-            {
-                if (_countries != value)
-                {
-                    _countries = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public System.Collections.Generic.List<HrProductCountryViewModel> Countries { get; set; }
     
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
         
-        public static HrProduct FromJson(string data)
+        public static HrProductViewModel FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<HrProduct>(data);
-        }
-    
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) 
-                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<HrProductViewModel>(data);
         }
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class HrProductCountry : System.ComponentModel.INotifyPropertyChanged
+    public partial class HrProductCountryViewModel 
     {
-        private int _countryId;
-        private int _levelId;
-    
         [Newtonsoft.Json.JsonProperty("CountryId", Required = Newtonsoft.Json.Required.Always)]
-        public int CountryId
-        {
-            get { return _countryId; }
-            set 
-            {
-                if (_countryId != value)
-                {
-                    _countryId = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public int CountryId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("LevelId", Required = Newtonsoft.Json.Required.Always)]
-        public int LevelId
-        {
-            get { return _levelId; }
-            set 
-            {
-                if (_levelId != value)
-                {
-                    _levelId = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public int LevelId { get; set; }
     
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
         
-        public static HrProductCountry FromJson(string data)
+        public static HrProductCountryViewModel FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<HrProductCountry>(data);
-        }
-    
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) 
-                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<HrProductCountryViewModel>(data);
         }
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class UpdateHrProductScopeCommand : System.ComponentModel.INotifyPropertyChanged
+    public partial class UpdateHrProductScopeCommand 
     {
-        private int _levelId;
-        private System.Collections.ObjectModel.ObservableCollection<int> _countryIds;
-    
         [Newtonsoft.Json.JsonProperty("LevelId", Required = Newtonsoft.Json.Required.Always)]
-        public int LevelId
-        {
-            get { return _levelId; }
-            set 
-            {
-                if (_levelId != value)
-                {
-                    _levelId = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public int LevelId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("CountryIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.ObjectModel.ObservableCollection<int> CountryIds
-        {
-            get { return _countryIds; }
-            set 
-            {
-                if (_countryIds != value)
-                {
-                    _countryIds = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        public System.Collections.Generic.List<int> CountryIds { get; set; }
     
         public string ToJson() 
         {
@@ -1184,19 +840,10 @@ namespace Proposing.API.Client
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateHrProductScopeCommand>(data);
         }
     
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) 
-                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-        }
-    
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.20.1.0 (NJsonSchema v9.11.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class ProposalsException : System.Exception
+    public partial class Exception : System.Exception
     {
         public int StatusCode { get; private set; }
 
@@ -1204,7 +851,7 @@ namespace Proposing.API.Client
 
         public System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>> Headers { get; private set; }
 
-        public ProposalsException(string message, int statusCode, string response, System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.Exception innerException) 
+        public Exception(string message, int statusCode, string response, System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.Exception innerException) 
             : base(message + "\n\nStatus: " + statusCode + "\nResponse: \n" + response.Substring(0, response.Length >= 512 ? 512 : response.Length), innerException)
         {
             StatusCode = statusCode;
@@ -1219,11 +866,11 @@ namespace Proposing.API.Client
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.20.1.0 (NJsonSchema v9.11.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class ProposalsException<TResult> : ProposalsException
+    public partial class Exception<TResult> : Exception
     {
         public TResult Result { get; private set; }
 
-        public ProposalsException(string message, int statusCode, string response, System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>> headers, TResult result, System.Exception innerException) 
+        public Exception(string message, int statusCode, string response, System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>> headers, TResult result, System.Exception innerException) 
             : base(message, statusCode, response, headers, innerException)
         {
             Result = result;

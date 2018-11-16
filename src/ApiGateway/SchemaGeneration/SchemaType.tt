@@ -1,0 +1,47 @@
+﻿<#@ template hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly Name="System.Core" #>
+<#@ import namespace="System.Reflection" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+using GraphQL.Types;
+using <#=_message.Type.Namespace#>;
+
+namespace <#=_message.SchemaTypeNamespace#>
+{
+	public partial class <#=_message.SchemaTypeTypeName#>: <#=_message.SchemaTypeBaseName#>
+	{
+		public <#=_message.SchemaTypeTypeName#>(<#=_message.ApiName#>Client client)
+		{
+			Name = "<#=_message.SchemaTypeName#>";
+<#
+		_message.Properties.ForEach(prop =>
+		{
+			if (prop.IsId)
+			{
+#>
+			Field(x => x.Id, nullable: <#=prop.IsNullable.ToString().ToLower()#>, type:(typeof(IdGraphType)));
+<#
+			}				
+			else if (prop.IsList)
+			{
+#>
+			Field(x => x.<#=prop.Name#>, nullable: <#=prop.IsNullable.ToString().ToLower()#>, type:typeof(ListGraphType<<#=prop.ListGraphTypeArgument#>>));
+<#
+			}
+			else
+			{
+#>
+			Field(x => x.<#=prop.Name#>, nullable: <#=prop.IsNullable.ToString().ToLower()#>);
+<#
+			}
+		});
+#>
+			this.Extend(client);
+		}
+
+		partial void Extend(<#=_message.ApiName#>Client client);
+	}
+}

@@ -10,13 +10,13 @@ namespace Sales.Bff.Schema
 {
     public class SalesSchemaMutationRoot : ObjectGraphType
     {
-        public SalesSchemaMutationRoot(ProposalsClient client)
+        public SalesSchemaMutationRoot(ProposingClient client)
         {
             Field<ProposalType>(
                 "CreateProposal",
                 arguments: new QueryArguments(
-                    new QueryArgument<NonNullGraphType<CreateProposalInputType>> { Name = "proposal" }),
-                resolve: context => client.CreateProposalAsync(context.GetArgument<CreateProposalCommand>("proposal"))
+                    new QueryArgument<NonNullGraphType<CreateProposalType>> { Name = "proposal" }),
+                resolve: context => client.Proposals_CreateProposalAsync(context.GetArgument<CreateProposalCommand>("proposal"))
             );
         }
     }

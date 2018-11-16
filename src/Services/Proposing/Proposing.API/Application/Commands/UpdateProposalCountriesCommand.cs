@@ -8,13 +8,13 @@ namespace Proposing.API.Application.Commands
 {
     public class UpdateProposalCountriesCommand : IRequest<bool>
     {
-        public UpdateProposalCountriesCommand(int proposalId, IEnumerable<int> countryIds)
+        public UpdateProposalCountriesCommand(int proposalId, List<int> countryIds)
         {
             ProposalId = proposalId;
             CountryIds = countryIds;
         }
 
         public int ProposalId { get; set; }
-        public IEnumerable<int> CountryIds { get; set; }
+        public List<int> CountryIds { get; set; }
     }
 }

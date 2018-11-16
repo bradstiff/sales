@@ -10,12 +10,12 @@ namespace Sales.Bff.Schema
 {
     public class SalesSchemaQueryRoot : ObjectGraphType
     {
-        public SalesSchemaQueryRoot(ProposalsClient client)
+        public SalesSchemaQueryRoot(ProposingClient client)
         {
             Field<ProposalType>(
                 "Proposal",
                 arguments: new QueryArguments(new QueryArgument<IntGraphType> { Name = "id" }),
-                resolve: context => client.GetProposalAsync(context.GetArgument<int>("id"))
+                resolve: context => client.Proposals_GetProposalAsync(context.GetArgument<int>("id"))
             );
 
             Field<ListGraphType<ProposalType>>(
@@ -25,7 +25,7 @@ namespace Sales.Bff.Schema
                     new QueryArgument<IntGraphType> { Name = "hasProduct" },
                     new QueryArgument<IntGraphType> { Name = "hasAnyProduct" }
                     ),
-                resolve: context => client.GetProposalsAsync()
+                resolve: context => client.Proposals_GetProposalsAsync()
             );
         }
     }

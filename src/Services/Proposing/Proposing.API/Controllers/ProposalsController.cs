@@ -28,7 +28,7 @@ namespace Proposing.API.Controllers
 
         [Route("{proposalId:int}", Name = "GetProposal")]
         [HttpGet]
-        [ProducesResponseType(typeof(Proposal), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProposalViewModel), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> GetProposal(int proposalId)
@@ -39,7 +39,7 @@ namespace Proposing.API.Controllers
 
         [Route("")]
         [HttpGet]
-        [ProducesResponseType(typeof(List<Proposal>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(List<ProposalViewModel>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetProposals()
         {
@@ -49,7 +49,7 @@ namespace Proposing.API.Controllers
 
         [Route("")]
         [HttpPost]
-        [ProducesResponseType(typeof(Proposal), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(ProposalViewModel), (int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> CreateProposal([FromBody] CreateProposalCommand command)
         {
@@ -94,7 +94,7 @@ namespace Proposing.API.Controllers
 
         [Route("{proposalId:int}/hr")]
         [HttpGet]
-        [ProducesResponseType(typeof(HrProduct), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(HrProductViewModel), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> GetHrProductScope(int proposalId)

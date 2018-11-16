@@ -8,15 +8,10 @@ using System.Threading.Tasks;
 namespace Sales.Bff.Proposing.SchemaTypes
 {
 
-    public class ProposalType : ObjectGraphType<Proposal>
+    public partial class ProposalType : ObjectGraphType<ProposalViewModel>
     {
-        public ProposalType(ProposalsClient client)
+        partial void Extend(ProposingClient client)
         {
-            Name = "Proposal";
-            Field(x => x.Id, type: typeof(IdGraphType));
-            Field(x => x.Name);
-            Field(x => x.ClientName);
-            Field(x => x.Countries, type: typeof(ListGraphType<ProposalCountryType>));
             Field<HrProductType>(
                 "hr",
                 resolve: null//context => queries.GetHrProduct(context.Source.Id)

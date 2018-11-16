@@ -47,7 +47,7 @@ namespace Sales.Bff
             //services.AddSingleton<HrProductCountryType>();
             services.AddSingleton(typeof(ObjectGraphType<>));
             services.AddSingleton(typeof(InputObjectGraphType<>));
-            services.AddHttpClient<ProposalsClient>(c => c.BaseAddress = new Uri("http://localhost:10598"));
+            services.AddHttpClient<ProposingClient>(c => c.BaseAddress = new Uri("http://localhost:10598"));
 
             //configure autofac
             var container = new ContainerBuilder();

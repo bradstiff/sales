@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Proposing.API.Application.Queries
 {
-    public class HrProductCountry
+    public class HrProductCountryViewModel
     {
         public int CountryId { get; set; }
         public int LevelId { get; set; }

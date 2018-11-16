@@ -21,7 +21,7 @@ namespace Proposing.API.Application.Queries
             return new SqlConnection(_connectionString);
         }
 
-        public async Task<Proposal> GetProposalAsync(int id)
+        public async Task<ProposalViewModel> GetProposalAsync(int id)
         {
             using (var conn = this.NewConnection())
             {
@@ -29,13 +29,13 @@ namespace Proposing.API.Application.Queries
                     select * from Proposal where Id = @id;
                     select * from ProposalCountry where ProposalId = @id"
                     , new { id });
-                var proposal = await results.ReadSingleAsync<Proposal>();
-                proposal.Countries = await results.ReadAsync<ProposalCountry>();
+                var proposal = await results.ReadSingleAsync<ProposalViewModel>();
+                proposal.Countries = await results.ReadAsync<ProposalCountryViewModel>();
                 return proposal;
             }
         }
 
-        public async Task<IEnumerable<Proposal>> GetProposalsAsync(Dictionary<string, object> arguments)
+        public async Task<IEnumerable<ProposalViewModel>> GetProposalsAsync(Dictionary<string, object> arguments)
         {
             var predicates = new List<string>();
             foreach(var argument in arguments)
@@ -61,11 +61,11 @@ namespace Proposing.API.Application.Queries
 
             using (var conn = this.NewConnection())
             {
-                return await conn.QueryAsync<Proposal>(query, arguments);
+                return await conn.QueryAsync<ProposalViewModel>(query, arguments);
             }
         }
 
-        public async Task<HrProduct> GetHrProduct(int proposalId)
+        public async Task<HrProductViewModel> GetHrProduct(int proposalId)
         {
             using (var conn = this.NewConnection())
             {
@@ -73,8 +73,8 @@ namespace Proposing.API.Application.Queries
                     select * from HrProduct where ProposalId = @proposalId;
                     select * from HrProductCountry where ProposalId = @proposalId", 
                 new { proposalId });
-                var hrProduct = await results.ReadSingleAsync<HrProduct>();
-                hrProduct.Countries = await results.ReadAsync<HrProductCountry>();
+                var hrProduct = await results.ReadSingleAsync<HrProductViewModel>();
+                hrProduct.Countries = await results.ReadAsync<HrProductCountryViewModel>();
                 return hrProduct;
             }
         }

@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace Proposing.API.Application.Commands
         {
         }
 
-        public CreateProposalCommand(string name, string clientName, string comments, IEnumerable<int> countryIds)
+        public CreateProposalCommand(string name, string clientName, string comments, List<int> countryIds)
         {
             Name = name;
             ClientName = clientName;
@@ -21,9 +22,15 @@ namespace Proposing.API.Application.Commands
             CountryIds = countryIds;
         }
 
+        [Required]
         public string Name { get; set; }
+
+        [Required]
         public string ClientName { get; set; }
+
         public string Comments { get; set; }
-        public IEnumerable<int> CountryIds { get; set; }
+
+        [Required]
+        public List<int> CountryIds { get; set; }
     }
 }
