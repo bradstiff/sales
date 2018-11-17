@@ -35,33 +35,50 @@ namespace Proposing.API.Application.Queries
             }
         }
 
-        public async Task<IEnumerable<ProposalViewModel>> GetProposalsAsync(Dictionary<string, object> arguments)
+        public async Task<ListPageViewModel<ProposalViewModel>> GetProposalListAsync(int page = 1, int rowsPerPage = 25, string orderBy = "ClientName", string order = "asc")
         {
+            var offset = (page - 1) * rowsPerPage;
+            if (offset < 0) offset = 0;
             var predicates = new List<string>();
-            foreach(var argument in arguments)
-            {
-                if (argument.Key.Equals("hasCountry", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    predicates.Add($"EXISTS(select 1 from ProposalCountry pc where pc.ProposalID = p.Id and pc.CountryID = @{argument.Key})");
-                }
-                else if (argument.Key.Equals("hasProduct", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    predicates.Add($"(ProductTypeIds & @{argument.Key}) = @{argument.Key}");
-                }
-                else if (argument.Key.Equals("hasAnyProduct", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    predicates.Add($"(ProductTypeIds & @{argument.Key}) > 0");
-                }
-            }
-            var query = "select * from Proposal p";
-            if (predicates.Count > 0)
-            {
-                query += " WHERE " + string.Join(" AND ", predicates);
-            }
+            var parameters = new Dictionary<string, object>{
+                { "offset", offset },
+                { "limit", rowsPerPage } };
+            //foreach(var argument in arguments)
+            //{
+            //    if (argument.Key.Equals("hasCountry", StringComparison.CurrentCultureIgnoreCase))
+            //    {
+            //        predicates.Add($"EXISTS(select 1 from ProposalCountry pc where pc.ProposalID = p.Id and pc.CountryID = @{argument.Key})");
+            //    }
+            //    else if (argument.Key.Equals("hasProduct", StringComparison.CurrentCultureIgnoreCase))
+            //    {
+            //        predicates.Add($"(ProductTypeIds & @{argument.Key}) = @{argument.Key}");
+            //    }
+            //    else if (argument.Key.Equals("hasAnyProduct", StringComparison.CurrentCultureIgnoreCase))
+            //    {
+            //        predicates.Add($"(ProductTypeIds & @{argument.Key}) > 0");
+            //    }
+            //}
 
-            using (var conn = this.NewConnection())
+            var countQuery = $@"
+            select count(*) from Proposal p 
+            {(predicates.Count > 0 ? " WHERE " + string.Join(" AND ", predicates) : "")}
+            ";
+
+            var query = $@"
+            select * from Proposal p 
+            {(predicates.Count > 0 ? " WHERE " + string.Join(" AND ", predicates) : "")}
+            ORDER BY {orderBy} {order}
+            OFFSET @offset ROWS
+            FETCH NEXT @limit ROWS ONLY
+            ";
+
+            using (var conn1 = this.NewConnection())
+            using (var conn2 = this.NewConnection())
             {
-                return await conn.QueryAsync<ProposalViewModel>(query, arguments);
+                var count = conn1.QueryFirstAsync<int>(countQuery, parameters);
+                var proposals = conn2.QueryAsync<ProposalViewModel>(query, parameters);
+                await Task.WhenAll(count, proposals);
+                return new ListPageViewModel<ProposalViewModel>(count.Result, page, proposals.Result.ToList());
             }
         }
 

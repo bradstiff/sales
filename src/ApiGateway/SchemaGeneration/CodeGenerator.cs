@@ -20,7 +20,14 @@ namespace SchemaTypeCodeGenerator
         }
         private string GetSchemaTypeName(Type message)
         {
-            return message.Name.Remove(message.Name.IndexOf(this.GetMessageType(message).ToString()));
+            var typeName = message.Name;
+            if (typeName.StartsWith("ListPageViewModelOf"))
+            {
+                //e.g., ListPageViewModelOfProposalViewModel => ProposalListPage
+                var ofType = typeName.Replace("ListPageViewModelOf", "").Replace("ViewModel", "");
+                return ofType + "ListPage";
+            }
+            return typeName.Remove(typeName.IndexOf(this.GetMessageType(message).ToString()));
         }
         private string GetSchemaTypeTypeName(Type message)
         {

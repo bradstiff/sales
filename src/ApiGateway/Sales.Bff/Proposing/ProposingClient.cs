@@ -203,17 +203,26 @@ namespace Proposing.API.Client
         }
     
         /// <exception cref="Exception">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ProposalViewModel>> Proposals_GetProposalsAsync()
+        public System.Threading.Tasks.Task<ListPageViewModelOfProposalViewModel> Proposals_GetProposalsAsync(int offset, int limit)
         {
-            return Proposals_GetProposalsAsync(System.Threading.CancellationToken.None);
+            return Proposals_GetProposalsAsync(offset, limit, System.Threading.CancellationToken.None);
         }
     
         /// <exception cref="Exception">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ProposalViewModel>> Proposals_GetProposalsAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ListPageViewModelOfProposalViewModel> Proposals_GetProposalsAsync(int offset, int limit, System.Threading.CancellationToken cancellationToken)
         {
+            if (offset == null)
+                throw new System.ArgumentNullException("offset");
+    
+            if (limit == null)
+                throw new System.ArgumentNullException("limit");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("api/Proposals");
+            urlBuilder_.Append("api/Proposals?");
+            urlBuilder_.Append("offset=").Append(System.Uri.EscapeDataString(ConvertToString(offset, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append("limit=").Append(System.Uri.EscapeDataString(ConvertToString(limit, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
     
             var client_ = _httpClient;
             try
@@ -244,10 +253,10 @@ namespace Proposing.API.Client
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(System.Collections.Generic.IEnumerable<ProposalViewModel>); 
+                            var result_ = default(ListPageViewModelOfProposalViewModel); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.Generic.IEnumerable<ProposalViewModel>>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<ListPageViewModelOfProposalViewModel>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -268,7 +277,7 @@ namespace Proposing.API.Client
                             throw new Exception("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(System.Collections.Generic.IEnumerable<ProposalViewModel>);
+                        return default(ListPageViewModelOfProposalViewModel);
                     }
                     finally
                     {
@@ -662,6 +671,9 @@ namespace Proposing.API.Client
         [Newtonsoft.Json.JsonProperty("ClientName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ClientName { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("Comments", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Comments { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("Countries", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.List<ProposalCountryViewModel> Countries { get; set; }
     
@@ -694,6 +706,30 @@ namespace Proposing.API.Client
         public static ProposalCountryViewModel FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<ProposalCountryViewModel>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class ListPageViewModelOfProposalViewModel 
+    {
+        [Newtonsoft.Json.JsonProperty("TotalCount", Required = Newtonsoft.Json.Required.Always)]
+        public int TotalCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Page", Required = Newtonsoft.Json.Required.Always)]
+        public int Page { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Rows", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<ProposalViewModel> Rows { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static ListPageViewModelOfProposalViewModel FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ListPageViewModelOfProposalViewModel>(data);
         }
     
     }

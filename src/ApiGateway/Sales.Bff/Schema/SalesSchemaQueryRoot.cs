@@ -18,14 +18,19 @@ namespace Sales.Bff.Schema
                 resolve: context => client.Proposals_GetProposalAsync(context.GetArgument<int>("id"))
             );
 
-            Field<ListGraphType<ProposalType>>(
-                "Proposals",
+            Field<ProposalListPageType>(
+                "ProposalListPage",
                 arguments: new QueryArguments(
-                    new QueryArgument<IntGraphType> { Name = "hasCountry" },
+                    new QueryArgument<IntGraphType> { Name = "page", DefaultValue = 1 },
+                    new QueryArgument<IntGraphType> { Name = "rowsPerPage", DefaultValue = 25 },
+                    new QueryArgument<StringGraphType> { Name = "orderBy", DefaultValue = "name" },
+                    new QueryArgument<StringGraphType> { Name = "order", DefaultValue = "asc" },
                     new QueryArgument<IntGraphType> { Name = "hasProduct" },
                     new QueryArgument<IntGraphType> { Name = "hasAnyProduct" }
                     ),
-                resolve: context => client.Proposals_GetProposalsAsync()
+                resolve: context => client.Proposals_GetProposalsAsync(
+                    context.GetArgument<int>("page"), 
+                    context.GetArgument<int>("rowsPerPage"))
             );
         }
     }

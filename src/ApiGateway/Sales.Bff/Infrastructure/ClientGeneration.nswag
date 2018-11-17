@@ -100,7 +100,7 @@
       "dateTimeType": "System.DateTime",
       "timeType": "System.TimeSpan",
       "timeSpanType": "System.TimeSpan",
-      "arrayType": "System.Collections.Generic.IEnumerable",
+      "arrayType": "System.Collections.Generic.List",
       "arrayInstanceType": null,
       "dictionaryType": "System.Collections.Generic.Dictionary",
       "dictionaryInstanceType": null,

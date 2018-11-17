@@ -39,11 +39,11 @@ namespace Proposing.API.Controllers
 
         [Route("")]
         [HttpGet]
-        [ProducesResponseType(typeof(List<ProposalViewModel>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ListPageViewModel<ProposalViewModel>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> GetProposals()
+        public async Task<IActionResult> GetProposals(int offset, int limit)
         {
-            var proposals = await _proposingQueries.GetProposalsAsync(new Dictionary<string, object>());
+            var proposals = await _proposingQueries.GetProposalListAsync(offset, limit);
             return Ok(proposals);
         }
 
