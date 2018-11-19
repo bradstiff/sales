@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SchemaTypeCodeGenerator
 {
-    public enum MessageType
+    public enum DtoType
     {
         ViewModel,
         Command

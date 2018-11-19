@@ -5,19 +5,19 @@ using System.Text;
 
 namespace SchemaTypeCodeGenerator
 {
-    public class Message
+    public class DtoModel
     {
         public Type Type{ get; set; }
-        public MessageType MessageType { get; set; }
+        public DtoType DtoType { get; set; }
         public string ApiName { get; set; }
         public string SchemaTypeName { get; set; }
-        public string SchemaTypeBaseName => $"{(this.MessageType == MessageType.ViewModel ? "ObjectGraphType" : "InputObjectGraphType")}<{this.Type.Name}>";
+        public string SchemaTypeBaseName => $"{(this.DtoType == DtoType.ViewModel ? "ObjectGraphType" : "InputObjectGraphType")}<{this.Type.Name}>";
         public string SchemaTypeTypeName { get; set; }
         public string SchemaTypeNamespace { get; set; }
-        public List<MessageProperty> Properties { get; set; }
+        public List<DtoPropertyModel> Properties { get; set; }
     }
 
-    public class MessageProperty
+    public class DtoPropertyModel
     {
         public string Name { get; set; }
         public Type Type { get; set; }

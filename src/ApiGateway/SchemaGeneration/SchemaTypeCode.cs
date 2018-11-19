@@ -6,8 +6,8 @@ namespace SchemaTypeCodeGenerator
 {
     public partial class SchemaType
     {
-        private Message _message;
-        public SchemaType(Message message)
+        private DtoModel _message;
+        public SchemaType(DtoModel message)
         {
             _message = message;
         }
