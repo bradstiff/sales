@@ -20,6 +20,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateway", "ApiGateway", "{58223F0D-8594-44C8-90DC-33A2C04D5320}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sales.Bff", "src\ApiGateway\Sales.Bff\Sales.Bff.csproj", "{1C4D3E31-DCAD-439D-8030-F40479471FF7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AB99A4D6-43A5-4910-B83E-51AF49F28D98} = {AB99A4D6-43A5-4910-B83E-51AF49F28D98}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchemaTypeCodeGenerator", "src\ApiGateway\SchemaGeneration\SchemaTypeCodeGenerator.csproj", "{3F480F94-3249-42C9-81D9-79F648669501}"
 EndProject

@@ -36,5 +36,9 @@
   <Target Name="NSwag" BeforeTargets="PrepareForBuild" Condition="'$(GenerateCode)'=='True' ">
     <Exec Command="$(NSwagExe_Core21) run Infrastructure\nswag.json /variables:Configuration=$(Configuration)" />
   </Target>
+ 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="dotnet run -p $(SolutionDir)\src\ApiGateway\SchemaGeneration" />
+  </Target>
 
 </Project>

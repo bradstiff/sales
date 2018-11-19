@@ -1,0 +1,9 @@
+Generating ProposalType
+Generating ProposalCountryType
+Generating ProposalListPageType
+Generating CreateProposalType
+Generating UpdateProposalType
+Generating UpdateProposalCountriesType
+Generating HrProductType
+Generating HrProductCountryType
+Generating UpdateHrProductScopeType
