@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Proposing.API.Infrastructure.Context;
-using Proposing.Domain.Core;
-using Proposing.Domain.Model.ProposalAggregate;
-using Proposing.Domain.Model.ProposalAggregate.HR;
+using Proposing.API.Domain.Core;
+using Proposing.API.Domain.Model.ProposalAggregate;
+using Proposing.API.Domain.Model.ProposalAggregate.HR;
 using System;
 using System.Collections.Generic;
 using System.Linq;

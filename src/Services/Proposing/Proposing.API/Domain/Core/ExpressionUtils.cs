@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 
-namespace Proposing.Domain.Core
+namespace Proposing.API.Domain.Core
 {
     public static class ExpressionUtils
     {

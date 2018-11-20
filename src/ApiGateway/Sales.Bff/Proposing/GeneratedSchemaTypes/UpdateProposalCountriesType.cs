@@ -9,8 +9,7 @@ namespace Sales.Bff.Proposing.SchemaTypes
 		public UpdateProposalCountriesType(ProposingClient client)
 		{
 			Name = "UpdateProposalCountries";
-			Field(x => x.ProposalId, nullable: true);
-			Field(x => x.CountryIds, nullable: true, type:typeof(ListGraphType<IntGraphType>));
+			Field(x => x.Countries, nullable: true, type:typeof(ListGraphType<ProposalCountryInputType>));
 			this.Extend(client);
 		}
 

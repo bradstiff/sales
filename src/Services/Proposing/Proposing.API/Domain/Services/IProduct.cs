@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Proposing.Domain.Services
+namespace Proposing.API.Domain.Services
 {
     interface IProduct
     {

@@ -375,14 +375,14 @@ namespace Proposing.API.Client
         }
     
         /// <exception cref="Exception">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task Proposals_UpdateCountriesAsync(int proposalId, UpdateProposalCountriesCommand command)
+        public System.Threading.Tasks.Task<bool> Proposals_UpdateCountriesAsync(int proposalId, UpdateProposalCountriesCommand command)
         {
             return Proposals_UpdateCountriesAsync(proposalId, command, System.Threading.CancellationToken.None);
         }
     
         /// <exception cref="Exception">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task Proposals_UpdateCountriesAsync(int proposalId, UpdateProposalCountriesCommand command, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<bool> Proposals_UpdateCountriesAsync(int proposalId, UpdateProposalCountriesCommand command, System.Threading.CancellationToken cancellationToken)
         {
             if (proposalId == null)
                 throw new System.ArgumentNullException("proposalId");
@@ -400,6 +400,7 @@ namespace Proposing.API.Client
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
     
                     PrepareRequest(client_, request_, urlBuilder_);
                     var url_ = urlBuilder_.ToString();
@@ -421,7 +422,17 @@ namespace Proposing.API.Client
                         var status_ = ((int)response_.StatusCode).ToString();
                         if (status_ == "200") 
                         {
-                            return;
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(bool); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<bool>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new Exception("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
                         }
                         else
                         if (status_ == "400") 
@@ -441,6 +452,8 @@ namespace Proposing.API.Client
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new Exception("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
+            
+                        return default(bool);
                     }
                     finally
                     {
@@ -701,6 +714,12 @@ namespace Proposing.API.Client
         [Newtonsoft.Json.JsonProperty("CountryId", Required = Newtonsoft.Json.Required.Always)]
         public int CountryId { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("Name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Headcount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Headcount { get; set; }
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
@@ -751,9 +770,9 @@ namespace Proposing.API.Client
         [Newtonsoft.Json.JsonProperty("Comments", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Comments { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("CountryIds", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("Countries", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.List<int> CountryIds { get; set; } = new System.Collections.Generic.List<int>();
+        public System.Collections.Generic.List<ProposalCountryDto> Countries { get; set; } = new System.Collections.Generic.List<ProposalCountryDto>();
     
         public string ToJson() 
         {
@@ -763,6 +782,27 @@ namespace Proposing.API.Client
         public static CreateProposalCommand FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateProposalCommand>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.12.2.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ProposalCountryDto 
+    {
+        [Newtonsoft.Json.JsonProperty("CountryId", Required = Newtonsoft.Json.Required.Always)]
+        public int CountryId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Headcount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Headcount { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static ProposalCountryDto FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProposalCountryDto>(data);
         }
     
     }
@@ -797,11 +837,8 @@ namespace Proposing.API.Client
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.12.2.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class UpdateProposalCountriesCommand 
     {
-        [Newtonsoft.Json.JsonProperty("ProposalId", Required = Newtonsoft.Json.Required.Always)]
-        public int ProposalId { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("CountryIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<int> CountryIds { get; set; }
+        [Newtonsoft.Json.JsonProperty("Countries", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<ProposalCountryDto> Countries { get; set; }
     
         public string ToJson() 
         {

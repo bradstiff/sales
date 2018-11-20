@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Proposing.Domain.Core;
-using Proposing.Domain.Model.ProposalAggregate;
+using Proposing.API.Domain.Core;
+using Proposing.API.Domain.Model.ProposalAggregate;
 using System;
 using System.Collections.Generic;
 using System.Linq;

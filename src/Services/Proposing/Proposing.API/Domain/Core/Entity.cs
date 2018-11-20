@@ -2,7 +2,7 @@
 using MediatR;
 using System.Collections.Generic;
 
-namespace Proposing.Domain.Core
+namespace Proposing.API.Domain.Core
 {
     public abstract class Entity
     {

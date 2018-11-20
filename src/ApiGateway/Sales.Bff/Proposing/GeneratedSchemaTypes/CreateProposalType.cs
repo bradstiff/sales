@@ -12,7 +12,7 @@ namespace Sales.Bff.Proposing.SchemaTypes
 			Field(x => x.Name, nullable: false);
 			Field(x => x.ClientName, nullable: false);
 			Field(x => x.Comments, nullable: true);
-			Field(x => x.CountryIds, nullable: false, type:typeof(ListGraphType<IntGraphType>));
+			Field(x => x.Countries, nullable: false, type:typeof(ListGraphType<ProposalCountryInputType>));
 			this.Extend(client);
 		}
 

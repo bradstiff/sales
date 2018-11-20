@@ -11,7 +11,6 @@ import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
 import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
-import FilterListIcon from '@material-ui/icons/FilterList';
 
 import SortEnabledTableHead from '../common/SortEnabledTableHead';
 import LinkButton from '../common/LinkButton';

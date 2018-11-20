@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Proposing.Domain.Core
+namespace Proposing.API.Domain.Core
 {
     public abstract class Enumeration<T> where T : struct 
     {

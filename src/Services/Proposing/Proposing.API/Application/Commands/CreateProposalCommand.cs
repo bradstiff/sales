@@ -14,12 +14,12 @@ namespace Proposing.API.Application.Commands
         {
         }
 
-        public CreateProposalCommand(string name, string clientName, string comments, List<int> countryIds)
+        public CreateProposalCommand(string name, string clientName, string comments, List<ProposalCountryDto> countries)
         {
             Name = name;
             ClientName = clientName;
             Comments = comments;
-            CountryIds = countryIds;
+            Countries = countries;
         }
 
         [Required]
@@ -31,6 +31,23 @@ namespace Proposing.API.Application.Commands
         public string Comments { get; set; }
 
         [Required]
-        public List<int> CountryIds { get; set; }
+        public List<ProposalCountryDto> Countries { get; set; }
+    }
+
+    public class ProposalCountryDto
+    {
+        public ProposalCountryDto()
+        {
+        }
+
+        public ProposalCountryDto(int countryId, int? headcount)
+        {
+            CountryId = countryId;
+            Headcount = headcount;
+        }
+
+        public int CountryId { get; set; }
+
+        public int? Headcount { get; set; }
     }
 }

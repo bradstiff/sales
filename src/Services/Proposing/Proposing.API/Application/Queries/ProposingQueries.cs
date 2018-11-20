@@ -27,7 +27,7 @@ namespace Proposing.API.Application.Queries
             {
                 var results = await conn.QueryMultipleAsync(@"
                     select * from Proposal where Id = @id;
-                    select * from ProposalCountry where ProposalId = @id"
+                    select pc.*, c.Name from ProposalCountry pc join Country c on pc.CountryID = c.Id where ProposalId = @id"
                     , new { id });
                 var proposal = await results.ReadSingleAsync<ProposalViewModel>();
                 proposal.Countries = await results.ReadAsync<ProposalCountryViewModel>();

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Proposing.Domain.Model.ProposalAggregate;
-using Proposing.Domain.Model.ProposalAggregate.Payroll;
+using Proposing.API.Domain.Model.ProposalAggregate;
+using Proposing.API.Domain.Model.ProposalAggregate.Payroll;
 using System;
 using System.Collections.Generic;
 using System.Linq;

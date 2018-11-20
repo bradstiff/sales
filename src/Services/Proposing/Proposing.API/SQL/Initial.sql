@@ -23,6 +23,7 @@ create table ProposalCountry
 	ProposalId int not null,
 	CountryID int not null,
 	ProductTypeIds bigint not null,
+	ProposalCountry add	Headcount int null,
 	constraint PK_ProposalCountry primary key (Id),
 	constraint FK_ProposalCountry_Proposal foreign key (ProposalId) references Proposal (Id),
 	constraint FK_ProposalCountry_Country foreign key (CountryId) references Country (Id),
@@ -72,3 +73,16 @@ create table HrProductCountry
 	constraint PK_HrProductCountry primary key (Id),
 	constraint FK_HrProductCountry_Proposal foreign key (ProposalId) references Proposal (Id),
 )
+
+create table ProposalPrice
+(
+	Id int not null identity,
+	ProposalId int not null,
+	PriceItemId int not null,
+	CountryId int null,
+	TypeId tinyint not null,
+	Book decimal(9,2) not null,
+	Cost decimal(9,2) not null,
+	Net decimal(9,2) not null,
+	DiscountPct decimal(9,8) not null,
+	Headcount int not null,

@@ -8,13 +8,11 @@ namespace Proposing.API.Application.Commands
 {
     public class UpdateProposalCountriesCommand : IRequest<bool>
     {
-        public UpdateProposalCountriesCommand(int proposalId, List<int> countryIds)
+        public UpdateProposalCountriesCommand(List<ProposalCountryDto> countries)
         {
-            ProposalId = proposalId;
-            CountryIds = countryIds;
+            Countries = countries;
         }
 
-        public int ProposalId { get; set; }
-        public List<int> CountryIds { get; set; }
+        public List<ProposalCountryDto> Countries { get; set; }
     }
 }

@@ -1,9 +1,9 @@
-﻿using Proposing.Domain.Core;
+﻿using Proposing.API.Domain.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Proposing.Domain.Model.ProposalAggregate.Payroll
+namespace Proposing.API.Domain.Model.ProposalAggregate.Payroll
 {
     public class PayrollProduct : Entity, IProduct, IProductScopeUpdater<PayrollProductScopeDto>
     {

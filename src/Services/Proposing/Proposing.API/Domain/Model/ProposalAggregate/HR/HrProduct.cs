@@ -1,11 +1,11 @@
-﻿using Proposing.Domain.Core;
-using Proposing.Domain.Model.ProposalAggregate.HR;
+﻿using Proposing.API.Domain.Core;
+using Proposing.API.Domain.Model.ProposalAggregate.HR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Proposing.Domain.Model.ProposalAggregate
+namespace Proposing.API.Domain.Model.ProposalAggregate
 {
     public class HrProduct : Entity, IProduct, IProductScopeUpdater<HrProductScopeDto>
     {

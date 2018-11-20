@@ -44,7 +44,7 @@ const withQuery = (query, options, NotFound) => Component => {
             return <Component  {...wrappedComponentProps} />;
         }
 
-        static getDerivedStateFromProps = (props, state) => {
+        static getDerivedStateFromProps(props, state) {
             if (props.loading && !state.loading) {
                 props.onStartLoading();
                 return { loading: true };

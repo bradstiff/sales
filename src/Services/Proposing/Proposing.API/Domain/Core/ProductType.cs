@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Proposing.Domain.Exceptions;
-using Proposing.Domain.Model.ProposalAggregate;
-using Proposing.Domain.Model.ProposalAggregate.HR;
-using Proposing.Domain.Model.ProposalAggregate.Payroll;
+using Proposing.API.Domain.Exceptions;
+using Proposing.API.Domain.Model.ProposalAggregate;
+using Proposing.API.Domain.Model.ProposalAggregate.HR;
+using Proposing.API.Domain.Model.ProposalAggregate.Payroll;
 
-namespace Proposing.Domain.Core
+namespace Proposing.API.Domain.Core
 {
     public class ProductType : Enumeration<long>
     {

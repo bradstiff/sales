@@ -1,9 +1,9 @@
-﻿using Proposing.Domain.Core;
+﻿using Proposing.API.Domain.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Proposing.Domain.Model.ProposalAggregate
+namespace Proposing.API.Domain.Model.ProposalAggregate
 {
     public class PayrollProductCountry : Entity, IProductCountry
     {

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Proposing.Domain.Core;
-using Proposing.Domain.Exceptions;
+using Proposing.API.Domain.Core;
+using Proposing.API.Domain.Exceptions;
 
-namespace Proposing.Domain.Model.ProposalAggregate
+namespace Proposing.API.Domain.Model.ProposalAggregate
 {
     public class ProductModelVersion : Enumeration<int>
     {

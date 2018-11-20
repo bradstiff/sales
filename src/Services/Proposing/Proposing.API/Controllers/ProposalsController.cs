@@ -79,7 +79,7 @@ namespace Proposing.API.Controllers
 
         [Route("{proposalId:int}/countries")]
         [HttpPut]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> UpdateCountries(int proposalId, [FromBody] UpdateProposalCountriesCommand command)
@@ -89,7 +89,7 @@ namespace Proposing.API.Controllers
             {
                 return BadRequest();
             }
-            return Ok();
+            return Ok(result);
         }
 
         [Route("{proposalId:int}/hr")]

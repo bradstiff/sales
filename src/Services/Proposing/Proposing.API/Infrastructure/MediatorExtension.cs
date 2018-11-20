@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Proposing.Domain.Core;
+using Proposing.API.Domain.Core;
 using System.Linq;
 using System.Threading.Tasks;
 

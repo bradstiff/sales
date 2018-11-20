@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Proposing.Domain.Events
+namespace Proposing.API.Domain.Events
 {
     public class ScopeChangedDomainEvent
     {

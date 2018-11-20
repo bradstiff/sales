@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using Proposing.Domain.Model.ProposalAggregate;
+using Proposing.API.Domain.Model.ProposalAggregate;
 using MediatR;
 using System.Threading;
-using Proposing.Domain.Model.ProposalAggregate.Payroll;
+using Proposing.API.Domain.Model.ProposalAggregate.Payroll;
 
 namespace Proposing.API.Infrastructure.Context
 {

@@ -21,7 +21,7 @@ namespace Proposing.API.Application.Commands
         public async Task<bool> Handle(CommandWithResourceId<int, UpdateProposalCountriesCommand, bool> request, CancellationToken cancellationToken)
         {
             var proposal = await _context.Proposals.FindByIdAsync(request.ResourceId, cancellationToken);
-            proposal.UpdateCountries(request.InnerCommand.CountryIds);
+            proposal.UpdateCountries(request.InnerCommand.Countries);
             await _context.SaveChangesAsync(cancellationToken);
             return true;
         }

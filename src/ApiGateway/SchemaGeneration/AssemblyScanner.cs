@@ -9,7 +9,7 @@ namespace SchemaTypeCodeGenerator
 {
     public static class AssemblyScanner
     {
-        public static List<Type> Scan(string assemblyPath, Func<Type, bool> predicate)
+        public static List<Type> Scan(string assemblyPath, Func<Type, bool> predicate, IEnumerable<string> typeNamesToForceInclude)
         {
             var assembly = Assembly.LoadFrom(assemblyPath);
             List<Type> types;
@@ -22,8 +22,9 @@ namespace SchemaTypeCodeGenerator
                 types = e.Types.Where(t => t != null).ToList();
             }
 
+            Func<Type, bool> predicateWithOverrides = type => predicate(type) || typeNamesToForceInclude.Any(o => o == type.Name);
             var dtos = new List<Type>();
-            types.ForEach(type => TryAddType(type, dtos, predicate));
+            types.ForEach(type => TryAddType(type, dtos, predicateWithOverrides));
             return dtos;
         }
 

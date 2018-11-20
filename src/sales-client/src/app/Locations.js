@@ -18,4 +18,6 @@ export default {
         order: order
     }),
     Proposal: new Location('/proposals/:id', {id: identity}),
+    ProposalCountries: new Location('/proposals/:id/countries', {id: identity}),
+    ProposalHr: new Location('/proposals/:id/hr', {id: identity}),
 };

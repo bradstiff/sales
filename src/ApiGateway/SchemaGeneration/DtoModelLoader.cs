@@ -10,13 +10,13 @@ namespace SchemaTypeCodeGenerator
 {
     public static class DtoModelLoader
     {
-        public static IEnumerable<DtoModel> Load(IEnumerable<Type> dtos)
+        public static IEnumerable<DtoModel> Load(IEnumerable<Type> dtos, Dictionary<string,string> nameOverrides)
         {
             foreach(var dto in dtos)
             {
                 var dtoType = GetDtoType(dto);
-                var schemaTypeName = GetSchemaTypeName(dto);
-                var schemaTypeTypeName = GetSchemaTypeTypeName(dto);
+                var schemaTypeName = GetSchemaTypeName(dto, nameOverrides);
+                var schemaTypeTypeName = GetSchemaTypeTypeName(dto, nameOverrides);
                 var apiName = dto.Namespace.Remove(dto.Namespace.IndexOf(".API.Client"));
 
                 yield return new DtoModel
@@ -54,7 +54,7 @@ namespace SchemaTypeCodeGenerator
                                 }
                                 else if (dtos.Any(type => type == listGenericArgument))
                                 {
-                                    listGraphTypeArgument = GetSchemaTypeTypeName(listGenericArgument);
+                                    listGraphTypeArgument = GetSchemaTypeTypeName(listGenericArgument, nameOverrides);
                                 }
                                 else
                                 {
@@ -77,26 +77,30 @@ namespace SchemaTypeCodeGenerator
             }
         }
 
-        private static DtoType GetDtoType(Type message)
+        private static DtoType GetDtoType(Type dto)
         {
-            return message.Name.EndsWith("ViewModel")
+            return dto.Name.EndsWith("ViewModel")
                         ? DtoType.ViewModel
                         : DtoType.Command;
         }
-        private static string GetSchemaTypeName(Type message)
+        private static string GetSchemaTypeName(Type dto, Dictionary<string, string> nameOverrides)
         {
-            var typeName = message.Name;
-            if (typeName.StartsWith("ListPageViewModelOf"))
+            var typeName = dto.Name;
+            if (nameOverrides.ContainsKey(typeName))
+            {
+                return nameOverrides[typeName];
+            }
+            else if (typeName.StartsWith("ListPageViewModelOf"))
             {
                 //e.g., ListPageViewModelOfProposalViewModel => ProposalListPage
                 var ofType = typeName.Replace("ListPageViewModelOf", "").Replace("ViewModel", "");
                 return ofType + "ListPage";
             }
-            return typeName.Remove(typeName.IndexOf(GetDtoType(message).ToString()));
+            return typeName.Remove(typeName.IndexOf(GetDtoType(dto).ToString()));
         }
-        private static string GetSchemaTypeTypeName(Type message)
+        private static string GetSchemaTypeTypeName(Type dto, Dictionary<string, string> nameOverrides)
         {
-            return GetSchemaTypeName(message) + "Type";
+            return GetSchemaTypeName(dto, nameOverrides) + "Type";
         }
     }
 }

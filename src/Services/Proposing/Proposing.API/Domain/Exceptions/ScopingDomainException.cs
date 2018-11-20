@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Proposing.Domain.Exceptions
+namespace Proposing.API.Domain.Exceptions
 {
     public class ScopingDomainException : Exception
     {

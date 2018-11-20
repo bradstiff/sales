@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Proposing.API.Infrastructure.Context;
-using Proposing.Domain.Model.ProposalAggregate;
+using Proposing.API.Domain.Model.ProposalAggregate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +21,7 @@ namespace Proposing.API.Application.Commands
 
         public async Task<int> Handle(CreateProposalCommand request, CancellationToken cancellationToken)
         {
-            var proposal = new Proposal(request.CountryIds);
+            var proposal = new Proposal(request.Countries);
             proposal.SetGeneralProperties(request.Name, request.ClientName, request.Comments);
             _context.Proposals.Add(proposal);
             await _context.SaveChangesAsync(cancellationToken);

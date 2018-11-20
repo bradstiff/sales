@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Proposing.Domain.Model.ProposalAggregate
+namespace Proposing.API.Domain.Model.ProposalAggregate
 {
     public interface IProductCountry
     {

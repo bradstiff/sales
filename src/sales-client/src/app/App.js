@@ -10,7 +10,8 @@ import orange from '@material-ui/core/colors/orange';
 
 import { QueryProgressProvider } from './QueryProgressContext';
 import Proposals from '../proposal/Proposals';
-import Proposal from '../proposal/Proposals';
+import Proposal from '../proposal/Proposal';
+import ProposalCountries from '../proposal/ProposalCountries';
 import NotFound from './NotFound';
 import Locations from './Locations';
 import ErrorPage from './Error';
@@ -48,6 +49,7 @@ class App extends React.Component {
                                     <Switch>
                                         {Locations.Proposals.toRoute({ component: Proposals, invalid: NotFound}, true)};
                                         {Locations.Proposal.toRoute({ component: Proposal, invalid: NotFound}, true)};
+                                        {Locations.ProposalCountries.toRoute({ component: ProposalCountries, invalid: NotFound}, true)};
                                         <Route component={NotFound} />
                                     </Switch>
                                 </QueryProgressProvider>

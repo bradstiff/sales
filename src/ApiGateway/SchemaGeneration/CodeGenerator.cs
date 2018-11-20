@@ -16,11 +16,14 @@ namespace SchemaTypeCodeGenerator
         {
             const string basePath = @"C:\Users\Brad\Source\Repos\sales\src\ApiGateway\Sales.Bff";
 
-            //var assemblyPath = @"C:\Users\Brad\Source\Repos\sales\src\ApiGateway\Sales.Bff\bin\Release\netcoreapp2.1\publish\Sales.Bff.dll";
+            var overrides = new Dictionary<string, string>
+            {
+                { "ProposalCountryDto", "ProposalCountryInput" }
+            };
             var assemblyPath = @"C:\Users\Brad\Source\Repos\sales\src\ApiGateway\Sales.Bff\bin\Debug\netcoreapp2.1\Sales.Bff.dll";
-            var dtos = AssemblyScanner.Scan(assemblyPath, t => t.Namespace.EndsWith("API.Client") && (t.Name.EndsWith("ViewModel") || t.Name.EndsWith("Command")));
+            var dtos = AssemblyScanner.Scan(assemblyPath, t => t.Namespace.EndsWith("API.Client") && (t.Name.EndsWith("ViewModel") || t.Name.EndsWith("Command")), overrides.Keys);
 
-            var dtoModels = DtoModelLoader.Load(dtos);
+            var dtoModels = DtoModelLoader.Load(dtos, overrides);
             foreach (var dtoModel in dtoModels)
             {
                 Console.WriteLine($"Generating {dtoModel.SchemaTypeTypeName}");

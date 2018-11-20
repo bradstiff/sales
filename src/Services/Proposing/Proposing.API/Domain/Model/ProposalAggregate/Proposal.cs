@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MoreLinq;
-using Proposing.Domain.Core;
-using Proposing.Domain.Model.ProposalAggregate.Payroll;
+using Proposing.API.Application.Commands;
+using Proposing.API.Domain.Core;
+using Proposing.API.Domain.Model.ProposalAggregate.Payroll;
 
-namespace Proposing.Domain.Model.ProposalAggregate
+namespace Proposing.API.Domain.Model.ProposalAggregate
 {
     public class Proposal : Entity
     {
@@ -32,16 +33,16 @@ namespace Proposing.Domain.Model.ProposalAggregate
             _proposalCountries = new List<ProposalCountry>();
         }
 
-        public Proposal(IEnumerable<int> countryIds) : this()
+        public Proposal(IEnumerable<ProposalCountryDto> countries) : this()
         {
             ProductModelVersionId = 1; //todo
             PriceModelVersionId = 1;
 
-            if (countryIds != null)
+            if (countries != null)
             {
-                foreach (var countryId in countryIds)
+                foreach (var country in countries)
                 {
-                    _proposalCountries.Add(new ProposalCountry(countryId));
+                    _proposalCountries.Add(new ProposalCountry(country.CountryId, country.Headcount));
                 }
             }
         }
@@ -96,21 +97,30 @@ namespace Proposing.Domain.Model.ProposalAggregate
         }
         #endregion
 
-        public void UpdateCountries(IEnumerable<int> countryIds)
+        public void UpdateCountries(IEnumerable<ProposalCountryDto> countries)
         {
             var changes = false;
             this.ProposalCountries
-                .Where(pc => !countryIds.Any(id => pc.CountryId == id))
+                .Where(pc => !countries.Any(country => pc.CountryId == country.CountryId))
                 .ToList()
                 .ForEach(country =>
                 {
                     _proposalCountries.Remove(country);
                     changes = true;
                 });
-            foreach(var countryId in countryIds.Where(id => !this.ProposalCountries.Any(pc => pc.CountryId == id)))
+            foreach(var country in countries)
             {
-                _proposalCountries.Add(new ProposalCountry(countryId));
-                changes = true;
+                var proposalCountry = this.ProposalCountries.FirstOrDefault(pc => pc.CountryId == country.CountryId);
+                if (proposalCountry == null)
+                {
+                    _proposalCountries.Add(new ProposalCountry(country.CountryId, country.Headcount));
+                    changes = true;
+                }
+                else if (proposalCountry.Headcount != country.Headcount)
+                {
+                    proposalCountry.SetHeadcount(country.Headcount);
+                    changes = true;
+                }
             }
             if (changes)
             {
