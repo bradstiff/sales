@@ -14,6 +14,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Locations from '../app/Locations';
 import NotFound from '../app/NotFound';
 import withQuery from '../common/withQuery';
+import FlexRightAligned from '../common/FlexRightAligned';
 
 const query = gql`
     query Proposal($id: Int!) {
@@ -33,7 +34,9 @@ const Proposal = ({proposal, id}) => (
         <Typography variant='title'>{proposal.name}</Typography>
         <Toolbar>
             <Typography variant='title'>Scope</Typography>
-            <Button href={Locations.ProposalCountries.toUrl({id})}>Countries</Button>
+            <FlexRightAligned>
+                <Button href={Locations.ProposalCountries.toUrl({id})}>Countries</Button>
+            </FlexRightAligned>
         </Toolbar>
         <List>
             {proposal.countries.map(country => (

@@ -125,6 +125,7 @@ class AddCountries extends React.Component{
             name: countries.find(country => country.id === id).name,
         }));
         onClose(addedCountries);
+        this.regions = null; //re-filter to remove existing countries
     }
 
     handleExpandedRegionChange = (name, expanded) => {

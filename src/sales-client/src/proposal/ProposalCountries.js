@@ -23,6 +23,7 @@ import Locations from '../app/Locations';
 import NotFound from '../app/NotFound';
 import withQuery from '../common/withQuery';
 import AddCountries from './AddCountries';
+import FlexRightAligned from '../common/FlexRightAligned';
 
 const styles = theme => ({
     fab: {
@@ -30,8 +31,8 @@ const styles = theme => ({
       bottom: theme.spacing.unit * 2,
       right: theme.spacing.unit * 2,
     },
-    flex: {
-        flex: 'auto',
+    grow: {
+        flexGrow: 1,
     },
 });
 
@@ -90,7 +91,6 @@ class ProposalCountries extends React.Component {
             headcount: null
         }));
         countries.push(...newCountries);
-        this.forceUpdate();
     }
 
     render() {
@@ -106,16 +106,18 @@ class ProposalCountries extends React.Component {
                     render={({ values, isSubmitting }) => {
                         const countryIds = values.countries.map(country => country.countryId);
                         return (
-                            <Form>
-                                <Toolbar>
-                                    <Typography variant='h5' classsName={classes.flex}>{name}</Typography>
-                                    <Button color='primary' disabled={isSubmitting} onClick={onClose}>{canEdit ? 'Cancel' : 'Close'}</Button>
-                                    {canEdit && <Button color='primary' variant='outlined' type='submit' disabled={isSubmitting}>Save</Button>}
-                                </Toolbar>
-                                <FieldArray
-                                    name='countries'
-                                    render={arrayHelpers => (
-                                        <React.Fragment>
+                            <React.Fragment>
+                                <Form>
+                                    <Toolbar>
+                                        <Typography variant='h5'>{name}</Typography>
+                                        <FlexRightAligned>
+                                            <Button color='primary' disabled={isSubmitting} onClick={onClose}>{canEdit ? 'Cancel' : 'Close'}</Button>
+                                            {canEdit && <Button color='primary' variant='outlined' type='submit' disabled={isSubmitting}>Save</Button>}
+                                        </FlexRightAligned>
+                                    </Toolbar>
+                                    <FieldArray
+                                        name='countries'
+                                        render={arrayHelpers => (
                                             <List>
                                                 {values.countries.map((country, index) => {
                                                     const name = `countries.${index}.headcount`;
@@ -135,14 +137,14 @@ class ProposalCountries extends React.Component {
                                                     );
                                                 })}
                                             </List>
-                                            <Button variant='fab' className={classes.fab} color='primary' onClick={this.handleAddCountriesClick} >
-                                                <AddIcon />
-                                            </Button>
-                                            <AddCountries open={addingCountries} onClose={this.handleDoneAddingCountries(values.countries)} existingCountryIds={countryIds} />
-                                        </React.Fragment>
-                                    )}
-                                />
-                            </Form>
+                                        )}
+                                    />
+                                </Form>
+                                <Button variant='fab' className={classes.fab} color='primary' onClick={this.handleAddCountriesClick} >
+                                    <AddIcon />
+                                </Button>
+                                <AddCountries open={addingCountries} onClose={this.handleDoneAddingCountries(values.countries)} existingCountryIds={countryIds} />
+                            </React.Fragment>
                         );
                     }}
                 />
