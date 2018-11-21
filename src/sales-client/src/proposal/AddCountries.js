@@ -17,6 +17,7 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -63,16 +64,14 @@ class Region extends React.PureComponent {
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography>{region.name}</Typography>
                 </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                    <List dense>
-                        {region.countries.map(country => (
-                            <Country
-                                key={country.id}
-                                country={country}
-                                onToggle={onToggleCountry}
-                            />
-                        ))}
-                    </List>
+                <ExpansionPanelDetails style={{flexDirection: 'column'}}>
+                    {region.countries.map(country => (
+                        <Country
+                            key={country.id}
+                            country={country}
+                            onToggle={onToggleCountry}
+                        />
+                    ))}
                 </ExpansionPanelDetails>
             </ExpansionPanel>                    
         );
@@ -93,14 +92,19 @@ class Country extends React.PureComponent {
     render() {
         const {country} = this.props;
         return (
-            <ListItem role={undefined} dense button onClick={this.handleToggle}>
-                <Checkbox
-                    checked={this.state.checked}
-                    tabIndex={-1}
-                    disableRipple
+            <div>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={this.state.checked}
+                            tabIndex={-1}
+                            disableRipple
+                            onChange={this.handleToggle}
+                        />
+                    }
+                    label={country.name}
                 />
-                <ListItemText>{country.name}</ListItemText>
-            </ListItem>
+            </div>
         );
     }
 }
