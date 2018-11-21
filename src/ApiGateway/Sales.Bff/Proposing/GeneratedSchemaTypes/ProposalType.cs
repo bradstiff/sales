@@ -9,7 +9,7 @@ namespace Sales.Bff.Proposing.SchemaTypes
 		public ProposalType(ProposingClient client)
 		{
 			Name = "Proposal";
-			Field(x => x.Id, nullable: true, type:(typeof(IdGraphType)));
+			Field(x => x.Id, nullable: false);
 			Field(x => x.Name, nullable: true);
 			Field(x => x.ClientName, nullable: true);
 			Field(x => x.Comments, nullable: true);

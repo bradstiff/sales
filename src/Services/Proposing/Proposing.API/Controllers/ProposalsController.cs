@@ -22,8 +22,8 @@ namespace Proposing.API.Controllers
 
         public ProposalsController(IMediator mediator, ProposingQueries proposingQueries)
         {
-            _mediator = mediator;
-            _proposingQueries = proposingQueries;
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _proposingQueries = proposingQueries ?? throw new ArgumentNullException(nameof(proposingQueries));
         }
 
         [Route("{proposalId:int}", Name = "GetProposal")]

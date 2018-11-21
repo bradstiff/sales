@@ -14,12 +14,26 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import TextField from '@material-ui/core/TextField';
+import { withStyles } from '@material-ui/core/styles';
 
 import Locations from '../app/Locations';
 import NotFound from '../app/NotFound';
 import withQuery from '../common/withQuery';
+import AddCountries from './AddCountries';
+
+const styles = theme => ({
+    fab: {
+      position: 'absolute',
+      bottom: theme.spacing.unit * 2,
+      right: theme.spacing.unit * 2,
+    },
+    flex: {
+        flex: 'auto',
+    },
+});
 
 const query = gql`
     query ProposalCountries($id: Int!) {
@@ -51,8 +65,37 @@ const schema = Yup.object().shape({
 });
 
 class ProposalCountries extends React.Component {
+    state = {
+        addingCountries: false,
+    };
+
+    handleAddCountriesClick = () => {
+        this.setState({
+            addingCountries: true,
+        });
+    }
+
+    handleDoneAddingCountries = arrayHelpers => addedCountries => {
+        this.setState({
+            addingCountries: false,
+        })
+
+        if (!addedCountries) {
+            return;
+        }
+
+        const newCountries = addedCountries.map(added => ({
+            countryId: added.id,
+            name: added.name,
+            headcount: null
+        }));
+        arrayHelpers.push(...newCountries);
+        this.forceUpdate();
+    }
+
     render() {
-        const { proposal: {name, countries}, onSubmit, onClose } = this.props;
+        const { proposal: {name, countries}, onSubmit, onClose, classes } = this.props;
+        const { addingCountries } = this.state;
         const canEdit = true;
         return (
             <Paper>
@@ -60,38 +103,48 @@ class ProposalCountries extends React.Component {
                     initialValues={{countries}}
                     validationSchema={schema}
                     onSubmit={onSubmit}
-                    render={({ values, isSubmitting }) => (
-                        <Form>
-                            <Toolbar>
-                                <Typography variant='h5' style={{ flex: 'auto' }}>{name}</Typography>
-                                <Button color='primary' disabled={isSubmitting} onClick={onClose}>{canEdit ? 'Cancel' : 'Close'}</Button>
-                                {canEdit && <Button color='primary' variant='outlined' type='submit' disabled={isSubmitting}>Save</Button>}
-                            </Toolbar>
-                            <FieldArray
-                                name='countries'
-                                render={arrayHelpers => (
-                                    <List>
-                                        {values.countries.map((country, index) => {
-                                            const name = `countries.${index}.headcount`;
-                                            return (
-                                            <ListItem key={country.countryId}>
-                                                <ListItemText>
-                                                    <Typography>{country.name}</Typography>
-                                                    <Field name={`countries.${index}.headcount`} />
-                                                    <ErrorMessage name={`countries.${index}.headcount`} />
-                                                </ListItemText>
-                                                <ListItemSecondaryAction>
-                                                    <IconButton aria-label="Delete" onClick={() => arrayHelpers.remove(index)}>
-                                                        <DeleteIcon />
-                                                    </IconButton>
-                                                </ListItemSecondaryAction>
-                                            </ListItem>
-                                        );})}
-                                    </List>
-                                )}
-                            />
-                        </Form>
-                    )}
+                    render={({ values, isSubmitting }) => {
+                        const countryIds = values.countries.map(country => country.countryId);
+                        return (
+                            <Form>
+                                <Toolbar>
+                                    <Typography variant='h5' classsName={classes.flex}>{name}</Typography>
+                                    <Button color='primary' disabled={isSubmitting} onClick={onClose}>{canEdit ? 'Cancel' : 'Close'}</Button>
+                                    {canEdit && <Button color='primary' variant='outlined' type='submit' disabled={isSubmitting}>Save</Button>}
+                                </Toolbar>
+                                <FieldArray
+                                    name='countries'
+                                    render={arrayHelpers => (
+                                        <React.Fragment>
+                                            <List>
+                                                {values.countries.map((country, index) => {
+                                                    const name = `countries.${index}.headcount`;
+                                                    return (
+                                                        <ListItem key={country.countryId}>
+                                                            <ListItemText>
+                                                                <Typography>{country.name}</Typography>
+                                                                <Field name={`countries.${index}.headcount`} />
+                                                                <ErrorMessage name={`countries.${index}.headcount`} />
+                                                            </ListItemText>
+                                                            <ListItemSecondaryAction>
+                                                                <IconButton aria-label="Delete" onClick={() => arrayHelpers.remove(index)} tabIndex={-1}>
+                                                                    <DeleteIcon />
+                                                                </IconButton>
+                                                            </ListItemSecondaryAction>
+                                                        </ListItem>
+                                                    );
+                                                })}
+                                            </List>
+                                            <Button variant='fab' className={classes.fab} color='primary' onClick={this.handleAddCountriesClick} >
+                                                <AddIcon />
+                                            </Button>
+                                            <AddCountries open={addingCountries} onClose={this.handleDoneAddingCountries(arrayHelpers)} existingCountryIds={countryIds} />
+                                        </React.Fragment>
+                                    )}
+                                />
+                            </Form>
+                        );
+                    }}
                 />
             </Paper>
         );
@@ -100,9 +153,8 @@ class ProposalCountries extends React.Component {
 
 export default compose(
     withRouter,
-    withQuery(query, {
-        selector: 'proposal',
-    }, NotFound),
+    withStyles(styles),
+    withQuery(query, {selector: 'proposal',}, NotFound),
     graphql(mutation, {
         name: 'updateProposalCountries',
         props: ({updateProposalCountries, ownProps: {history, id}}) => ({

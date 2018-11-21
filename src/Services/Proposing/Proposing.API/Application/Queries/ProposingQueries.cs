@@ -95,5 +95,17 @@ namespace Proposing.API.Application.Queries
                 return hrProduct;
             }
         }
+
+        public async Task<List<CountryViewModel>> GetCountries()
+        {
+            using (var conn = this.NewConnection())
+            {
+                var results = await conn.QueryAsync<CountryViewModel>(@"
+                    select c.*, r.name as regionName 
+                    from Country c 
+                    join Region r on r.Id = c.RegionId");
+                return results.ToList();
+            }
+        }
     }
 }

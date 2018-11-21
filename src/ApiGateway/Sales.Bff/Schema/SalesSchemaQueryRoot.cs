@@ -32,6 +32,11 @@ namespace Sales.Bff.Schema
                     context.GetArgument<int>("page"), 
                     context.GetArgument<int>("rowsPerPage"))
             );
+
+            Field<ListGraphType<CountryType>>(
+                "Countries",
+                resolve: context => client.Countries_GetCountriesAsync()
+            );
         }
     }
 }

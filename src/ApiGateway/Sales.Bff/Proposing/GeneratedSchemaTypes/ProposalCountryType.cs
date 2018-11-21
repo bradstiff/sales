@@ -9,7 +9,7 @@ namespace Sales.Bff.Proposing.SchemaTypes
 		public ProposalCountryType(ProposingClient client)
 		{
 			Name = "ProposalCountry";
-			Field(x => x.Id, nullable: true, type:(typeof(IdGraphType)));
+			Field(x => x.Id, nullable: false);
 			Field(x => x.CountryId, nullable: true);
 			Field(x => x.Name, nullable: true);
 			Field(x => x.Headcount, nullable: true);

@@ -4,7 +4,8 @@
   "swaggerGenerator": {
     "webApiToSwagger": {
       "controllerNames": [
-        "Proposing.API.Controllers.ProposalsController"
+        "Proposing.API.Controllers.ProposalsController",
+        "Proposing.API.Controllers.CountriesController"
       ],
       "isAspNetCore": true,
       "resolveJsonOptions": false,

@@ -1,8 +1,21 @@
+use [Sales.Proposing]
+go
+
+create table Region
+(
+	Id int not null,
+	ShortName varchar(25) not null,
+	Name varchar(50) not null,
+	constraint PK_Region primary key (Id),
+)
+
 create table Country
 (
 	Id int not null identity,
-	Name varchar(50) not null
+	Name varchar(50) not null,
+	RegionId int not null,
 	constraint PK_Country primary key (Id),
+	constraint FK_Country_Region foreign key (RegionId) references Region(Id),
 )
 
 create table Proposal
@@ -23,7 +36,7 @@ create table ProposalCountry
 	ProposalId int not null,
 	CountryID int not null,
 	ProductTypeIds bigint not null,
-	ProposalCountry add	Headcount int null,
+	Headcount int null,
 	constraint PK_ProposalCountry primary key (Id),
 	constraint FK_ProposalCountry_Proposal foreign key (ProposalId) references Proposal (Id),
 	constraint FK_ProposalCountry_Country foreign key (CountryId) references Country (Id),
@@ -74,6 +87,7 @@ create table HrProductCountry
 	constraint FK_HrProductCountry_Proposal foreign key (ProposalId) references Proposal (Id),
 )
 
+/*
 create table ProposalPrice
 (
 	Id int not null identity,
@@ -86,3 +100,5 @@ create table ProposalPrice
 	Net decimal(9,2) not null,
 	DiscountPct decimal(9,8) not null,
 	Headcount int not null,
+)
+*/

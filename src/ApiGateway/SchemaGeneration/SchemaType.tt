@@ -22,7 +22,7 @@ namespace <#=_message.SchemaTypeNamespace#>
 			if (prop.IsId)
 			{
 #>
-			Field(x => x.Id, nullable: <#=prop.IsNullable.ToString().ToLower()#>, type:(typeof(IdGraphType)));
+			Field(x => x.Id, nullable: false);
 <#
 			}				
 			else if (prop.IsList)
