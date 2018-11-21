@@ -75,7 +75,7 @@ class ProposalCountries extends React.Component {
         });
     }
 
-    handleDoneAddingCountries = arrayHelpers => addedCountries => {
+    handleDoneAddingCountries = countries => addedCountries => {
         this.setState({
             addingCountries: false,
         })
@@ -89,7 +89,7 @@ class ProposalCountries extends React.Component {
             name: added.name,
             headcount: null
         }));
-        arrayHelpers.push(...newCountries);
+        countries.push(...newCountries);
         this.forceUpdate();
     }
 
@@ -138,7 +138,7 @@ class ProposalCountries extends React.Component {
                                             <Button variant='fab' className={classes.fab} color='primary' onClick={this.handleAddCountriesClick} >
                                                 <AddIcon />
                                             </Button>
-                                            <AddCountries open={addingCountries} onClose={this.handleDoneAddingCountries(arrayHelpers)} existingCountryIds={countryIds} />
+                                            <AddCountries open={addingCountries} onClose={this.handleDoneAddingCountries(values.countries)} existingCountryIds={countryIds} />
                                         </React.Fragment>
                                     )}
                                 />

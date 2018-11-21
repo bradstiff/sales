@@ -1,5 +1,5 @@
 import React from 'react';
-import { graphql, compose } from 'react-apollo';
+import {  compose } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import AppBar from '@material-ui/core/AppBar';
@@ -14,9 +14,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { withStyles } from '@material-ui/core/styles';
@@ -163,6 +160,7 @@ class AddCountries extends React.Component{
                 region.countries.push(country);
                 return acc;
             }, []);
+            
         this.regions.sort((a, b) => objectCompare(a, b, 'name', 'name'));
         this.regions.forEach(region => region.countries.sort((a,b) => objectCompare(a, b, 'name', 'id')));
 

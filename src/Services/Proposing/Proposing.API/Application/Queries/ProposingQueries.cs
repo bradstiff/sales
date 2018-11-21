@@ -96,14 +96,15 @@ namespace Proposing.API.Application.Queries
             }
         }
 
-        public async Task<List<CountryViewModel>> GetCountries()
+        public async Task<List<CountryViewModel>> GetCountries(string orderBy = "RegionName, Name")
         {
             using (var conn = this.NewConnection())
             {
-                var results = await conn.QueryAsync<CountryViewModel>(@"
-                    select c.*, r.name as regionName 
+                var results = await conn.QueryAsync<CountryViewModel>($@"
+                    select c.*, r.name as RegionName 
                     from Country c 
-                    join Region r on r.Id = c.RegionId");
+                    join Region r on r.Id = c.RegionId
+                    order by {orderBy}");
                 return results.ToList();
             }
         }
