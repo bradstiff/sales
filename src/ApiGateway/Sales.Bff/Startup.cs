@@ -41,10 +41,6 @@ namespace Sales.Bff
             services.AddSingleton<SalesSchemaQueryRoot>();
             services.AddSingleton<SalesSchemaMutationRoot>();
 
-            //services.AddSingleton<ProposalType>();
-            //services.AddSingleton<ProposalCountryType>();
-            //services.AddSingleton<HrProductType>();
-            //services.AddSingleton<HrProductCountryType>();
             services.AddSingleton(typeof(ObjectGraphType<>));
             services.AddSingleton(typeof(InputObjectGraphType<>));
             services.AddHttpClient<ProposingClient>(c => c.BaseAddress = new Uri("http://localhost:10598"));

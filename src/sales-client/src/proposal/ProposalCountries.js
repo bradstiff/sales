@@ -19,6 +19,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 
+import { proposalPageFragment } from './Proposal';
 import Locations from '../app/Locations';
 import NotFound from '../app/NotFound';
 import withQuery from '../common/withQuery';
@@ -31,14 +32,12 @@ const styles = theme => ({
       bottom: theme.spacing.unit * 2,
       right: theme.spacing.unit * 2,
     },
-    grow: {
-        flexGrow: 1,
-    },
 });
 
 const query = gql`
     query ProposalCountries($id: Int!) {
         proposal(id: $id) {
+            id,
             name,
             countries {
                 id,
@@ -52,8 +51,11 @@ const query = gql`
 
 const mutation = gql`
     mutation updateProposalCountries($id: Int!, $proposalCountries: [ProposalCountryInput!]!) {
-        updateProposalCountries(proposalId: $id, proposalCountries: $proposalCountries) 
+        updateProposalCountries(proposalId: $id, proposalCountries: $proposalCountries) {
+            ...proposalFragment
+        }
     }
+    ${proposalPageFragment}
 `;
 
 const nullableNumber = Yup.number().transform((cv, ov) => ov === '' ? null : cv).nullable();

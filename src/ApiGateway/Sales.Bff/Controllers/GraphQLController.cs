@@ -7,6 +7,7 @@ using GraphQL.Bff.Models;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace GraphQL.Bff.Controllers
 {
@@ -16,11 +17,13 @@ namespace GraphQL.Bff.Controllers
     {
         private readonly IDocumentExecuter _documentExecuter;
         private readonly ISchema _schema;
+        private readonly ILogger<GraphQLController> _logger;
 
-        public GraphQLController(ISchema schema, IDocumentExecuter documentExecuter)
+        public GraphQLController(ISchema schema, IDocumentExecuter documentExecuter, ILogger<GraphQLController> logger)
         {
             _schema = schema;
             _documentExecuter = documentExecuter;
+            _logger = logger;
         }
 
         [HttpPost]
@@ -32,8 +35,10 @@ namespace GraphQL.Bff.Controllers
             {
                 Schema = _schema,
                 Query = query.Query,
-                Inputs = inputs
+                Inputs = inputs,
             };
+
+            _logger.Log(LogLevel.Information, "Executing {query.Query}", query.Query);
 
             var result = await _documentExecuter.ExecuteAsync(executionOptions).ConfigureAwait(false);
 

@@ -16,17 +16,26 @@ import NotFound from '../app/NotFound';
 import withQuery from '../common/withQuery';
 import FlexRightAligned from '../common/FlexRightAligned';
 
+export const proposalPageFragment = gql`
+    fragment proposalFragment on Proposal {
+        id,
+        name,
+        clientName,
+        countries {
+            id,
+            name,
+            headcount,
+        }
+    }
+`;
+
 const query = gql`
     query Proposal($id: Int!) {
         proposal(id: $id) {
-            name,
-            countries {
-                id,
-                name,
-                headcount,
-            }
+            ...proposalFragment
         }
     }
+    ${proposalPageFragment}
 `;
 
 const Proposal = ({proposal, id}) => (

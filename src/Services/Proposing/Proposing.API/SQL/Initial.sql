@@ -4,7 +4,6 @@ go
 create table Region
 (
 	Id int not null,
-	ShortName varchar(25) not null,
 	Name varchar(50) not null,
 	constraint PK_Region primary key (Id),
 )
@@ -13,9 +12,32 @@ create table Country
 (
 	Id int not null identity,
 	Name varchar(50) not null,
+	IsoCode char(2) not null,
 	RegionId int not null,
 	constraint PK_Country primary key (Id),
 	constraint FK_Country_Region foreign key (RegionId) references Region(Id),
+)
+
+create table ComponentType
+(
+	Id smallint not null,
+	ProductId smallint null,
+	Name varchar(50) not null,
+	FullName varchar(100) null,
+	constraint PK_ComponentType primary key (Id)
+)
+
+create table Component
+(
+	Id smallint not null,
+	ComponentTypeID smallint null,
+	ProductId smallint null,
+	Name varchar(50) not null,
+	FullName varchar(100) null,
+	IsActive bit not null,
+	SortOrder tinyint null,
+	constraint PK_Component primary key (Id),
+	constraint FK_Component_ComponentType foreign key (ComponentTypeID) references ComponentType (Id)
 )
 
 create table Proposal
@@ -66,6 +88,7 @@ create table PayrollProductCountry
 	PayslipStorage bit null,
 	constraint PK_PayrollProductCountry primary key (Id),
 	constraint FK_PayrollProductCountry_Proposal foreign key (ProposalId) references Proposal (Id),
+	constraint FK_PayrollProductCountry_Component foreign key (LevelId) references Component (Id),
 )
 
 create table HrProduct
@@ -75,6 +98,7 @@ create table HrProduct
 	LevelId smallint null,
 	constraint PK_HrProduct primary key (Id),
 	constraint FK_HrProduct_Proposal foreign key (ProposalId) references Proposal (Id),
+	constraint FK_HrProduct_Component foreign key (LevelId) references Component (Id),
 )
 
 create table HrProductCountry

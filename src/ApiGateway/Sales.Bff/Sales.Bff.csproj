@@ -38,7 +38,7 @@
   </Target>
  
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="dotnet run -p $(SolutionDir)\src\ApiGateway\SchemaGeneration" />
+    <Exec Command="dotnet run -p $(ProjectDir)\..\SchemaGeneration" />
   </Target>
 
 </Project>
