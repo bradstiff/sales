@@ -100,7 +100,7 @@ namespace SchemaTypeCodeGenerator
         }
         private static string GetSchemaTypeTypeName(Type dto, Dictionary<string, string> nameOverrides)
         {
-            return GetSchemaTypeName(dto, nameOverrides) + "Type";
+            return GetSchemaTypeName(dto, nameOverrides) + "SchemaType";
         }
     }
 }

@@ -4,13 +4,13 @@ using Proposing.API.Client;
 
 namespace Sales.Bff.Proposing.SchemaTypes
 {
-	public partial class ProposalCountryInputType: InputObjectGraphType<ProposalCountryDto>
+	public partial class HrProductCountrySchemaType: ObjectGraphType<HrProductCountryViewModel>
 	{
-		public ProposalCountryInputType(ProposingClient client)
+		public HrProductCountrySchemaType(ProposingClient client)
 		{
-			Name = "ProposalCountryInput";
+			Name = "HrProductCountry";
 			Field(x => x.CountryId, nullable: true);
-			Field(x => x.Headcount, nullable: true);
+			Field(x => x.LevelId, nullable: true);
 			this.Extend(client);
 		}
 

@@ -10,7 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Proposing\GeneratedSchemaTypes\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

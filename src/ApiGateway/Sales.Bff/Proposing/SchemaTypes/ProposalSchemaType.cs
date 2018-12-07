@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 namespace Sales.Bff.Proposing.SchemaTypes
 {
 
-    public partial class ProposalType : ObjectGraphType<ProposalViewModel>
+    public partial class ProposalSchemaType : ObjectGraphType<ProposalViewModel>
     {
         partial void Extend(ProposingClient client)
         {
-            Field<HrProductType>(
+            Field<HrProductSchemaType>(
                 "hr",
                 resolve: null//context => queries.GetHrProduct(context.Source.Id)
                 );

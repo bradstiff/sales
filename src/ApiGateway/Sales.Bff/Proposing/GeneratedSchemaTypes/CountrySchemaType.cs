@@ -4,9 +4,9 @@ using Proposing.API.Client;
 
 namespace Sales.Bff.Proposing.SchemaTypes
 {
-	public partial class CountryType: ObjectGraphType<CountryViewModel>
+	public partial class CountrySchemaType: ObjectGraphType<CountryViewModel>
 	{
-		public CountryType(ProposingClient client)
+		public CountrySchemaType(ProposingClient client)
 		{
 			Name = "Country";
 			Field(x => x.Id, nullable: false);

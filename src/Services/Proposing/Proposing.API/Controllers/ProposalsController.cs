@@ -99,13 +99,13 @@ namespace Proposing.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> GetHrProductScope(int proposalId)
         {
-            var result = await _proposingQueries.GetHrProduct(proposalId);
+            var result = await _proposingQueries.GetHrProductAsync(proposalId);
             return Ok(result);
         }
 
         [Route("{proposalId:int}/hr")]
         [HttpPut]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> UpdateHrProductScope(int proposalId, [FromBody] UpdateHrProductScopeCommand command)
@@ -115,7 +115,7 @@ namespace Proposing.API.Controllers
             {
                 return BadRequest();
             }
-            return Ok();
+            return Ok(result);
         }
     }
 }

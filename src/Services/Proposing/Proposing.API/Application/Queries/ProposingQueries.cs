@@ -82,7 +82,7 @@ namespace Proposing.API.Application.Queries
             }
         }
 
-        public async Task<HrProductViewModel> GetHrProduct(int proposalId)
+        public async Task<HrProductViewModel> GetHrProductAsync(int proposalId)
         {
             using (var conn = this.NewConnection())
             {
@@ -96,7 +96,7 @@ namespace Proposing.API.Application.Queries
             }
         }
 
-        public async Task<List<CountryViewModel>> GetCountries(string orderBy = "RegionName, Name")
+        public async Task<List<CountryViewModel>> GetCountriesAsync(string orderBy = "RegionName, Name")
         {
             using (var conn = this.NewConnection())
             {
@@ -105,6 +105,18 @@ namespace Proposing.API.Application.Queries
                     from Country c 
                     join Region r on r.Id = c.RegionId
                     order by {orderBy}");
+                return results.ToList();
+            }
+        }
+
+        public async Task<List<ComponentViewModel>> GetComponentsAsync(short componentTypeId)
+        {
+            using (var conn = this.NewConnection())
+            {
+                var results = await conn.QueryAsync<ComponentViewModel>(@"
+                    select * from Component where ComponentTypeId = @componentTypeId order by SortOrder",
+                    new { componentTypeId }
+                );
                 return results.ToList();
             }
         }

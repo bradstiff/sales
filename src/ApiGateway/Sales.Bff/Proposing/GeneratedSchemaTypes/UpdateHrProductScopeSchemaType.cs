@@ -4,9 +4,9 @@ using Proposing.API.Client;
 
 namespace Sales.Bff.Proposing.SchemaTypes
 {
-	public partial class UpdateHrProductScopeType: InputObjectGraphType<UpdateHrProductScopeCommand>
+	public partial class UpdateHrProductScopeSchemaType: InputObjectGraphType<UpdateHrProductScopeCommand>
 	{
-		public UpdateHrProductScopeType(ProposingClient client)
+		public UpdateHrProductScopeSchemaType(ProposingClient client)
 		{
 			Name = "UpdateHrProductScope";
 			Field(x => x.LevelId, nullable: true);

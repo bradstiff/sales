@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Proposing.API.Infrastructure.Context
 {
-    public class ProposalCountryConfiguration : IEntityTypeConfiguration<ProposalCountry>
+    public class ProposalCountryEntityConfiguration : IEntityTypeConfiguration<ProposalCountry>
     {
         public void Configure(EntityTypeBuilder<ProposalCountry> builder)
         {

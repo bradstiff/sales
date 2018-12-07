@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Proposing.API.Infrastructure.Context
 {
-    public class ProposalConfiguration : IEntityTypeConfiguration<Proposal>
+    public class ProposalEntityConfiguration : IEntityTypeConfiguration<Proposal>
     {
         public void Configure(EntityTypeBuilder<Proposal> builder)
         {

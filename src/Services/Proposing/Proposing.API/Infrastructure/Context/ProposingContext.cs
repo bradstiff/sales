@@ -20,6 +20,9 @@ namespace Proposing.API.Infrastructure.Context
         //public DbSet<HrProduct> HrProducts { get; set; }
         public DbSet<HrProductCountry> HrProductCountries { get; set; }
 
+        public DbSet<Component> Components { get; set; }
+        public DbSet<ComponentType> ComponentTypes { get; set; }
+
         private readonly IMediator _mediator;
 
         private ProposingContext(DbContextOptions<ProposingContext> options) : base(options)
@@ -33,14 +36,17 @@ namespace Proposing.API.Infrastructure.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new ProposalConfiguration());
-            modelBuilder.ApplyConfiguration(new ProposalCountryConfiguration());
+            modelBuilder.ApplyConfiguration(new ProposalEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new ProposalCountryEntityConfiguration());
 
-            modelBuilder.ApplyConfiguration(new ProductConfiguration<PayrollProduct>("PayrollProduct", p => p.PayrollProduct));
-            modelBuilder.ApplyConfiguration(new ProductCountryConfiguration<PayrollProductCountry, PayrollProduct>("PayrollProductCountry"));
+            modelBuilder.ApplyConfiguration(new ProductEntityConfiguration<PayrollProduct>("PayrollProduct", p => p.PayrollProduct));
+            modelBuilder.ApplyConfiguration(new ProductCountryEntityConfiguration<PayrollProductCountry, PayrollProduct>("PayrollProductCountry"));
 
-            modelBuilder.ApplyConfiguration(new ProductConfiguration<HrProduct>("HrProduct", p => p.HrProduct));
-            modelBuilder.ApplyConfiguration(new ProductCountryConfiguration<HrProductCountry, HrProduct>("HrProductCountry"));
+            modelBuilder.ApplyConfiguration(new ProductEntityConfiguration<HrProduct>("HrProduct", p => p.HrProduct));
+            modelBuilder.ApplyConfiguration(new ProductCountryEntityConfiguration<HrProductCountry, HrProduct>("HrProductCountry"));
+
+            modelBuilder.ApplyConfiguration(new ComponentEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new ComponentTypeEntityConfiguration());
         }
 
         public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))

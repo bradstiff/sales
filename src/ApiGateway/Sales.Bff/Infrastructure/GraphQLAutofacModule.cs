@@ -16,9 +16,14 @@ namespace Sales.Bff.Infrastructure
             builder
                 .RegisterAssemblyTypes(typeof(SalesSchema).GetTypeInfo().Assembly)
                 .AsClosedTypesOf(typeof(ObjectGraphType<>));
+
             builder
                 .RegisterAssemblyTypes(typeof(SalesSchema).GetTypeInfo().Assembly)
                 .AsClosedTypesOf(typeof(InputObjectGraphType<>));
+
+            builder
+                .RegisterAssemblyTypes(typeof(SalesSchema).GetTypeInfo().Assembly)
+                .AssignableTo(typeof(EnumerationGraphType));
         }
     }
 }

@@ -4,16 +4,15 @@ using Proposing.API.Client;
 
 namespace Sales.Bff.Proposing.SchemaTypes
 {
-	public partial class ProposalType: ObjectGraphType<ProposalViewModel>
+	public partial class UpdateProposalSchemaType: InputObjectGraphType<UpdateProposalCommand>
 	{
-		public ProposalType(ProposingClient client)
+		public UpdateProposalSchemaType(ProposingClient client)
 		{
-			Name = "Proposal";
-			Field(x => x.Id, nullable: false);
+			Name = "UpdateProposal";
+			Field(x => x.ProposalId, nullable: true);
 			Field(x => x.Name, nullable: true);
 			Field(x => x.ClientName, nullable: true);
 			Field(x => x.Comments, nullable: true);
-			Field(x => x.Countries, nullable: true, type:typeof(ListGraphType<ProposalCountryType>));
 			this.Extend(client);
 		}
 

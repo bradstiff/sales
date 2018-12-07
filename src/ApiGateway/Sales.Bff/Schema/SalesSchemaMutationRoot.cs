@@ -12,17 +12,18 @@ namespace Sales.Bff.Schema
     {
         public SalesSchemaMutationRoot(ProposingClient client)
         {
-            Field<ProposalType>(
+            Field<ProposalSchemaType>(
                 "CreateProposal",
                 arguments: new QueryArguments(
-                    new QueryArgument<NonNullGraphType<CreateProposalType>> { Name = "proposal" }),
+                    new QueryArgument<NonNullGraphType<CreateProposalSchemaType>> { Name = "proposal" }),
                 resolve: context => client.Proposals_CreateProposalAsync(context.GetArgument<CreateProposalCommand>("proposal"))
             );
-            FieldAsync<ProposalType>(
+
+            FieldAsync<ProposalSchemaType>(
                 "UpdateProposalCountries",
                 arguments: new QueryArguments(
                     new QueryArgument<NonNullGraphType<IntGraphType>> { Name = "proposalId" },
-                    new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<ProposalCountryInputType>>>> { Name = "proposalCountries" }),
+                    new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<ProposalCountryInputSchemaType>>>> { Name = "proposalCountries" }),
                 resolve: async context =>
                 {
                     var command = new UpdateProposalCountriesCommand
@@ -32,6 +33,25 @@ namespace Sales.Bff.Schema
                     var proposalId = context.GetArgument<int>("proposalId");
                     await client.Proposals_UpdateCountriesAsync(proposalId, command);
                     return await client.Proposals_GetProposalAsync(proposalId);
+                }
+            );
+
+            Field<BooleanGraphType>(
+                "UpdateHrScope",
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<IntGraphType>> { Name = "proposalId" },
+                    new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<IntGraphType>>>> { Name = "countryIds" },
+                    new QueryArgument<NonNullGraphType<HrLevelSchemaType>> { Name = "levelId" }
+                    ),
+                resolve: context =>
+                {
+                    var command = new UpdateHrProductScopeCommand
+                    {
+                        LevelId = context.GetArgument<short>("levelId"),
+                        CountryIds = context.GetArgument<List<int>>("countryIds"),
+                    };
+                    var proposalId = context.GetArgument<int>("proposalId");
+                    return client.Proposals_UpdateHrProductScopeAsync(proposalId, command);
                 }
             );
         }

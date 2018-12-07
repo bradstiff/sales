@@ -12,13 +12,13 @@ namespace Sales.Bff.Schema
     {
         public SalesSchemaQueryRoot(ProposingClient client)
         {
-            Field<ProposalType>(
+            Field<ProposalSchemaType>(
                 "Proposal",
                 arguments: new QueryArguments(new QueryArgument<IntGraphType> { Name = "id" }),
                 resolve: context => client.Proposals_GetProposalAsync(context.GetArgument<int>("id"))
             );
 
-            Field<ProposalListPageType>(
+            Field<ProposalListPageSchemaType>(
                 "ProposalListPage",
                 arguments: new QueryArguments(
                     new QueryArgument<IntGraphType> { Name = "page", DefaultValue = 1 },
@@ -33,9 +33,14 @@ namespace Sales.Bff.Schema
                     context.GetArgument<int>("rowsPerPage"))
             );
 
-            Field<ListGraphType<CountryType>>(
+            Field<ListGraphType<CountrySchemaType>>(
                 "Countries",
                 resolve: context => client.Countries_GetCountriesAsync()
+            );
+
+            Field<ListGraphType<ComponentSchemaType>>(
+                "HrLevels",
+                resolve: context => client.Products_GetComponentsAsync(10)
             );
         }
     }

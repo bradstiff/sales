@@ -5,18 +5,20 @@ using Proposing.API.Domain.Model.ProposalAggregate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Proposing.API.Infrastructure.Context
 {
-    public class ProductCountryConfiguration<T, TParent> : IEntityTypeConfiguration<T>
-        where T : Entity, IProductCountry
-        where TParent : Entity, IProduct
+    public class ProductEntityConfiguration<T> : IEntityTypeConfiguration<T>
+        where T:Entity, IProduct
     {
         private string _tableName;
-        public ProductCountryConfiguration(string tableName)
+        private Expression<Func<Proposal, T>> _property;
+        public ProductEntityConfiguration(string tableName, Expression<Func<Proposal, T>> property)
         {
             _tableName = tableName;
+            _property = property;
         }
 
         public void Configure(EntityTypeBuilder<T> builder)
@@ -24,9 +26,12 @@ namespace Proposing.API.Infrastructure.Context
             builder.ToTable(_tableName);
             builder.HasKey(p => p.Id);
             builder.Property<int>("ProposalId").IsRequired();
-            builder.HasAlternateKey(new[] { nameof(IProductCountry.CountryId), "ProposalId" });
-            builder.HasOne<TParent>().WithMany("ProductCountries").HasForeignKey("ProposalId").HasPrincipalKey("ProposalId").OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne<Proposal>().WithOne(_property).HasForeignKey<T>("ProposalId");
             builder.Ignore(p => p.DomainEvents);
+
+            builder.Metadata
+                .FindNavigation("ProductCountries")
+                .SetPropertyAccessMode(PropertyAccessMode.Field);
         }
     }
 }

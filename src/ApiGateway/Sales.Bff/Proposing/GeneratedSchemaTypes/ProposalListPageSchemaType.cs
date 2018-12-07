@@ -4,14 +4,14 @@ using Proposing.API.Client;
 
 namespace Sales.Bff.Proposing.SchemaTypes
 {
-	public partial class ProposalListPageType: ObjectGraphType<ListPageViewModelOfProposalViewModel>
+	public partial class ProposalListPageSchemaType: ObjectGraphType<ListPageViewModelOfProposalViewModel>
 	{
-		public ProposalListPageType(ProposingClient client)
+		public ProposalListPageSchemaType(ProposingClient client)
 		{
 			Name = "ProposalListPage";
 			Field(x => x.TotalCount, nullable: true);
 			Field(x => x.Page, nullable: true);
-			Field(x => x.Rows, nullable: true, type:typeof(ListGraphType<ProposalType>));
+			Field(x => x.Rows, nullable: true, type:typeof(ListGraphType<ProposalSchemaType>));
 			this.Extend(client);
 		}
 

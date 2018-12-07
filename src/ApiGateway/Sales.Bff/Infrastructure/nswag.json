@@ -5,7 +5,8 @@
     "webApiToSwagger": {
       "controllerNames": [
         "Proposing.API.Controllers.ProposalsController",
-        "Proposing.API.Controllers.CountriesController"
+        "Proposing.API.Controllers.CountriesController",
+        "Proposing.API.Controllers.ProductsController"
       ],
       "isAspNetCore": true,
       "resolveJsonOptions": false,

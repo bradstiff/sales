@@ -28,7 +28,7 @@ namespace Proposing.API.Controllers
         [ProducesResponseType(typeof(List<CountryViewModel>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetCountries()
         {
-            var countries = await _proposingQueries.GetCountries();
+            var countries = await _proposingQueries.GetCountriesAsync();
             return Ok(countries);
         }
     }
