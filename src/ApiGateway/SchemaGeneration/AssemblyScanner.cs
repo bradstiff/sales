@@ -22,7 +22,7 @@ namespace SchemaTypeCodeGenerator
                 types = e.Types.Where(t => t != null).ToList();
             }
 
-            Func<Type, bool> predicateWithOverrides = type => predicate(type) || typeNamesToForceInclude.Any(o => o == type.Name);
+            bool predicateWithOverrides(Type type) => predicate(type) || typeNamesToForceInclude.Any(o => o == type.Name);
             var dtos = new List<Type>();
             types.ForEach(type => TryAddType(type, dtos, predicateWithOverrides));
             return dtos;
@@ -32,7 +32,8 @@ namespace SchemaTypeCodeGenerator
         {
             try
             {
-                if (predicate(type))
+                //Anonymous types have Namespace == null
+                if (type.Namespace != null && predicate(type))
                 {
                     types.Add(type);
                 }

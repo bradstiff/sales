@@ -12,8 +12,8 @@ namespace Proposing.API.Domain.Core
     public class ProductType : Enumeration<long>
     {
         public static ProductType Payroll = new ProductType(1, nameof(Payroll).ToLowerInvariant(), typeof(PayrollProduct), p => p.PayrollProduct);
-        public static ProductType HR = new ProductType(1 << 1, nameof(HR).ToLowerInvariant(), typeof(HrProduct), p => p.HrProduct);
-        //public static ProductType Time = new ProductType(1 << 2, nameof(Time).ToLowerInvariant(), null);
+        public static ProductType HR = new ProductType(4, nameof(HR).ToLowerInvariant(), typeof(HrProduct), p => p.HrProduct);
+        //public static ProductType Time = new ProductType(64, nameof(Time).ToLowerInvariant(), null);
         //public static ProductType Benefits = new ProductType(1 << 3, nameof(Benefits).ToLowerInvariant(), null);
 
         public Type Type { get; private set; }

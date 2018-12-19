@@ -38,9 +38,9 @@ namespace Sales.Bff.Schema
                 resolve: context => client.Countries_GetCountriesAsync()
             );
 
-            Field<ListGraphType<ComponentSchemaType>>(
-                "HrLevels",
-                resolve: context => client.Products_GetComponentsAsync(10)
+            Field<ProductModelSchemaType>(
+                "ProductModel",
+                resolve: context => client.Products_GetComponentsAsync()
             );
         }
     }

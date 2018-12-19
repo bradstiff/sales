@@ -21,7 +21,7 @@ create table Country
 create table ComponentType
 (
 	Id smallint not null,
-	ProductId smallint null,
+	ProductId int null,
 	Name varchar(50) not null,
 	FullName varchar(100) null,
 	constraint PK_ComponentType primary key (Id)
@@ -31,7 +31,7 @@ create table Component
 (
 	Id smallint not null,
 	ComponentTypeID smallint null,
-	ProductId smallint null,
+	ProductId int null,
 	Name varchar(50) not null,
 	FullName varchar(100) null,
 	IsActive bit not null,
@@ -126,3 +126,4 @@ create table ProposalPrice
 	Headcount int not null,
 )
 */
+

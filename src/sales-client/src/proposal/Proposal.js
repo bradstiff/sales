@@ -21,10 +21,32 @@ export const proposalPageFragment = gql`
         id,
         name,
         clientName,
+        productModel {
+            products {
+                id
+                name
+            }
+        }
+        products {
+            id
+        }
+        hr {
+            level {
+                name
+            }
+        }
         countries {
             id,
             name,
             headcount,
+            products {
+                id
+            }
+            payroll {
+                level {
+                    name
+                }
+            }
         }
     }
 `;
@@ -38,25 +60,27 @@ const query = gql`
     ${proposalPageFragment}
 `;
 
-const Proposal = ({proposal, id}) => (
-    <Paper>
-        <Typography variant='title'>{proposal.name}</Typography>
-        <Toolbar>
-            <Typography variant='title'>Scope</Typography>
-            <FlexRightAligned>
-                <Button href={Locations.ProposalCountries.toUrl({id})}>Countries</Button>
-            </FlexRightAligned>
-        </Toolbar>
-        <List>
-            {proposal.countries.map(country => (
-                <ListItem key={country.id}>
-                    <ListItemText>{country.name}</ListItemText>
-                    <ListItemSecondaryAction>{country.headcount}</ListItemSecondaryAction>
-                </ListItem>
-            ))}
-        </List>
-    </Paper>
-);
+const Proposal = ({ proposal, id }) => {
+    return (
+        <Paper>
+            <Typography variant='title'>{proposal.name}</Typography>
+            <Toolbar>
+                <Typography variant='title'>Scope</Typography>
+                <FlexRightAligned>
+                    <Button href={Locations.ProposalCountries.toUrl({ id })}>Countries</Button>
+                </FlexRightAligned>
+            </Toolbar>
+            <List>
+                {proposal.countries.map(country => (
+                    <ListItem key={country.id}>
+                        <ListItemText>{country.name}</ListItemText>
+                        <ListItemSecondaryAction>{country.headcount}</ListItemSecondaryAction>
+                    </ListItem>
+                ))}
+            </List>
+        </Paper>
+    );
+};
 
 export default compose(
     withQuery(query, {

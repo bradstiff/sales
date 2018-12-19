@@ -29,58 +29,59 @@ namespace SchemaTypeCodeGenerator
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("\r\nusing GraphQL.Types;\r\nusing ");
+            this.Write("using GraphQL.DataLoader;\r\nusing GraphQL.Types;\r\nusing ");
             
             #line 10 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_message.Type.Namespace));
             
             #line default
             #line hidden
-            this.Write(";\r\n\r\nnamespace ");
+            this.Write(";\r\nusing Sales.Bff.Infrastructure;\r\n\r\nnamespace ");
             
-            #line 12 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
+            #line 13 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_message.SchemaTypeNamespace));
             
             #line default
             #line hidden
             this.Write("\r\n{\r\n\tpublic partial class ");
             
-            #line 14 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
+            #line 15 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_message.SchemaTypeTypeName));
             
             #line default
             #line hidden
             this.Write(": ");
             
-            #line 14 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
+            #line 15 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_message.SchemaTypeBaseName));
             
             #line default
             #line hidden
             this.Write("\r\n\t{\r\n\t\tpublic ");
             
-            #line 16 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
+            #line 17 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_message.SchemaTypeTypeName));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 16 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
+            #line 17 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_message.ApiName));
             
             #line default
             #line hidden
-            this.Write("Client client)\r\n\t\t{\r\n\t\t\tName = \"");
+            this.Write("Client client, ReferenceDataCache cache, IDataLoaderContextAccessor accessor)\r\n\t\t" +
+                    "{\r\n\t\t\tName = \"");
             
-            #line 18 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
+            #line 19 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_message.SchemaTypeName));
             
             #line default
             #line hidden
             this.Write("\";\r\n");
             
-            #line 19 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
+            #line 20 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
 
 		_message.Properties.ForEach(prop =>
 		{
@@ -92,7 +93,7 @@ namespace SchemaTypeCodeGenerator
             #line hidden
             this.Write("\t\t\tField(x => x.Id, nullable: false);\r\n");
             
-            #line 26 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
+            #line 27 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
 
 			}				
 			else if (prop.IsList)
@@ -103,28 +104,28 @@ namespace SchemaTypeCodeGenerator
             #line hidden
             this.Write("\t\t\tField(x => x.");
             
-            #line 31 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
+            #line 32 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(prop.Name));
             
             #line default
             #line hidden
             this.Write(", nullable: ");
             
-            #line 31 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
+            #line 32 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(prop.IsNullable.ToString().ToLower()));
             
             #line default
             #line hidden
             this.Write(", type:typeof(ListGraphType<");
             
-            #line 31 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
+            #line 32 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(prop.ListGraphTypeArgument));
             
             #line default
             #line hidden
             this.Write(">));\r\n");
             
-            #line 32 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
+            #line 33 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
 
 			}
 			else
@@ -135,21 +136,21 @@ namespace SchemaTypeCodeGenerator
             #line hidden
             this.Write("\t\t\tField(x => x.");
             
-            #line 37 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
+            #line 38 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(prop.Name));
             
             #line default
             #line hidden
             this.Write(", nullable: ");
             
-            #line 37 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
+            #line 38 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(prop.IsNullable.ToString().ToLower()));
             
             #line default
             #line hidden
             this.Write(");\r\n");
             
-            #line 38 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
+            #line 39 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
 
 			}
 		});
@@ -157,14 +158,15 @@ namespace SchemaTypeCodeGenerator
             
             #line default
             #line hidden
-            this.Write("\t\t\tthis.Extend(client);\r\n\t\t}\r\n\r\n\t\tpartial void Extend(");
+            this.Write("\t\t\tthis.Extend(client, cache, accessor);\r\n\t\t}\r\n\r\n\t\tpartial void Extend(");
             
-            #line 45 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
+            #line 46 "C:\Users\Brad\Source\Repos\sales\src\ApiGateway\SchemaGeneration\SchemaType.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_message.ApiName));
             
             #line default
             #line hidden
-            this.Write("Client client);\r\n\t}\r\n}\r\n");
+            this.Write("Client client, ReferenceDataCache cache, IDataLoaderContextAccessor accessor);\r\n\t" +
+                    "}\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

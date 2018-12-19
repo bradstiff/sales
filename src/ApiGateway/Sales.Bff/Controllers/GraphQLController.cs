@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GraphQL;
 using GraphQL.Bff.Models;
+using GraphQL.DataLoader;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,12 +19,14 @@ namespace GraphQL.Bff.Controllers
         private readonly IDocumentExecuter _documentExecuter;
         private readonly ISchema _schema;
         private readonly ILogger<GraphQLController> _logger;
+        private readonly DataLoaderDocumentListener _dataLoaderDocumentListener;
 
-        public GraphQLController(ISchema schema, IDocumentExecuter documentExecuter, ILogger<GraphQLController> logger)
+        public GraphQLController(ISchema schema, IDocumentExecuter documentExecuter, ILogger<GraphQLController> logger, DataLoaderDocumentListener dataLoaderDocumentListener)
         {
             _schema = schema;
             _documentExecuter = documentExecuter;
             _logger = logger;
+            _dataLoaderDocumentListener = dataLoaderDocumentListener;
         }
 
         [HttpPost]
@@ -37,6 +40,7 @@ namespace GraphQL.Bff.Controllers
                 Query = query.Query,
                 Inputs = inputs,
             };
+            executionOptions.Listeners.Add(_dataLoaderDocumentListener);
 
             _logger.Log(LogLevel.Information, "Executing {query.Query}", query.Query);
 

@@ -12,5 +12,7 @@ namespace Proposing.API.Application.Queries
         public string FullName { get; set; }
         public bool IsActive { get; set; }
         public short SortOrder { get; set; }
+        public int? ProductId { get; set; }
+        public short? ComponentTypeID { get; set; }
     }
 }

@@ -91,31 +91,5 @@ namespace Proposing.API.Controllers
             }
             return Ok(result);
         }
-
-        [Route("{proposalId:int}/hr")]
-        [HttpGet]
-        [ProducesResponseType(typeof(HrProductViewModel), (int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> GetHrProductScope(int proposalId)
-        {
-            var result = await _proposingQueries.GetHrProductAsync(proposalId);
-            return Ok(result);
-        }
-
-        [Route("{proposalId:int}/hr")]
-        [HttpPut]
-        [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> UpdateHrProductScope(int proposalId, [FromBody] UpdateHrProductScopeCommand command)
-        {
-            var result = await _mediator.Send(new CommandWithResourceId<int, UpdateHrProductScopeCommand, bool>(proposalId, command));
-            if (!result)
-            {
-                return BadRequest();
-            }
-            return Ok(result);
-        }
     }
 }

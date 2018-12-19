@@ -25,10 +25,37 @@ namespace Proposing.API.Controllers
 
         [Route("")]
         [HttpGet]
-        [ProducesResponseType(typeof(List<ComponentViewModel>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetComponents(short componentTypeId)
+        [ProducesResponseType(typeof(List<ProductDefinitionViewModel>), (int)HttpStatusCode.OK)]
+        public IActionResult GetProducts()
         {
-            var components = await _proposingQueries.GetComponentsAsync(componentTypeId);
+            var payroll = new ProductDefinitionViewModel
+            {
+                Id = 1,
+                Name = "Payroll"
+            };
+            return Ok(new[]
+            {
+                payroll,
+                new ProductDefinitionViewModel
+                {
+                    Id = 4,
+                    Name = "HR",
+                    DependsOnProducts = new [] { payroll }.ToList()
+                },
+                new ProductDefinitionViewModel
+                {
+                    Id = 64,
+                    Name = "Time"
+                }
+            });
+        }
+
+        [Route("components")]
+        [HttpGet]
+        [ProducesResponseType(typeof(List<ComponentViewModel>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetComponents()
+        {
+            var components = await _proposingQueries.GetComponentsAsync();
             return Ok(components);
         }
     }

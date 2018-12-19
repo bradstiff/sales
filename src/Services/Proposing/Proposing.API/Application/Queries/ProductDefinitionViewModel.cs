@@ -5,12 +5,10 @@ using System.Threading.Tasks;
 
 namespace Proposing.API.Application.Queries
 {
-    public class ProposalCountryViewModel
+    public class ProductDefinitionViewModel
     {
         public int Id { get; set; }
-        public int ProposalId { get; set; }
-        public int CountryId { get; set; }
         public string Name { get; set; }
-        public int? Headcount { get; set; }
+        public List<ProductDefinitionViewModel> DependsOnProducts { get; set; }
     }
 }

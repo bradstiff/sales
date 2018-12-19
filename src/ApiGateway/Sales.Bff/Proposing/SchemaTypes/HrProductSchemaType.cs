@@ -9,15 +9,15 @@ using System.Threading.Tasks;
 
 namespace Sales.Bff.Proposing.SchemaTypes
 {
-
-    public partial class ProposalSchemaType : ObjectGraphType<ProposalViewModel>
+    public partial class HrProductSchemaType : ObjectGraphType<HrProductViewModel>
     {
         partial void Extend(ProposingClient client, ReferenceDataCache cache, IDataLoaderContextAccessor accessor)
         {
-            Field<HrProductSchemaType>(
-                "hr",
-                resolve: context => client.HrProductScope_GetGlobalScopeAsync(context.Source.Id)
+            Field<HrLevelSchemaType>(
+                "level",
+                resolve: context => cache.Components[context.Source.LevelId]
             );
         }
+
     }
 }

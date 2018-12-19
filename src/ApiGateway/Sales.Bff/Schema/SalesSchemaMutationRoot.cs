@@ -41,7 +41,7 @@ namespace Sales.Bff.Schema
                 arguments: new QueryArguments(
                     new QueryArgument<NonNullGraphType<IntGraphType>> { Name = "proposalId" },
                     new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<IntGraphType>>>> { Name = "countryIds" },
-                    new QueryArgument<NonNullGraphType<HrLevelSchemaType>> { Name = "levelId" }
+                    new QueryArgument<NonNullGraphType<HrLevelEnumSchemaType>> { Name = "levelId" }
                     ),
                 resolve: context =>
                 {
@@ -51,7 +51,7 @@ namespace Sales.Bff.Schema
                         CountryIds = context.GetArgument<List<int>>("countryIds"),
                     };
                     var proposalId = context.GetArgument<int>("proposalId");
-                    return client.Proposals_UpdateHrProductScopeAsync(proposalId, command);
+                    return client.HrProductScope_UpdateScopeAsync(proposalId, command);
                 }
             );
         }

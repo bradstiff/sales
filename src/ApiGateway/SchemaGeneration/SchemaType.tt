@@ -5,15 +5,16 @@
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
-
+using GraphQL.DataLoader;
 using GraphQL.Types;
 using <#=_message.Type.Namespace#>;
+using Sales.Bff.Infrastructure;
 
 namespace <#=_message.SchemaTypeNamespace#>
 {
 	public partial class <#=_message.SchemaTypeTypeName#>: <#=_message.SchemaTypeBaseName#>
 	{
-		public <#=_message.SchemaTypeTypeName#>(<#=_message.ApiName#>Client client)
+		public <#=_message.SchemaTypeTypeName#>(<#=_message.ApiName#>Client client, ReferenceDataCache cache, IDataLoaderContextAccessor accessor)
 		{
 			Name = "<#=_message.SchemaTypeName#>";
 <#
@@ -39,9 +40,9 @@ namespace <#=_message.SchemaTypeNamespace#>
 			}
 		});
 #>
-			this.Extend(client);
+			this.Extend(client, cache, accessor);
 		}
 
-		partial void Extend(<#=_message.ApiName#>Client client);
+		partial void Extend(<#=_message.ApiName#>Client client, ReferenceDataCache cache, IDataLoaderContextAccessor accessor);
 	}
 }

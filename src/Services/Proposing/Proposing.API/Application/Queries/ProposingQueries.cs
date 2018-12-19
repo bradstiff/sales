@@ -82,17 +82,62 @@ namespace Proposing.API.Application.Queries
             }
         }
 
+        public async Task<PayrollProductViewModel> GetPayrollProductAsync(int proposalId)
+        {
+            using (var conn = this.NewConnection())
+            {
+                var result = await conn.QueryFirstAsync<PayrollProductViewModel>(@"
+                    select * from PayrollProduct where ProposalId = @proposalId",
+                new { proposalId });
+                return result;
+            }
+        }
+
+        public async Task<List<PayrollProductCountryViewModel>> GetPayrollProductCountryAsync(int proposalId, int[] countryIds = null)
+        {
+            using (var conn = this.NewConnection())
+            {
+                var query = "select * from PayrollProductCountry where ProposalId = @proposalId";
+                if (countryIds != null)
+                {
+                    query += " and CountryId in (@countryIds)";
+                }
+                var parameters = new {
+                    proposalId,
+                    countryIds
+                };
+                var results = await conn.QueryAsync<PayrollProductCountryViewModel>(query, parameters);
+                return results.ToList();
+            }
+        }
+
         public async Task<HrProductViewModel> GetHrProductAsync(int proposalId)
         {
             using (var conn = this.NewConnection())
             {
-                var results = await conn.QueryMultipleAsync(@"
-                    select * from HrProduct where ProposalId = @proposalId;
-                    select * from HrProductCountry where ProposalId = @proposalId", 
+                var result = await conn.QueryFirstAsync<HrProductViewModel>(@"
+                    select * from HrProduct where ProposalId = @proposalId", 
                 new { proposalId });
-                var hrProduct = await results.ReadSingleAsync<HrProductViewModel>();
-                hrProduct.Countries = await results.ReadAsync<HrProductCountryViewModel>();
-                return hrProduct;
+                return result;
+            }
+        }
+
+        public async Task<List<HrProductCountryViewModel>> GetHrProductCountryAsync(int proposalId, int[] countryIds = null)
+        {
+            using (var conn = this.NewConnection())
+            {
+                var query = "select * from HrProductCountry where ProposalId = @proposalId";
+                if (countryIds?.Length > 0)
+                {
+                    query += " and CountryId in @countryIds";
+                }
+                var parameters = new
+                {
+                    proposalId,
+                    countryIds
+                };
+                var results = await conn.QueryAsync<HrProductCountryViewModel>(query, parameters);
+                return results.ToList();
             }
         }
 
@@ -109,14 +154,11 @@ namespace Proposing.API.Application.Queries
             }
         }
 
-        public async Task<List<ComponentViewModel>> GetComponentsAsync(short componentTypeId)
+        public async Task<List<ComponentViewModel>> GetComponentsAsync()
         {
             using (var conn = this.NewConnection())
             {
-                var results = await conn.QueryAsync<ComponentViewModel>(@"
-                    select * from Component where ComponentTypeId = @componentTypeId order by SortOrder",
-                    new { componentTypeId }
-                );
+                var results = await conn.QueryAsync<ComponentViewModel>("select * from Component order by SortOrder");
                 return results.ToList();
             }
         }

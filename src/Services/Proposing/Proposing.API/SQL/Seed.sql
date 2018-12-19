@@ -15,6 +15,7 @@ from	Pricing.dbo.Country
 
 set identity_insert Country off
 
+declare @componentTypeId smallint
 insert Component values (0, null, null, 'None', 'None', 1,  0)
 
 --Payroll
@@ -27,7 +28,6 @@ insert Component values (0, null, null, 'None', 'None', 1,  0)
 
 --insert	Component(Id, ComponentTypeID, ProductId, Name, FullName, IsActive, SortOrder) values (7, null, 8, 'SL', 'ADP Streamline Payroll Service', 1, 10)
 
-declare @componentTypeId smallint
 select @componentTypeID = 2
 insert	ComponentType (Id, ProductId, Name) values (@componentTypeID, 1, 'Payroll Level')
 
@@ -53,7 +53,7 @@ insert	Component(Id, ComponentTypeID, ProductId, Name, FullName, IsActive, SortO
 --insert	Component(Id, ComponentTypeID, ProductId, Name, FullName, IsActive, SortOrder) values (28, null, 8, 'BI', 'Business Intelligence', 1, 0)
 
 select @componentTypeID = 3
-insert	ComponentType (Id, ProductId, Name) values (@componentTypeID, 9, 'Pay Frequencies')
+insert	ComponentType (Id, ProductId, Name) values (@componentTypeID, 1, 'Pay Frequencies')
 
 insert	Component(Id, ComponentTypeID, ProductId, Name, FullName, IsActive, SortOrder) values (51, @componentTypeID, 9, 'Monthly', 'Monthly', 1, 10)
 insert	Component(Id, ComponentTypeID, ProductId, Name, FullName, IsActive, SortOrder) values (52, @componentTypeID, 9, 'Lunar', 'Lunar', 1, 20)

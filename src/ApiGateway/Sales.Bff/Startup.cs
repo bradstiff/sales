@@ -6,6 +6,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using GraphiQl;
 using GraphQL;
+using GraphQL.DataLoader;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,12 +38,16 @@ namespace Sales.Bff
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
+            services.AddSingleton<IDataLoaderContextAccessor, DataLoaderContextAccessor>();
+            services.AddSingleton<DataLoaderDocumentListener>();
+            services.AddSingleton(typeof(ObjectGraphType<>));
+            services.AddSingleton(typeof(InputObjectGraphType<>));
+
             services.AddSingleton<ISchema, SalesSchema>(sp => new SalesSchema(new FuncDependencyResolver(sp.GetRequiredService)));
             services.AddSingleton<SalesSchemaQueryRoot>();
             services.AddSingleton<SalesSchemaMutationRoot>();
 
-            services.AddSingleton(typeof(ObjectGraphType<>));
-            services.AddSingleton(typeof(InputObjectGraphType<>));
+            services.AddSingleton<ReferenceDataCache>();
             services.AddHttpClient<ProposingClient>(c => c.BaseAddress = new Uri("http://localhost:10598"));
 
             //configure autofac

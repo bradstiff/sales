@@ -5,6 +5,7 @@
     "webApiToSwagger": {
       "controllerNames": [
         "Proposing.API.Controllers.ProposalsController",
+        "Proposing.API.Controllers.HrProductScopeController",
         "Proposing.API.Controllers.CountriesController",
         "Proposing.API.Controllers.ProductsController"
       ],

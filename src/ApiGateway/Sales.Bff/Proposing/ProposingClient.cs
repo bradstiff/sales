@@ -468,20 +468,20 @@ namespace Proposing.API.Client
         }
     
         /// <exception cref="Exception">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<HrProductViewModel> Proposals_GetHrProductScopeAsync(int proposalId)
+        public System.Threading.Tasks.Task<HrProductViewModel> HrProductScope_GetGlobalScopeAsync(int proposalId)
         {
-            return Proposals_GetHrProductScopeAsync(proposalId, System.Threading.CancellationToken.None);
+            return HrProductScope_GetGlobalScopeAsync(proposalId, System.Threading.CancellationToken.None);
         }
     
         /// <exception cref="Exception">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<HrProductViewModel> Proposals_GetHrProductScopeAsync(int proposalId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<HrProductViewModel> HrProductScope_GetGlobalScopeAsync(int proposalId, System.Threading.CancellationToken cancellationToken)
         {
             if (proposalId == null)
                 throw new System.ArgumentNullException("proposalId");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("api/Proposals/{proposalId}/hr");
+            urlBuilder_.Append("api/HrProductScope/{proposalId}");
             urlBuilder_.Replace("{proposalId}", System.Uri.EscapeDataString(ConvertToString(proposalId, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = _httpClient;
@@ -558,20 +558,20 @@ namespace Proposing.API.Client
         }
     
         /// <exception cref="Exception">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<bool> Proposals_UpdateHrProductScopeAsync(int proposalId, UpdateHrProductScopeCommand command)
+        public System.Threading.Tasks.Task<bool> HrProductScope_UpdateScopeAsync(int proposalId, UpdateHrProductScopeCommand command)
         {
-            return Proposals_UpdateHrProductScopeAsync(proposalId, command, System.Threading.CancellationToken.None);
+            return HrProductScope_UpdateScopeAsync(proposalId, command, System.Threading.CancellationToken.None);
         }
     
         /// <exception cref="Exception">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<bool> Proposals_UpdateHrProductScopeAsync(int proposalId, UpdateHrProductScopeCommand command, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<bool> HrProductScope_UpdateScopeAsync(int proposalId, UpdateHrProductScopeCommand command, System.Threading.CancellationToken cancellationToken)
         {
             if (proposalId == null)
                 throw new System.ArgumentNullException("proposalId");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("api/Proposals/{proposalId}/hr");
+            urlBuilder_.Append("api/HrProductScope/{proposalId}");
             urlBuilder_.Replace("{proposalId}", System.Uri.EscapeDataString(ConvertToString(proposalId, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = _httpClient;
@@ -637,6 +637,101 @@ namespace Proposing.API.Client
                         }
             
                         return default(bool);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="Exception">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<HrProductCountryViewModel>> HrProductScope_GetCountryScopeAsync(int proposalId, System.Collections.Generic.IEnumerable<int> countryId)
+        {
+            return HrProductScope_GetCountryScopeAsync(proposalId, countryId, System.Threading.CancellationToken.None);
+        }
+    
+        /// <exception cref="Exception">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<HrProductCountryViewModel>> HrProductScope_GetCountryScopeAsync(int proposalId, System.Collections.Generic.IEnumerable<int> countryId, System.Threading.CancellationToken cancellationToken)
+        {
+            if (proposalId == null)
+                throw new System.ArgumentNullException("proposalId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("api/HrProductScope/{proposalId}/countries?");
+            urlBuilder_.Replace("{proposalId}", System.Uri.EscapeDataString(ConvertToString(proposalId, System.Globalization.CultureInfo.InvariantCulture)));
+            if (countryId != null) 
+            {
+                foreach (var item_ in countryId) { urlBuilder_.Append("countryId=").Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append("&"); }
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(System.Collections.Generic.IEnumerable<HrProductCountryViewModel>); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.Generic.IEnumerable<HrProductCountryViewModel>>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new Exception("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new Exception("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new Exception("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new Exception("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(System.Collections.Generic.IEnumerable<HrProductCountryViewModel>);
                     }
                     finally
                     {
@@ -725,22 +820,91 @@ namespace Proposing.API.Client
         }
     
         /// <exception cref="Exception">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ComponentViewModel>> Products_GetComponentsAsync(int componentTypeId)
+        public System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ProductDefinitionViewModel>> Products_GetProductsAsync()
         {
-            return Products_GetComponentsAsync(componentTypeId, System.Threading.CancellationToken.None);
+            return Products_GetProductsAsync(System.Threading.CancellationToken.None);
         }
     
         /// <exception cref="Exception">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ComponentViewModel>> Products_GetComponentsAsync(int componentTypeId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ProductDefinitionViewModel>> Products_GetProductsAsync(System.Threading.CancellationToken cancellationToken)
         {
-            if (componentTypeId == null)
-                throw new System.ArgumentNullException("componentTypeId");
-    
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("api/Products?");
-            urlBuilder_.Append("componentTypeId=").Append(System.Uri.EscapeDataString(ConvertToString(componentTypeId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Length--;
+            urlBuilder_.Append("api/Products");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(System.Collections.Generic.IEnumerable<ProductDefinitionViewModel>); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.Generic.IEnumerable<ProductDefinitionViewModel>>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new Exception("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new Exception("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(System.Collections.Generic.IEnumerable<ProductDefinitionViewModel>);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="Exception">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ComponentViewModel>> Products_GetComponentsAsync()
+        {
+            return Products_GetComponentsAsync(System.Threading.CancellationToken.None);
+        }
+    
+        /// <exception cref="Exception">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ComponentViewModel>> Products_GetComponentsAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("api/Products/components");
     
             var client_ = _httpClient;
             try
@@ -876,6 +1040,9 @@ namespace Proposing.API.Client
     {
         [Newtonsoft.Json.JsonProperty("Id", Required = Newtonsoft.Json.Required.Always)]
         public int Id { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ProposalId", Required = Newtonsoft.Json.Required.Always)]
+        public int ProposalId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("CountryId", Required = Newtonsoft.Json.Required.Always)]
         public int CountryId { get; set; }
@@ -1045,6 +1212,9 @@ namespace Proposing.API.Client
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.12.2.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class HrProductCountryViewModel 
     {
+        [Newtonsoft.Json.JsonProperty("ProposalId", Required = Newtonsoft.Json.Required.Always)]
+        public int ProposalId { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("CountryId", Required = Newtonsoft.Json.Required.Always)]
         public int CountryId { get; set; }
     
@@ -1115,6 +1285,30 @@ namespace Proposing.API.Client
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.12.2.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ProductDefinitionViewModel 
+    {
+        [Newtonsoft.Json.JsonProperty("Id", Required = Newtonsoft.Json.Required.Always)]
+        public int Id { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("DependsOnProducts", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<ProductDefinitionViewModel> DependsOnProducts { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static ProductDefinitionViewModel FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProductDefinitionViewModel>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.12.2.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class ComponentViewModel 
     {
         [Newtonsoft.Json.JsonProperty("Id", Required = Newtonsoft.Json.Required.Always)]
@@ -1131,6 +1325,12 @@ namespace Proposing.API.Client
     
         [Newtonsoft.Json.JsonProperty("SortOrder", Required = Newtonsoft.Json.Required.Always)]
         public int SortOrder { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ProductId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ProductId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ComponentTypeID", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ComponentTypeID { get; set; }
     
         public string ToJson() 
         {
