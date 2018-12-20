@@ -20,6 +20,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Proposing.API.Application.Exceptions;
 using Proposing.API.Application.Queries;
+using Proposing.API.Infrastructure;
 using Proposing.API.Infrastructure.AutofacModules;
 using Proposing.API.Infrastructure.Context;
 
@@ -39,11 +40,13 @@ namespace Proposing.API
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddCustomDbContext(Configuration);
 
+            services.AddScoped<ProposingQueries>();
+
             //configure autofac
             var container = new ContainerBuilder();
             container.Populate(services);
 
-            container.Register((c) => new ProposingQueries(Configuration["connectionString"])).InstancePerLifetimeScope();
+            container.Register(c => new QueryConnectionFactory(Configuration["connectionString"])).SingleInstance();
 
             container.RegisterModule(new MediatorModule());
 

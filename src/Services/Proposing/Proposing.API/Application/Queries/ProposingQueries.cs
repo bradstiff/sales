@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Proposing.API.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,20 +11,16 @@ namespace Proposing.API.Application.Queries
 {
     public class ProposingQueries
     {
-        private string _connectionString = string.Empty;
-        public ProposingQueries(string connectionString)
-        {
-            _connectionString = !string.IsNullOrWhiteSpace(connectionString) ? connectionString : throw new ArgumentNullException(nameof(connectionString));
-        }
+        private readonly QueryConnectionFactory _connectionFactory;
 
-        private IDbConnection NewConnection()
+        public ProposingQueries(QueryConnectionFactory connectionFactory)
         {
-            return new SqlConnection(_connectionString);
+            _connectionFactory = connectionFactory;
         }
 
         public async Task<ProposalViewModel> GetProposalAsync(int id)
         {
-            using (var conn = this.NewConnection())
+            using (var conn = _connectionFactory.Create())
             {
                 var results = await conn.QueryMultipleAsync(@"
                     select * from Proposal where Id = @id;
@@ -72,8 +69,8 @@ namespace Proposing.API.Application.Queries
             FETCH NEXT @limit ROWS ONLY
             ";
 
-            using (var conn1 = this.NewConnection())
-            using (var conn2 = this.NewConnection())
+            using (var conn1 = _connectionFactory.Create())
+            using (var conn2 = _connectionFactory.Create())
             {
                 var count = conn1.QueryFirstAsync<int>(countQuery, parameters);
                 var proposals = conn2.QueryAsync<ProposalViewModel>(query, parameters);
@@ -84,7 +81,7 @@ namespace Proposing.API.Application.Queries
 
         public async Task<PayrollProductViewModel> GetPayrollProductAsync(int proposalId)
         {
-            using (var conn = this.NewConnection())
+            using (var conn = _connectionFactory.Create())
             {
                 var result = await conn.QueryFirstAsync<PayrollProductViewModel>(@"
                     select * from PayrollProduct where ProposalId = @proposalId",
@@ -95,7 +92,7 @@ namespace Proposing.API.Application.Queries
 
         public async Task<List<PayrollProductCountryViewModel>> GetPayrollProductCountryAsync(int proposalId, int[] countryIds = null)
         {
-            using (var conn = this.NewConnection())
+            using (var conn = _connectionFactory.Create())
             {
                 var query = "select * from PayrollProductCountry where ProposalId = @proposalId";
                 if (countryIds != null)
@@ -113,7 +110,7 @@ namespace Proposing.API.Application.Queries
 
         public async Task<HrProductViewModel> GetHrProductAsync(int proposalId)
         {
-            using (var conn = this.NewConnection())
+            using (var conn = _connectionFactory.Create())
             {
                 var result = await conn.QueryFirstAsync<HrProductViewModel>(@"
                     select * from HrProduct where ProposalId = @proposalId", 
@@ -124,7 +121,7 @@ namespace Proposing.API.Application.Queries
 
         public async Task<List<HrProductCountryViewModel>> GetHrProductCountryAsync(int proposalId, int[] countryIds = null)
         {
-            using (var conn = this.NewConnection())
+            using (var conn = _connectionFactory.Create())
             {
                 var query = "select * from HrProductCountry where ProposalId = @proposalId";
                 if (countryIds?.Length > 0)
@@ -143,7 +140,7 @@ namespace Proposing.API.Application.Queries
 
         public async Task<List<CountryViewModel>> GetCountriesAsync(string orderBy = "RegionName, Name")
         {
-            using (var conn = this.NewConnection())
+            using (var conn = _connectionFactory.Create())
             {
                 var results = await conn.QueryAsync<CountryViewModel>($@"
                     select c.*, r.name as RegionName 
@@ -156,7 +153,7 @@ namespace Proposing.API.Application.Queries
 
         public async Task<List<ComponentViewModel>> GetComponentsAsync()
         {
-            using (var conn = this.NewConnection())
+            using (var conn = _connectionFactory.Create())
             {
                 var results = await conn.QueryAsync<ComponentViewModel>("select * from Component order by SortOrder");
                 return results.ToList();

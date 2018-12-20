@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Folder Include="Application\DomainEventHandlers\" />
+    <Folder Include="Application\Queries\ProductScope\" />
     <Folder Include="Domain\Model\ProposalAggregate\Time\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>

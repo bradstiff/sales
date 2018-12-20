@@ -6,6 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Proposing\SchemaTypes\PayrollProductCountrySchemaType.cs" />
+    <Compile Remove="Proposing\SchemaTypes\PayrollProductSchemaType.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="Infrastructure\nswag.json" />
   </ItemGroup>
 
