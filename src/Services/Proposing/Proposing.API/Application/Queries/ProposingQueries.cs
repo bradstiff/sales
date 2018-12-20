@@ -108,36 +108,6 @@ namespace Proposing.API.Application.Queries
             }
         }
 
-        public async Task<HrProductViewModel> GetHrProductAsync(int proposalId)
-        {
-            using (var conn = _connectionFactory.Create())
-            {
-                var result = await conn.QueryFirstAsync<HrProductViewModel>(@"
-                    select * from HrProduct where ProposalId = @proposalId", 
-                new { proposalId });
-                return result;
-            }
-        }
-
-        public async Task<List<HrProductCountryViewModel>> GetHrProductCountryAsync(int proposalId, int[] countryIds = null)
-        {
-            using (var conn = _connectionFactory.Create())
-            {
-                var query = "select * from HrProductCountry where ProposalId = @proposalId";
-                if (countryIds?.Length > 0)
-                {
-                    query += " and CountryId in @countryIds";
-                }
-                var parameters = new
-                {
-                    proposalId,
-                    countryIds
-                };
-                var results = await conn.QueryAsync<HrProductCountryViewModel>(query, parameters);
-                return results.ToList();
-            }
-        }
-
         public async Task<List<CountryViewModel>> GetCountriesAsync(string orderBy = "RegionName, Name")
         {
             using (var conn = _connectionFactory.Create())
