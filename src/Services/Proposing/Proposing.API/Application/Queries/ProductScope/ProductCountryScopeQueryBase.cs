@@ -1,11 +1,12 @@
-﻿using System;
+﻿using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Proposing.API.Application.Queries.ProductScope
 {
-    public class ProductCountryScopeQueryBase
+    public class ProductCountryScopeQueryBase<TProductCountryScopeQueryResult> : IRequest<List<TProductCountryScopeQueryResult>>
     {
         public void Init(int proposalId, int[] countryIds)
         {

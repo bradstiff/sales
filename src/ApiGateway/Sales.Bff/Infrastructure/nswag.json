@@ -1,18 +1,18 @@
 ﻿{
-  "runtime": "NetCore21",
+  "runtime": "NetCore22",
   "defaultVariables": null,
   "swaggerGenerator": {
-    "webApiToSwagger": {
-      "controllerNames": [
-        "Proposing.API.Controllers.ProposalsController",
-        "Proposing.API.Controllers.HrProductScopeController",
-        "Proposing.API.Controllers.CountriesController",
-        "Proposing.API.Controllers.ProductsController"
-      ],
-      "isAspNetCore": true,
-      "resolveJsonOptions": false,
-      "defaultUrlTemplate": "api/{controller}/{id?}",
-      "addMissingPathParameters": false,
+    "aspNetCoreToSwagger": {
+      "project": "",
+      "msBuildProjectExtensionsPath": null,
+      "configuration": null,
+      "runtime": null,
+      "targetFramework": null,
+      "noBuild": false,
+      "verbose": true,
+      "workingDirectory": null,
+      "requireParametersWithoutDefault": false,
+      "apiGroupNames": null,
       "defaultPropertyNameHandling": "Default",
       "defaultReferenceTypeNullHandling": "Null",
       "defaultEnumHandling": "Integer",
@@ -29,7 +29,6 @@
       "infoTitle": "My Title",
       "infoDescription": null,
       "infoVersion": "1.0.0",
-      "includedVersions": null,
       "documentTemplate": null,
       "documentProcessorTypes": [],
       "operationProcessorTypes": [],
@@ -37,17 +36,20 @@
       "schemaNameGeneratorType": null,
       "contractResolverType": null,
       "serializerSettingsType": null,
-      "useDocumentProvider": false,
+      "useDocumentProvider": true,
+      "documentName": "v1",
+      "aspNetCoreEnvironment": null,
+      "createWebHostBuilderMethod": null,
       "startupType": null,
       "allowNullableBodyParameters": true,
-      "output": null,
+      "output": "../../../Services/Proposing/Proposing.API/wwwroot/swagger.json",
       "outputType": "Swagger2",
       "assemblyPaths": [
-        "../../../Services/Proposing/Proposing.API/bin/Debug/netcoreapp2.1/Proposing.API.dll"
+        "../../../Services/Proposing/Proposing.API/bin/Debug/netcoreapp2.2/Proposing.API.dll"
       ],
       "assemblyConfig": null,
       "referencePaths": [
-        "../../../Services/Proposing/Proposing.API/bin/Debug/netcoreapp2.1/publish"
+        "../../../Services/Proposing/Proposing.API/bin/Debug/netcoreapp2.2/publish"
       ],
       "useNuGetCache": false
     }
@@ -117,6 +119,8 @@
       "generateImmutableArrayProperties": false,
       "generateImmutableDictionaryProperties": false,
       "jsonSerializerSettingsTransformationMethod": null,
+      "inlineNamedDictionaries": false,
+      "inlineNamedTuples": true,
       "templateDirectory": null,
       "typeNameGeneratorType": null,
       "propertyNameGeneratorType": null,

@@ -15,54 +15,60 @@ namespace Proposing.API.Controllers
 {
     [Route("api/[controller]/{proposalId:int}")]
     [ApiController]
-    public class HrProductScopeController : ControllerBase
+    public class HrProductScopeController : ProductScopeController<HrProductQuery, HrProductViewModel, HrProductCountryQuery, HrProductCountryViewModel, UpdateHrProductScopeCommand>
     {
-        private readonly IMediator _mediator;
-
-        public HrProductScopeController(IMediator mediator, ProposingQueries proposingQueries)
+        public HrProductScopeController(IMediator mediator) : base(mediator)
         {
-            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-        }
-
-        [Route("")]
-        [HttpGet]
-        [ProducesResponseType(typeof(HrProductViewModel), (int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> GetGlobalScope(int proposalId)
-        {
-            var query = new HrProductQuery();
-            query.Init(proposalId);
-            var result = await _mediator.Send(query);
-            return Ok(result);
-        }
-
-        [Route("countries")]
-        [HttpGet]
-        [ProducesResponseType(typeof(List<HrProductCountryViewModel>), (int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> GetCountryScope(int proposalId, [FromQuery(Name = "countryId")] int[] countryIds)
-        {
-            var query = new HrProductCountryQuery();
-            query.Init(proposalId, countryIds);
-            var result = await _mediator.Send(query);
-            return Ok(result);
-        }
-
-        [Route("")]
-        [HttpPut]
-        [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> UpdateScope(int proposalId, [FromBody] UpdateHrProductScopeCommand command)
-        {
-            var result = await _mediator.Send(new CommandWithResourceId<int, UpdateHrProductScopeCommand, bool>(proposalId, command));
-            if (!result)
-            {
-                return BadRequest();
-            }
-            return Ok(result);
         }
     }
+    //public class HrProductScopeController : ControllerBase
+    //{
+    //    private readonly IMediator _mediator;
+
+    //    public HrProductScopeController(IMediator mediator, ProposingQueries proposingQueries)
+    //    {
+    //        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+    //    }
+
+    //    [Route("")]
+    //    [HttpGet]
+    //    [ProducesResponseType(typeof(HrProductViewModel), (int)HttpStatusCode.OK)]
+    //    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    //    [ProducesResponseType((int)HttpStatusCode.NotFound)]
+    //    public async Task<IActionResult> GetGlobalScope(int proposalId)
+    //    {
+    //        var query = new HrProductQuery();
+    //        query.Init(proposalId);
+    //        var result = await _mediator.Send(query);
+    //        return Ok(result);
+    //    }
+
+    //    [Route("countries")]
+    //    [HttpGet]
+    //    [ProducesResponseType(typeof(List<HrProductCountryViewModel>), (int)HttpStatusCode.OK)]
+    //    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    //    [ProducesResponseType((int)HttpStatusCode.NotFound)]
+    //    public async Task<IActionResult> GetCountryScope(int proposalId, [FromQuery(Name = "countryId")] int[] countryIds)
+    //    {
+    //        var query = new HrProductCountryQuery();
+    //        query.Init(proposalId, countryIds);
+    //        var result = await _mediator.Send(query);
+    //        return Ok(result);
+    //    }
+
+    //    [Route("")]
+    //    [HttpPut]
+    //    [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
+    //    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    //    [ProducesResponseType((int)HttpStatusCode.NotFound)]
+    //    public async Task<IActionResult> UpdateScope(int proposalId, [FromBody] UpdateHrProductScopeCommand command)
+    //    {
+    //        var result = await _mediator.Send(new CommandWithResourceId<int, UpdateHrProductScopeCommand, bool>(proposalId, command));
+    //        if (!result)
+    //        {
+    //            return BadRequest();
+    //        }
+    //        return Ok(result);
+    //    }
+    //}
 }

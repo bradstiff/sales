@@ -16,7 +16,7 @@ namespace Proposing.API.Application.Queries.ProductScope
         public int LevelId { get; set; }
     }
 
-    public class HrProductCountryQuery : ProductCountryScopeQueryBase, IRequest<List<HrProductCountryViewModel>> { }
+    public class HrProductCountryQuery : ProductCountryScopeQueryBase<HrProductCountryViewModel> { }
 
     public class HrProductCountryQueryHandler : IRequestHandler<HrProductCountryQuery, List<HrProductCountryViewModel>>
     {

@@ -37,8 +37,9 @@ namespace Proposing.API
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddCustomDbContext(Configuration);
+            services.AddOpenApiDocument();
 
             services.AddScoped<ProposingQueries>();
 
@@ -64,6 +65,7 @@ namespace Proposing.API
                 app.UseHsts();
             }
 
+            //app.UseSwaggerUi3();
             //app.UseHttpsRedirection();
             app.UseCustomExceptionHandler();
             app.UseMvc();

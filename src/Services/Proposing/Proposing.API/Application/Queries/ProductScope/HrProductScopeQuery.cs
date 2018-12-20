@@ -16,7 +16,7 @@ namespace Proposing.API.Application.Queries.ProductScope
         public IEnumerable<HrProductCountryViewModel> Countries { get; set; }
     }
 
-    public class HrProductQuery : ProductScopeQueryBase, IRequest<HrProductViewModel> { }
+    public class HrProductQuery : ProductScopeQueryBase<HrProductViewModel> { }
 
     public class HrProductQueryHandler: IRequestHandler<HrProductQuery, HrProductViewModel>
     {
