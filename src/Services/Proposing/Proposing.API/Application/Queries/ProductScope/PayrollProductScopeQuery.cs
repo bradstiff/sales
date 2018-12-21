@@ -9,23 +9,23 @@ using System.Threading.Tasks;
 
 namespace Proposing.API.Application.Queries.ProductScope
 {
-    public class HrProductQuery : ProductScopeQueryBase<HrProductViewModel> { }
+    public class PayrollProductQuery : ProductScopeQueryBase<PayrollProductViewModel> { }
 
-    public class HrProductQueryHandler: IRequestHandler<HrProductQuery, HrProductViewModel>
+    public class PayrollProductQueryHandler: IRequestHandler<PayrollProductQuery, PayrollProductViewModel>
     {
         private readonly QueryConnectionFactory _connectionFactory;
 
-        public HrProductQueryHandler(QueryConnectionFactory connectionFactory)
+        public PayrollProductQueryHandler(QueryConnectionFactory connectionFactory)
         {
             _connectionFactory = connectionFactory;
         }
 
-        public async Task<HrProductViewModel> Handle(HrProductQuery request, CancellationToken cancellationToken)
+        public async Task<PayrollProductViewModel> Handle(PayrollProductQuery request, CancellationToken cancellationToken)
         {
             using (var conn = _connectionFactory.Create())
             {
-                var result = await conn.QueryFirstAsync<HrProductViewModel>(@"
-                    select * from HrProduct where ProposalId = @proposalId",
+                var result = await conn.QueryFirstAsync<PayrollProductViewModel>(@"
+                    select * from PayrollProduct where ProposalId = @proposalId",
                 new { proposalId = request.ProposalId });
                 return result;
             }

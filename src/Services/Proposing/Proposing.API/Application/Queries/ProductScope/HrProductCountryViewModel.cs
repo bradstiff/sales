@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Proposing.API.Application.Queries
+namespace Proposing.API.Application.Queries.ProductScope
 {
-    public class PayrollProductCountryViewModel
+    public class HrProductCountryViewModel
     {
+        public int ProposalId { get; set; }
         public int CountryId { get; set; }
         public int LevelId { get; set; }
     }

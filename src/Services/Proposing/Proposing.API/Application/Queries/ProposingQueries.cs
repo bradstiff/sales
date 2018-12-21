@@ -79,35 +79,6 @@ namespace Proposing.API.Application.Queries
             }
         }
 
-        public async Task<PayrollProductViewModel> GetPayrollProductAsync(int proposalId)
-        {
-            using (var conn = _connectionFactory.Create())
-            {
-                var result = await conn.QueryFirstAsync<PayrollProductViewModel>(@"
-                    select * from PayrollProduct where ProposalId = @proposalId",
-                new { proposalId });
-                return result;
-            }
-        }
-
-        public async Task<List<PayrollProductCountryViewModel>> GetPayrollProductCountryAsync(int proposalId, int[] countryIds = null)
-        {
-            using (var conn = _connectionFactory.Create())
-            {
-                var query = "select * from PayrollProductCountry where ProposalId = @proposalId";
-                if (countryIds != null)
-                {
-                    query += " and CountryId in (@countryIds)";
-                }
-                var parameters = new {
-                    proposalId,
-                    countryIds
-                };
-                var results = await conn.QueryAsync<PayrollProductCountryViewModel>(query, parameters);
-                return results.ToList();
-            }
-        }
-
         public async Task<List<CountryViewModel>> GetCountriesAsync(string orderBy = "RegionName, Name")
         {
             using (var conn = _connectionFactory.Create())
