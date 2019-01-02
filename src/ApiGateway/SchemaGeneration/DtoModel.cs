@@ -21,10 +21,10 @@ namespace SchemaTypeCodeGenerator
     {
         public string Name { get; set; }
         public Type Type { get; set; }
-        public bool IsId { get; set; }
-        public Type ListGenericArgument { get; set; }
-        public bool IsList => this.ListGenericArgument != null;
-        public string ListGraphTypeArgument { get; set; }
+        public string GraphType { get; set; }
+        public bool IsId => this.Name == "Id";
+        public bool IsList { get; set; }
+        public bool IsDto { get; set; }
         public bool IsNullable { get; set; }
     }
 }

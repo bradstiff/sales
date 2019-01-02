@@ -46,9 +46,9 @@ create table Proposal
 	Name varchar(100) not null,
 	ClientName varchar(100) not null,
 	Comments varchar(max) null,
-	ProductModelVersionId int not null,
-	PriceModelVersionId int not null,
-	ProductTypeIds bigint not null,
+	ProductModelId int not null,
+	PriceModelId int not null,
+	ProductIds bigint not null,
 	constraint PK_Proposal primary key (Id),
 )
 
@@ -57,7 +57,7 @@ create table ProposalCountry
 	Id int not null identity,
 	ProposalId int not null,
 	CountryID int not null,
-	ProductTypeIds bigint not null,
+	ProductIds bigint not null,
 	Headcount int null,
 	constraint PK_ProposalCountry primary key (Id),
 	constraint FK_ProposalCountry_Proposal foreign key (ProposalId) references Proposal (Id),
@@ -79,7 +79,7 @@ create table PayrollProductCountry
 	Id int not null identity,
 	ProposalId int not null,
 	CountryID int not null,
-	LevelId smallint null,
+	LevelId smallint not null,
 	WeeklyPayees int null,
 	BiWeeklyPayees int null,
 	SemiMonthlyPayees int null,
@@ -95,7 +95,7 @@ create table HrProduct
 (
 	Id int not null identity,
 	ProposalId int not null,
-	LevelId smallint null,
+	LevelId smallint not null,
 	constraint PK_HrProduct primary key (Id),
 	constraint FK_HrProduct_Proposal foreign key (ProposalId) references Proposal (Id),
 	constraint FK_HrProduct_Component foreign key (LevelId) references Component (Id),
@@ -106,7 +106,7 @@ create table HrProductCountry
 	Id int not null identity,
 	ProposalId int not null,
 	CountryID int not null,
-	LevelId smallint null,
+	LevelId smallint not null,
 	constraint PK_HrProductCountry primary key (Id),
 	constraint FK_HrProductCountry_Proposal foreign key (ProposalId) references Proposal (Id),
 )

@@ -1,5 +1,7 @@
-﻿using GraphQL.Types;
+﻿using GraphQL.DataLoader;
+using GraphQL.Types;
 using Proposing.API.Client;
+using Sales.Bff.Infrastructure;
 using Sales.Bff.Proposing.SchemaTypes;
 using System;
 using System.Collections.Generic;
@@ -10,7 +12,7 @@ namespace Sales.Bff.Schema
 {
     public class SalesSchemaQueryRoot : ObjectGraphType
     {
-        public SalesSchemaQueryRoot(ProposingClient client)
+        public SalesSchemaQueryRoot(ProposingClient client, ReferenceDataCache cache, IDataLoaderContextAccessor accessor)
         {
             Field<ProposalSchemaType>(
                 "Proposal",
@@ -38,9 +40,9 @@ namespace Sales.Bff.Schema
                 resolve: context => client.Countries_GetCountriesAsync()
             );
 
-            Field<ProductModelSchemaType>(
-                "ProductModel",
-                resolve: context => client.Products_GetComponentsAsync()
+            Field<ListGraphType<ProductModelSchemaType>>(
+                "ProductModels",
+                resolve: context => cache.ProductModels.Values
             );
         }
     }

@@ -29,7 +29,13 @@ namespace <#=_message.SchemaTypeNamespace#>
 			else if (prop.IsList)
 			{
 #>
-			Field(x => x.<#=prop.Name#>, nullable: <#=prop.IsNullable.ToString().ToLower()#>, type:typeof(ListGraphType<<#=prop.ListGraphTypeArgument#>>));
+			Field(x => x.<#=prop.Name#>, nullable: <#=prop.IsNullable.ToString().ToLower()#>, type:typeof(ListGraphType<<#=prop.GraphType#>>));
+<#
+			}
+            else if (prop.IsDto)
+			{
+#>
+			Field(x => x.<#=prop.Name#>, nullable: <#=prop.IsNullable.ToString().ToLower()#>, type:typeof(<#=prop.GraphType#>));
 <#
 			}
 			else

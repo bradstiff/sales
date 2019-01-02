@@ -24,9 +24,7 @@ namespace Proposing.API.Application.Queries.ProductScope
         {
             using (var conn = _connectionFactory.Create())
             {
-                var result = await conn.QueryFirstAsync<PayrollProductViewModel>(@"
-                    select * from PayrollProduct where ProposalId = @proposalId",
-                new { proposalId = request.ProposalId });
+                var result = await conn.QuerySingleOrDefaultAsync<PayrollProductViewModel>("select * from PayrollProduct where ProposalId = @proposalId", request);
                 return result;
             }
         }

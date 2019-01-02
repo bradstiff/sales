@@ -11,7 +11,7 @@ namespace Sales.Bff.Proposing.SchemaTypes
 		{
 			Name = "HrProduct";
 			Field(x => x.ProposalId, nullable: true);
-			Field(x => x.LevelId, nullable: true);
+			Field(x => x.Level, nullable: true, type:typeof(ComponentSchemaType));
 			Field(x => x.Countries, nullable: true, type:typeof(ListGraphType<HrProductCountrySchemaType>));
 			this.Extend(client, cache, accessor);
 		}

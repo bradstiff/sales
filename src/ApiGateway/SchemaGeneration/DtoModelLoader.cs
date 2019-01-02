@@ -31,44 +31,46 @@ namespace SchemaTypeCodeGenerator
                         .GetProperties(BindingFlags.Public | BindingFlags.Instance)
                         .Select(prop =>
                         {
-                            Type listGenericArgument = null;
-                            string listGraphTypeArgument = null;
-                            if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
+                            var isList = prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(List<>);
+                            var type = isList
+                                ? prop.PropertyType.GetGenericArguments()[0]
+                                : Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
+
+                            string graphType = null;
+                            var isDto = false;
+                            if (new[] { typeof(long), typeof(int), typeof(short), typeof(byte) }.Contains(type))
                             {
-                                listGenericArgument = prop.PropertyType.GetGenericArguments()[0];
-                                if (new[] { typeof(long), typeof(int), typeof(short), typeof(byte) }.Contains(listGenericArgument))
-                                {
-                                    listGraphTypeArgument = "IntGraphType";
-                                }
-                                else if (new[] { typeof(decimal), typeof(double), typeof(float) }.Contains(listGenericArgument))
-                                {
-                                    listGraphTypeArgument = "FloatGraphType";
-                                }
-                                else if (typeof(bool) == listGenericArgument)
-                                {
-                                    listGraphTypeArgument = "BooleanGraphType";
-                                }
-                                else if (typeof(string) == listGenericArgument)
-                                {
-                                    listGraphTypeArgument = "StringGraphType";
-                                }
-                                else if (dtos.Any(type => type == listGenericArgument))
-                                {
-                                    listGraphTypeArgument = GetSchemaTypeTypeName(listGenericArgument, nameOverrides);
-                                }
-                                else
-                                {
-                                    throw new ArgumentOutOfRangeException($"{listGenericArgument.Name} does not have a corresponding GraphType.");
-                                }
+                                graphType = "IntGraphType";
+                            }
+                            else if (new[] { typeof(decimal), typeof(double), typeof(float) }.Contains(type))
+                            {
+                                graphType = "FloatGraphType";
+                            }
+                            else if (typeof(bool) == type)
+                            {
+                                graphType = "BooleanGraphType";
+                            }
+                            else if (typeof(string) == type)
+                            {
+                                graphType = "StringGraphType";
+                            }
+                            else if (dtos.Any(d => d == type))
+                            {
+                                graphType = GetSchemaTypeTypeName(type, nameOverrides);
+                                isDto = true; //view model
+                            }
+                            else
+                            {
+                                throw new ArgumentOutOfRangeException($"{type.Name} does not have a corresponding GraphType.");
                             }
 
                             return new DtoPropertyModel
                             {
                                 Name = prop.Name,
                                 Type = prop.PropertyType,
-                                IsId = prop.Name == "Id",
-                                ListGenericArgument = listGenericArgument,
-                                ListGraphTypeArgument = listGraphTypeArgument,
+                                GraphType = graphType,
+                                IsList = isList,
+                                IsDto = isDto,
                                 IsNullable = prop.GetCustomAttribute<RequiredAttribute>() == null
                             };
                         })

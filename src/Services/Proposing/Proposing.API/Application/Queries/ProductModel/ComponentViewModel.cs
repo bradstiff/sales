@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Proposing.API.Application.Queries
+namespace Proposing.API.Application.Queries.ProductModel
 {
     public class ComponentViewModel
     {

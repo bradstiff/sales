@@ -14,9 +14,9 @@ namespace Proposing.API.Domain.Model.ProposalAggregate
         public string Name { get; private set; }
         public string ClientName { get; private set; }
         public string Comments { get; private set; }
-        public int ProductModelVersionId { get; private set; }
-        public int PriceModelVersionId { get; private set; }
-        public long ProductTypeIds { get; private set; }
+        public int ProductModelId { get; private set; }
+        public int PriceModelId { get; private set; }
+        public long ProductIds { get; private set; }
 
         public PayrollProduct PayrollProduct { get; private set; }
         public HrProduct HrProduct { get; private set; }
@@ -35,8 +35,8 @@ namespace Proposing.API.Domain.Model.ProposalAggregate
 
         public Proposal(IEnumerable<ProposalCountryDto> countries) : this()
         {
-            ProductModelVersionId = 1; //todo
-            PriceModelVersionId = 1;
+            ProductModelId = 1; //todo
+            PriceModelId = 1;
 
             if (countries != null)
             {
@@ -165,7 +165,7 @@ namespace Proposing.API.Domain.Model.ProposalAggregate
                 var product = (IProductScopeUpdater<T>)this.NewProduct(productType);
                 product.Update(scopeData);
                 this.SetProduct(productType, product);
-                this.ProductTypeIds |= productType.Value;
+                this.ProductIds |= productType.Value;
             }
 
             //adjust the ProposalCountry.ProductTypeIds
@@ -187,7 +187,7 @@ namespace Proposing.API.Domain.Model.ProposalAggregate
         private void RemoveProduct(ProductType productType) 
         {
             this.SetProduct(productType, null);
-            this.ProductTypeIds &= ~productType.Value;
+            this.ProductIds &= ~productType.Value;
         }
     }
 }

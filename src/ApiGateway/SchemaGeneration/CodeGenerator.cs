@@ -20,7 +20,7 @@ namespace SchemaTypeCodeGenerator
             {
                 { "ProposalCountryDto", "ProposalCountryInput" }
             };
-            var assemblyPath = @"C:\Users\Brad\Source\Repos\sales\src\ApiGateway\Sales.Bff\bin\Debug\netcoreapp2.1\Sales.Bff.dll";
+            var assemblyPath = @"C:\Users\Brad\Source\Repos\sales\src\ApiGateway\Sales.Bff\bin\Debug\netcoreapp2.2\Sales.Bff.dll";
             var dtos = AssemblyScanner.Scan(assemblyPath, t => t.Namespace.EndsWith("API.Client") && (t.Name.EndsWith("ViewModel") || t.Name.EndsWith("Command")), overrides.Keys);
 
             var dtoModels = DtoModelLoader.Load(dtos, overrides);

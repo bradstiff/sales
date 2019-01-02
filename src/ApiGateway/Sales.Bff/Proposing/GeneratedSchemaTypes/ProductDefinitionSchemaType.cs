@@ -12,6 +12,8 @@ namespace Sales.Bff.Proposing.SchemaTypes
 			Name = "ProductDefinition";
 			Field(x => x.Id, nullable: false);
 			Field(x => x.Name, nullable: true);
+			Field(x => x.Levels, nullable: true, type:typeof(ListGraphType<ComponentSchemaType>));
+			Field(x => x.Components, nullable: true, type:typeof(ListGraphType<ComponentSchemaType>));
 			Field(x => x.DependsOnProducts, nullable: true, type:typeof(ListGraphType<ProductDefinitionSchemaType>));
 			this.Extend(client, cache, accessor);
 		}

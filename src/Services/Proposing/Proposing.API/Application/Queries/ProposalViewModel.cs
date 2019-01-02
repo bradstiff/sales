@@ -12,5 +12,7 @@ namespace Proposing.API.Application.Queries
         public string ClientName { get; set; }
         public string Comments { get; set; }
         public IEnumerable<ProposalCountryViewModel> Countries { get; set; }
+        public int ProductModelId { get; set; }
+        public long ProductIds { get; set; }
     }
 }

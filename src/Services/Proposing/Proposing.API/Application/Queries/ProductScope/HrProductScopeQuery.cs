@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using MediatR;
+using Proposing.API.Application.Queries.ProductModel;
 using Proposing.API.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -24,10 +25,12 @@ namespace Proposing.API.Application.Queries.ProductScope
         {
             using (var conn = _connectionFactory.Create())
             {
-                var result = await conn.QueryFirstAsync<HrProductViewModel>(@"
-                    select * from HrProduct where ProposalId = @proposalId",
-                new { proposalId = request.ProposalId });
-                return result;
+                var query = "select * from HrProduct p join Component c on p.LevelId = c.Id where p.ProposalId = @proposalId";
+                var result = await conn.QueryAsync<HrProductViewModel, ComponentViewModel, HrProductViewModel>(
+                    query,
+                    (product, component) => { product.Level = component; return product; },
+                    request);
+                return result.SingleOrDefault();
             }
         }
     }

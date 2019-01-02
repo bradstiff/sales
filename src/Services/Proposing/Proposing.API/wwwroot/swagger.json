@@ -255,12 +255,177 @@
         }
       }
     },
-    "/api/Products": {
+    "/api/PayrollProductScope/{proposalId}": {
       "get": {
         "tags": [
-          "Products"
+          "PayrollProductScope"
         ],
-        "operationId": "Products_GetProducts",
+        "operationId": "PayrollProductScope_GetGlobalScope",
+        "parameters": [
+          {
+            "name": "proposalId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "nullable": true,
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/PayrollProductViewModel"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "nullable": true,
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ProblemDetails"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "nullable": true,
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ProblemDetails"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "PayrollProductScope"
+        ],
+        "operationId": "PayrollProductScope_UpdateScope",
+        "parameters": [
+          {
+            "name": "proposalId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePayrollProductScopeCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "nullable": true,
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ProblemDetails"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "nullable": true,
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ProblemDetails"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/PayrollProductScope/{proposalId}/countries": {
+      "get": {
+        "tags": [
+          "PayrollProductScope"
+        ],
+        "operationId": "PayrollProductScope_GetCountryScope",
+        "parameters": [
+          {
+            "name": "proposalId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "countryId",
+            "in": "query",
+            "collectionFormat": "multi",
+            "schema": {
+              "type": "array",
+              "nullable": true,
+              "items": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            "x-position": 2
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -270,7 +435,61 @@
                   "type": "array",
                   "nullable": true,
                   "items": {
-                    "$ref": "#/components/schemas/ProductDefinitionViewModel"
+                    "$ref": "#/components/schemas/PayrollProductCountryViewModel"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "nullable": true,
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ProblemDetails"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "nullable": true,
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ProblemDetails"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ProductModels": {
+      "get": {
+        "tags": [
+          "ProductModels"
+        ],
+        "operationId": "ProductModels_GetAllProductModels",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "nullable": true,
+                  "items": {
+                    "$ref": "#/components/schemas/ProductModelViewModel"
                   }
                 }
               }
@@ -279,23 +498,44 @@
         }
       }
     },
-    "/api/Products/components": {
+    "/api/ProductModels/{productModelId}": {
       "get": {
         "tags": [
-          "Products"
+          "ProductModels"
         ],
-        "operationId": "Products_GetComponents",
+        "operationId": "ProductModels_GetProductModel",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "productModelId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 2
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
                   "nullable": true,
-                  "items": {
-                    "$ref": "#/components/schemas/ComponentViewModel"
-                  }
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ProductModelViewModel"
+                    }
+                  ]
                 }
               }
             }
@@ -656,9 +896,13 @@
             "type": "integer",
             "format": "int32"
           },
-          "levelId": {
-            "type": "integer",
-            "format": "int32"
+          "level": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ComponentViewModel"
+              }
+            ]
           },
           "countries": {
             "type": "array",
@@ -666,6 +910,38 @@
             "items": {
               "$ref": "#/components/schemas/HrProductCountryViewModel"
             }
+          }
+        }
+      },
+      "ComponentViewModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "fullName": {
+            "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "sortOrder": {
+            "type": "integer"
+          },
+          "productId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "componentTypeID": {
+            "type": "integer",
+            "nullable": true
           }
         }
       },
@@ -681,9 +957,13 @@
             "type": "integer",
             "format": "int32"
           },
-          "levelId": {
-            "type": "integer",
-            "format": "int32"
+          "level": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ComponentViewModel"
+              }
+            ]
           }
         }
       },
@@ -733,6 +1013,83 @@
           }
         }
       },
+      "PayrollProductViewModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "proposalId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "countries": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/PayrollProductCountryViewModel"
+            }
+          }
+        }
+      },
+      "PayrollProductCountryViewModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "proposalId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "countryId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "level": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ComponentViewModel"
+              }
+            ]
+          }
+        }
+      },
+      "UpdatePayrollProductScopeCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "levelId": {
+            "type": "integer"
+          },
+          "countryIds": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        }
+      },
+      "ProductModelViewModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "products": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ProductDefinitionViewModel"
+            }
+          }
+        }
+      },
       "ProductDefinitionViewModel": {
         "type": "object",
         "additionalProperties": false,
@@ -745,44 +1102,26 @@
             "type": "string",
             "nullable": true
           },
+          "levels": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ComponentViewModel"
+            }
+          },
+          "components": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ComponentViewModel"
+            }
+          },
           "dependsOnProducts": {
             "type": "array",
             "nullable": true,
             "items": {
               "$ref": "#/components/schemas/ProductDefinitionViewModel"
             }
-          }
-        }
-      },
-      "ComponentViewModel": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "integer"
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "fullName": {
-            "type": "string",
-            "nullable": true
-          },
-          "isActive": {
-            "type": "boolean"
-          },
-          "sortOrder": {
-            "type": "integer"
-          },
-          "productId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "componentTypeID": {
-            "type": "integer",
-            "nullable": true
           }
         }
       },
@@ -812,6 +1151,14 @@
             "items": {
               "$ref": "#/components/schemas/ProposalCountryViewModel"
             }
+          },
+          "productModelId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "productIds": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
@@ -834,6 +1181,10 @@
           "name": {
             "type": "string",
             "nullable": true
+          },
+          "productIds": {
+            "type": "integer",
+            "format": "int64"
           },
           "headcount": {
             "type": "integer",

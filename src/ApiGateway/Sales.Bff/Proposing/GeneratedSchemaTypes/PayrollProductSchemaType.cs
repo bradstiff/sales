@@ -5,14 +5,13 @@ using Sales.Bff.Infrastructure;
 
 namespace Sales.Bff.Proposing.SchemaTypes
 {
-	public partial class HrProductCountrySchemaType: ObjectGraphType<HrProductCountryViewModel>
+	public partial class PayrollProductSchemaType: ObjectGraphType<PayrollProductViewModel>
 	{
-		public HrProductCountrySchemaType(ProposingClient client, ReferenceDataCache cache, IDataLoaderContextAccessor accessor)
+		public PayrollProductSchemaType(ProposingClient client, ReferenceDataCache cache, IDataLoaderContextAccessor accessor)
 		{
-			Name = "HrProductCountry";
+			Name = "PayrollProduct";
 			Field(x => x.ProposalId, nullable: true);
-			Field(x => x.CountryId, nullable: true);
-			Field(x => x.Level, nullable: true, type:typeof(ComponentSchemaType));
+			Field(x => x.Countries, nullable: true, type:typeof(ListGraphType<PayrollProductCountrySchemaType>));
 			this.Extend(client, cache, accessor);
 		}
 
