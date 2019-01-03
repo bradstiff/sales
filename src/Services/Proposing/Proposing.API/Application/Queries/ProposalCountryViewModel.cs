@@ -11,6 +11,7 @@ namespace Proposing.API.Application.Queries
         public int ProposalId { get; set; }
         public int CountryId { get; set; }
         public string Name { get; set; }
+        public int ProductModelId { get; set; }
         public long ProductIds { get; set; }
         public int? Headcount { get; set; }
     }

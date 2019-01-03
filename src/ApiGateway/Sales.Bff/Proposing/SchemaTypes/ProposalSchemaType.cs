@@ -24,17 +24,14 @@ namespace Sales.Bff.Proposing.SchemaTypes
                 resolve: context =>
                 {
                     var model = cache.ProductModels[context.Source.ProductModelId];
-                    var bitArray = new BitArray(BitConverter.GetBytes(context.Source.ProductIds));
-                    var products = new List<ProductDefinitionViewModel>();
-                    for (int i = 0; i < bitArray.Length; i++)
-                    {
-                        if (bitArray[i])
-                        {
-                            products.Add(model.Products.First(p => p.Id == (2 ^ i)));
-                        }
-                    }
-                    return products;
+                    return context.Source.ProductIds
+                        .GetBits()
+                        .Select(id => model.Products.First(p => p.Id == id));
                 }
+            );
+            Field<HrProductSchemaType>(
+                "payroll",
+                resolve: context => client.PayrollProductScope_GetGlobalScopeAsync(context.Source.Id)
             );
             Field<HrProductSchemaType>(
                 "hr",

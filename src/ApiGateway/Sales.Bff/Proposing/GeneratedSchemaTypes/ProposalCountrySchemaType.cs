@@ -14,6 +14,7 @@ namespace Sales.Bff.Proposing.SchemaTypes
 			Field(x => x.ProposalId, nullable: true);
 			Field(x => x.CountryId, nullable: true);
 			Field(x => x.Name, nullable: true);
+			Field(x => x.ProductModelId, nullable: true);
 			Field(x => x.ProductIds, nullable: true);
 			Field(x => x.Headcount, nullable: true);
 			this.Extend(client, cache, accessor);

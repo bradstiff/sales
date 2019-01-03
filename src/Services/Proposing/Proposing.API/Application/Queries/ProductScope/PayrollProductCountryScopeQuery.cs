@@ -25,10 +25,10 @@ namespace Proposing.API.Application.Queries.ProductScope
         {
             using (var conn = _connectionFactory.Create())
             {
-                var query = "select * from PayrollProductCountry join Component c on p.LevelId = c.ComponentId where ProposalId = @proposalId";
+                var query = "select * from PayrollProductCountry p join Component c on p.LevelId = c.Id where p.ProposalId = @proposalId";
                 if (request.CountryIds?.Count > 0)
                 {
-                    query += " and CountryId in @countryIds";
+                    query += " and p.CountryId in @countryIds";
                 }
                 var parameters = new
                 {

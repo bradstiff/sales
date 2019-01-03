@@ -1182,6 +1182,10 @@
             "type": "string",
             "nullable": true
           },
+          "productModelId": {
+            "type": "integer",
+            "format": "int32"
+          },
           "productIds": {
             "type": "integer",
             "format": "int64"
