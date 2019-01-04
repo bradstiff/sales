@@ -7,7 +7,7 @@ namespace Proposing.API.Application.Queries.ProductModel
 {
     public class ProductDefinitionViewModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Name { get; set; }
         public List<ComponentViewModel> Levels { get; set; }
         public List<ComponentViewModel> Components { get; set; }

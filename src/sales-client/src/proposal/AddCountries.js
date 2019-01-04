@@ -1,5 +1,5 @@
 import React from 'react';
-import {  compose } from 'react-apollo';
+import { compose } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import AppBar from '@material-ui/core/AppBar';
@@ -14,10 +14,9 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import { withStyles } from '@material-ui/core/styles';
 
+import ToggleCountry from './ToggleCountry';
 import NotFound from '../app/NotFound';
 import withQuery from '../common/withQuery';
 import { objectCompare } from '../common/SortHelper';
@@ -63,45 +62,15 @@ class Region extends React.PureComponent {
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails style={{flexDirection: 'column'}}>
                     {region.countries.map(country => (
-                        <Country
+                        <ToggleCountry
                             key={country.id}
-                            country={country}
+                            id={country.id}
+                            name={country.name}
                             onToggle={onToggleCountry}
                         />
                     ))}
                 </ExpansionPanelDetails>
             </ExpansionPanel>                    
-        );
-    }
-}
-
-class Country extends React.PureComponent {
-    state = {
-        checked: false,
-    }
-    handleToggle = event => {
-        const {country, onToggle} = this.props;
-        this.setState({
-            checked: !this.state.checked
-        });
-        onToggle(country.id);
-    }
-    render() {
-        const {country} = this.props;
-        return (
-            <div>
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked={this.state.checked}
-                            tabIndex={-1}
-                            disableRipple
-                            onChange={this.handleToggle}
-                        />
-                    }
-                    label={country.name}
-                />
-            </div>
         );
     }
 }

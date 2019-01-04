@@ -18,19 +18,19 @@ namespace Proposing.API.Domain.Model.ProposalAggregate
         }
 
         public int CountryId { get; private set; }
-        public long ProductTypeIds { get; private set; }
+        public long ProductIds { get; private set; }
         public int? Headcount { get; private set; }
 
         public bool HasProductType(ProductType productType)
         {
-            return ProductType.IsFlagSet(this.ProductTypeIds, productType);
+            return ProductType.IsFlagSet(this.ProductIds, productType);
         }
 
         public void AddProductType(ProductType productType)
         {
             if (!this.HasProductType(productType))
             {
-                this.ProductTypeIds |= productType.Value;
+                this.ProductIds |= productType.Value;
             }
         }
 
@@ -38,7 +38,7 @@ namespace Proposing.API.Domain.Model.ProposalAggregate
         {
             if (this.HasProductType(productType))
             {
-                this.ProductTypeIds &= ~productType.Value;
+                this.ProductIds &= ~productType.Value;
             }
         }
 

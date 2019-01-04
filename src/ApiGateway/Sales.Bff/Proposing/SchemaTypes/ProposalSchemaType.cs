@@ -29,7 +29,7 @@ namespace Sales.Bff.Proposing.SchemaTypes
                         .Select(id => model.Products.First(p => p.Id == id));
                 }
             );
-            Field<HrProductSchemaType>(
+            Field<PayrollProductSchemaType>(
                 "payroll",
                 resolve: context => client.PayrollProductScope_GetGlobalScopeAsync(context.Source.Id)
             );

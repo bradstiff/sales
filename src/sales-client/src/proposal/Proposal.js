@@ -11,7 +11,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 
-import Locations from '../app/Locations';
+import Locations, { productLocations } from '../app/Locations';
 import NotFound from '../app/NotFound';
 import withQuery from '../common/withQuery';
 import FlexRightAligned from '../common/FlexRightAligned';
@@ -29,9 +29,11 @@ export const proposalPageFragment = gql`
         }
         products {
             id
+            name
         }
         hr {
             level {
+                id
                 name
             }
         }
@@ -44,6 +46,7 @@ export const proposalPageFragment = gql`
             }
             payroll {
                 level {
+                    id
                     name
                 }
             }
@@ -67,6 +70,7 @@ const Proposal = ({ proposal, id }) => {
             <Toolbar>
                 <Typography variant='title'>Scope</Typography>
                 <FlexRightAligned>
+                    {proposal.products.map(product => <Button href={productLocations[product.id].toUrl({ id })}>{product.name}</Button>)}
                     <Button href={Locations.ProposalCountries.toUrl({ id })}>Countries</Button>
                 </FlexRightAligned>
             </Toolbar>

@@ -9,7 +9,7 @@ const wholeNbr = integer.positive();
 const identity = wholeNbr.required();
 const order = Yup.string().oneOf(['asc', 'desc']).default('asc');
 
-export default {
+const Locations = {
     Home: new Location('/'),
     Proposals: new Location('/proposals', null, {
         page: naturalNbr.default(1),
@@ -19,5 +19,13 @@ export default {
     }),
     Proposal: new Location('/proposals/:id', {id: identity}),
     ProposalCountries: new Location('/proposals/:id/countries', {id: identity}),
+    ProposalPayroll: new Location('/proposals/:id/payroll', { id: identity }),
     ProposalHr: new Location('/proposals/:id/hr', {id: identity}),
+};
+
+export default Locations;
+
+export const productLocations = {
+    1: Locations.ProposalPayroll,
+    4: Locations.ProposalHr
 };
