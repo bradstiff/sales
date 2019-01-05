@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace Proposing.API.Infrastructure.Context
 {
-    public class ProductCountryEntityConfiguration<T, TParent> : IEntityTypeConfiguration<T>
-        where T : Entity, IProductCountry
-        where TParent : Entity, IProduct
+    public class ProductCountryScopeEntityConfiguration<T, TParent> : IEntityTypeConfiguration<T>
+        where T : Entity, IProductCountryScope
+        where TParent : Entity, IProductScope
     {
         private string _tableName;
-        public ProductCountryEntityConfiguration(string tableName)
+        public ProductCountryScopeEntityConfiguration(string tableName)
         {
             _tableName = tableName;
         }
@@ -24,8 +24,8 @@ namespace Proposing.API.Infrastructure.Context
             builder.ToTable(_tableName);
             builder.HasKey(p => p.Id);
             builder.Property<int>("ProposalId").IsRequired();
-            builder.HasAlternateKey(new[] { nameof(IProductCountry.CountryId), "ProposalId" });
-            builder.HasOne<TParent>().WithMany("ProductCountries").HasForeignKey("ProposalId").HasPrincipalKey("ProposalId").OnDelete(DeleteBehavior.Cascade);
+            builder.HasAlternateKey(new[] { nameof(IProductCountryScope.CountryId), "ProposalId" });
+            builder.HasOne<TParent>().WithMany("CountryScopes").HasForeignKey("ProposalId").HasPrincipalKey("ProposalId").OnDelete(DeleteBehavior.Cascade);
             builder.Ignore(p => p.DomainEvents);
         }
     }

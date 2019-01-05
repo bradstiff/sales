@@ -64,17 +64,17 @@ create table ProposalCountry
 	constraint FK_ProposalCountry_Country foreign key (CountryId) references Country (Id),
 )
 
-create table PayrollProduct
+create table PayrollScope
 (
 	Id int not null identity,
 	ProposalId int not null,
 	Reporting bit null,
 	PayslipStorage bit null,
-	constraint PK_PayrollProduct primary key (Id),
-	constraint FK_PayrollProduct_Proposal foreign key (ProposalId) references Proposal (Id),
+	constraint PK_PayrollScope primary key (Id),
+	constraint FK_PayrollScope_Proposal foreign key (ProposalId) references Proposal (Id),
 )
 
-create table PayrollProductCountry
+create table PayrollCountryScope
 (
 	Id int not null identity,
 	ProposalId int not null,
@@ -86,29 +86,29 @@ create table PayrollProductCountry
 	MonthlyPayees int null,
 	Reporting bit null,
 	PayslipStorage bit null,
-	constraint PK_PayrollProductCountry primary key (Id),
-	constraint FK_PayrollProductCountry_Proposal foreign key (ProposalId) references Proposal (Id),
-	constraint FK_PayrollProductCountry_Component foreign key (LevelId) references Component (Id),
+	constraint PK_PayrollCountryScope primary key (Id),
+	constraint FK_PayrollCountryScope_Proposal foreign key (ProposalId) references Proposal (Id),
+	constraint FK_PayrollCountryScope_Component foreign key (LevelId) references Component (Id),
 )
 
-create table HrProduct
+create table HrScope
 (
 	Id int not null identity,
 	ProposalId int not null,
 	LevelId smallint not null,
-	constraint PK_HrProduct primary key (Id),
-	constraint FK_HrProduct_Proposal foreign key (ProposalId) references Proposal (Id),
-	constraint FK_HrProduct_Component foreign key (LevelId) references Component (Id),
+	constraint PK_HrScope primary key (Id),
+	constraint FK_HrScope_Proposal foreign key (ProposalId) references Proposal (Id),
+	constraint FK_HrScope_Component foreign key (LevelId) references Component (Id),
 )
 
-create table HrProductCountry
+create table HrCountryScope
 (
 	Id int not null identity,
 	ProposalId int not null,
 	CountryID int not null,
 	LevelId smallint not null,
-	constraint PK_HrProductCountry primary key (Id),
-	constraint FK_HrProductCountry_Proposal foreign key (ProposalId) references Proposal (Id),
+	constraint PK_HrCountryScope primary key (Id),
+	constraint FK_HrCountryScope_Proposal foreign key (ProposalId) references Proposal (Id),
 )
 
 /*

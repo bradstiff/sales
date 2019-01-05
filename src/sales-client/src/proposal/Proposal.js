@@ -31,7 +31,7 @@ export const proposalPageFragment = gql`
             id
             name
         }
-        hr {
+        hrScope {
             level {
                 id
                 name
@@ -44,7 +44,7 @@ export const proposalPageFragment = gql`
             products {
                 id
             }
-            payroll {
+            payrollScope {
                 level {
                     id
                     name

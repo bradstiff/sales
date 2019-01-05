@@ -11,19 +11,19 @@ namespace Proposing.API.Domain.Core
 {
     public class ProductType : Enumeration<long>
     {
-        public static ProductType Payroll = new ProductType(1, nameof(Payroll).ToLowerInvariant(), typeof(PayrollProduct), p => p.PayrollProduct);
-        public static ProductType HR = new ProductType(4, nameof(HR).ToLowerInvariant(), typeof(HrProduct), p => p.HrProduct);
+        public static ProductType Payroll = new ProductType(1, nameof(Payroll).ToLowerInvariant(), typeof(PayrollScope), p => p.PayrollScope);
+        public static ProductType HR = new ProductType(4, nameof(HR).ToLowerInvariant(), typeof(HrScope), p => p.HrScope);
         //public static ProductType Time = new ProductType(64, nameof(Time).ToLowerInvariant(), null);
         //public static ProductType Benefits = new ProductType(1 << 3, nameof(Benefits).ToLowerInvariant(), null);
 
         public Type Type { get; private set; }
-        public Expression<Func<Proposal,IProduct>> Selector { get; private set; }
+        public Expression<Func<Proposal,IProductScope>> Selector { get; private set; }
 
         public ProductType()
         {
         }
 
-        public ProductType(long value, string name, Type product, Expression<Func<Proposal,IProduct>> selector) : base(value, name)
+        public ProductType(long value, string name, Type product, Expression<Func<Proposal,IProductScope>> selector) : base(value, name)
         {
             this.Selector = selector;
             this.Type = product;

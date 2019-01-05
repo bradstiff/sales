@@ -10,22 +10,22 @@ using System.Threading.Tasks;
 
 namespace Proposing.API.Application.Queries.ProductScope
 {
-    public class PayrollProductCountryQuery : ProductCountryScopeQueryBase<PayrollProductCountryViewModel> { }
+    public class HrCountryScopeQuery : ProductCountryScopeQueryBase<HrCountryScopeViewModel> { }
 
-    public class PayrollProductCountryQueryHandler : IRequestHandler<PayrollProductCountryQuery, List<PayrollProductCountryViewModel>>
+    public class HrCountryScopeQueryHandler : IRequestHandler<HrCountryScopeQuery, List<HrCountryScopeViewModel>>
     {
         private readonly QueryConnectionFactory _connectionFactory;
 
-        public PayrollProductCountryQueryHandler(QueryConnectionFactory connectionFactory)
+        public HrCountryScopeQueryHandler(QueryConnectionFactory connectionFactory)
         {
             _connectionFactory = connectionFactory;
         }
 
-        public async Task<List<PayrollProductCountryViewModel>> Handle(PayrollProductCountryQuery request, CancellationToken cancellationToken)
+        public async Task<List<HrCountryScopeViewModel>> Handle(HrCountryScopeQuery request, CancellationToken cancellationToken)
         {
             using (var conn = _connectionFactory.Create())
             {
-                var query = "select * from PayrollProductCountry p join Component c on p.LevelId = c.Id where p.ProposalId = @proposalId";
+                var query = "select * from HrCountryScope p join Component c on p.LevelId = c.Id where p.ProposalId = @proposalId";
                 if (request.CountryIds?.Count > 0)
                 {
                     query += " and p.CountryId in @countryIds";
@@ -35,8 +35,8 @@ namespace Proposing.API.Application.Queries.ProductScope
                     proposalId = request.ProposalId,
                     countryIds = request.CountryIds
                 };
-                var results = await conn.QueryAsync<PayrollProductCountryViewModel, ComponentViewModel, PayrollProductCountryViewModel>(
-                    query, 
+                var results = await conn.QueryAsync<HrCountryScopeViewModel, ComponentViewModel, HrCountryScopeViewModel>(
+                    query,
                     (product, component) => { product.Level = component; return product; },
                     parameters);
                 return results.ToList();

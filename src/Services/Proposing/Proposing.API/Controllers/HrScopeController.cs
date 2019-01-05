@@ -15,9 +15,9 @@ namespace Proposing.API.Controllers
 {
     [Route("api/[controller]/{proposalId:int}")]
     [ApiController]
-    public class HrProductScopeController : ProductScopeController<HrProductQuery, HrProductViewModel, HrProductCountryQuery, HrProductCountryViewModel, UpdateHrProductScopeCommand>
+    public class HrScopeController : ProductScopeController<HrScopeQuery, HrScopeViewModel, HrCountryScopeQuery, HrCountryScopeViewModel, UpdateHrProductScopeCommand>
     {
-        public HrProductScopeController(IMediator mediator) : base(mediator)
+        public HrScopeController(IMediator mediator) : base(mediator)
         {
         }
     }

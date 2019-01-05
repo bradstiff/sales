@@ -18,15 +18,15 @@ namespace Proposing.API.Domain.Model.ProposalAggregate
         public int PriceModelId { get; private set; }
         public long ProductIds { get; private set; }
 
-        public PayrollProduct PayrollProduct { get; private set; }
-        public HrProduct HrProduct { get; private set; }
+        public PayrollScope PayrollScope { get; private set; }
+        public HrScope HrScope { get; private set; }
 
         private readonly List<ProposalCountry> _proposalCountries;
         public IReadOnlyCollection<ProposalCountry> ProposalCountries => _proposalCountries;
 
-        private Dictionary<ProductType, Func<IProduct>> _productConstructors;
-        private Dictionary<ProductType, Func<Proposal, IProduct>> _productGetters;
-        private Dictionary<ProductType, Action<Proposal, IProduct>> _productSetters;
+        private Dictionary<ProductType, Func<IProductScope>> _productConstructors;
+        private Dictionary<ProductType, Func<Proposal, IProductScope>> _productGetters;
+        private Dictionary<ProductType, Action<Proposal, IProductScope>> _productSetters;
 
         private Proposal()
         {
@@ -48,7 +48,7 @@ namespace Proposing.API.Domain.Model.ProposalAggregate
         }
 
         #region Product Generalization Methods
-        private IProduct NewProduct(ProductType productType)
+        private IProductScope NewProduct(ProductType productType)
         {
             if (_productConstructors == null)
             {
@@ -57,14 +57,14 @@ namespace Proposing.API.Domain.Model.ProposalAggregate
                     .Select(pt => new
                     {
                         ProductType = pt,
-                        Constructor = ExpressionUtils.CreateDefaultConstructor<IProduct>(pt.Type)
+                        Constructor = ExpressionUtils.CreateDefaultConstructor<IProductScope>(pt.Type)
                     })
                     .ToDictionary(x => x.ProductType, x => x.Constructor);
             }
             return _productConstructors[productType]();
         }
 
-        private IProduct GetProduct(ProductType productType)
+        private IProductScope GetProduct(ProductType productType)
         {
             if (_productGetters == null)
             {
@@ -80,7 +80,7 @@ namespace Proposing.API.Domain.Model.ProposalAggregate
             return _productGetters[productType](this);
         }
 
-        private void SetProduct(ProductType productType, IProduct product)
+        private void SetProduct(ProductType productType, IProductScope product)
         {
             if (_productSetters == null)
             {

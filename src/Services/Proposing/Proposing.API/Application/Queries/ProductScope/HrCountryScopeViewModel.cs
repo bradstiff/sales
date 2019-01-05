@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Proposing.API.Application.Queries.ProductScope
 {
-    public class PayrollProductCountryViewModel
+    public class HrCountryScopeViewModel
     {
         public int ProposalId { get; set; }
         public int CountryId { get; set; }

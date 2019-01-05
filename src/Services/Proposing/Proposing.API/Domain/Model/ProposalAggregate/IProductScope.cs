@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Proposing.API.Domain.Model.ProposalAggregate
 {
-    public interface IProduct
+    public interface IProductScope
     {
         void AddCountry();
         void DeleteCountry();
@@ -13,7 +13,7 @@ namespace Proposing.API.Domain.Model.ProposalAggregate
         void GetStuffForPriceModel();
     }
 
-    public interface IProductScopeUpdater<T> : IProduct where T:ProductScopeDto
+    public interface IProductScopeUpdater<T> : IProductScope where T:ProductScopeDto
     {
         void Update(T scope);
     }

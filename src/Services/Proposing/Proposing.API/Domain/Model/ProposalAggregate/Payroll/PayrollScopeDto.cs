@@ -4,13 +4,13 @@ using System.Text;
 
 namespace Proposing.API.Domain.Model.ProposalAggregate.Payroll
 {
-    public class PayrollProductScopeDto : ProductScopeDto
+    public class PayrollScopeDto : ProductScopeDto
     {
         public bool Reporting { get; set; }
         public bool PayslipStorage { get; set; }
     }
 
-    public class PayrollProductCountryScopeDto : ProductCountryScopeDto
+    public class PayrollCountryScopeDto : ProductCountryScopeDto
     {
     }
 }

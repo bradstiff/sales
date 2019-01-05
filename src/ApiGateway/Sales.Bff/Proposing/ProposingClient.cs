@@ -107,20 +107,20 @@ namespace Proposing.API.Client
         }
     
         /// <exception cref="Exception">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<HrProductViewModel> HrProductScope_GetGlobalScopeAsync(int proposalId)
+        public System.Threading.Tasks.Task<HrScopeViewModel> HrScope_GetGlobalScopeAsync(int proposalId)
         {
-            return HrProductScope_GetGlobalScopeAsync(proposalId, System.Threading.CancellationToken.None);
+            return HrScope_GetGlobalScopeAsync(proposalId, System.Threading.CancellationToken.None);
         }
     
         /// <exception cref="Exception">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<HrProductViewModel> HrProductScope_GetGlobalScopeAsync(int proposalId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<HrScopeViewModel> HrScope_GetGlobalScopeAsync(int proposalId, System.Threading.CancellationToken cancellationToken)
         {
             if (proposalId == null)
                 throw new System.ArgumentNullException("proposalId");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("api/HrProductScope/{proposalId}");
+            urlBuilder_.Append("api/HrScope/{proposalId}");
             urlBuilder_.Replace("{proposalId}", System.Uri.EscapeDataString(ConvertToString(proposalId, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = _httpClient;
@@ -152,10 +152,10 @@ namespace Proposing.API.Client
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(HrProductViewModel); 
+                            var result_ = default(HrScopeViewModel); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<HrProductViewModel>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<HrScopeViewModel>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -200,7 +200,7 @@ namespace Proposing.API.Client
                             throw new Exception("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(HrProductViewModel);
+                        return default(HrScopeViewModel);
                     }
                     finally
                     {
@@ -215,20 +215,20 @@ namespace Proposing.API.Client
         }
     
         /// <exception cref="Exception">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<bool> HrProductScope_UpdateScopeAsync(int proposalId, UpdateHrProductScopeCommand command)
+        public System.Threading.Tasks.Task<bool> HrScope_UpdateScopeAsync(int proposalId, UpdateHrProductScopeCommand command)
         {
-            return HrProductScope_UpdateScopeAsync(proposalId, command, System.Threading.CancellationToken.None);
+            return HrScope_UpdateScopeAsync(proposalId, command, System.Threading.CancellationToken.None);
         }
     
         /// <exception cref="Exception">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<bool> HrProductScope_UpdateScopeAsync(int proposalId, UpdateHrProductScopeCommand command, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<bool> HrScope_UpdateScopeAsync(int proposalId, UpdateHrProductScopeCommand command, System.Threading.CancellationToken cancellationToken)
         {
             if (proposalId == null)
                 throw new System.ArgumentNullException("proposalId");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("api/HrProductScope/{proposalId}");
+            urlBuilder_.Append("api/HrScope/{proposalId}");
             urlBuilder_.Replace("{proposalId}", System.Uri.EscapeDataString(ConvertToString(proposalId, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = _httpClient;
@@ -326,20 +326,20 @@ namespace Proposing.API.Client
         }
     
         /// <exception cref="Exception">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<HrProductCountryViewModel>> HrProductScope_GetCountryScopeAsync(int proposalId, System.Collections.Generic.IEnumerable<int> countryId)
+        public System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<HrCountryScopeViewModel>> HrScope_GetCountryScopeAsync(int proposalId, System.Collections.Generic.IEnumerable<int> countryId)
         {
-            return HrProductScope_GetCountryScopeAsync(proposalId, countryId, System.Threading.CancellationToken.None);
+            return HrScope_GetCountryScopeAsync(proposalId, countryId, System.Threading.CancellationToken.None);
         }
     
         /// <exception cref="Exception">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<HrProductCountryViewModel>> HrProductScope_GetCountryScopeAsync(int proposalId, System.Collections.Generic.IEnumerable<int> countryId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<HrCountryScopeViewModel>> HrScope_GetCountryScopeAsync(int proposalId, System.Collections.Generic.IEnumerable<int> countryId, System.Threading.CancellationToken cancellationToken)
         {
             if (proposalId == null)
                 throw new System.ArgumentNullException("proposalId");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("api/HrProductScope/{proposalId}/countries?");
+            urlBuilder_.Append("api/HrScope/{proposalId}/countries?");
             urlBuilder_.Replace("{proposalId}", System.Uri.EscapeDataString(ConvertToString(proposalId, System.Globalization.CultureInfo.InvariantCulture)));
             if (countryId != null) 
             {
@@ -376,10 +376,10 @@ namespace Proposing.API.Client
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(System.Collections.Generic.IEnumerable<HrProductCountryViewModel>); 
+                            var result_ = default(System.Collections.Generic.IEnumerable<HrCountryScopeViewModel>); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.Generic.IEnumerable<HrProductCountryViewModel>>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.Generic.IEnumerable<HrCountryScopeViewModel>>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -424,7 +424,7 @@ namespace Proposing.API.Client
                             throw new Exception("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(System.Collections.Generic.IEnumerable<HrProductCountryViewModel>);
+                        return default(System.Collections.Generic.IEnumerable<HrCountryScopeViewModel>);
                     }
                     finally
                     {
@@ -439,20 +439,20 @@ namespace Proposing.API.Client
         }
     
         /// <exception cref="Exception">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<PayrollProductViewModel> PayrollProductScope_GetGlobalScopeAsync(int proposalId)
+        public System.Threading.Tasks.Task<PayrollScopeViewModel> PayrollScope_GetGlobalScopeAsync(int proposalId)
         {
-            return PayrollProductScope_GetGlobalScopeAsync(proposalId, System.Threading.CancellationToken.None);
+            return PayrollScope_GetGlobalScopeAsync(proposalId, System.Threading.CancellationToken.None);
         }
     
         /// <exception cref="Exception">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<PayrollProductViewModel> PayrollProductScope_GetGlobalScopeAsync(int proposalId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<PayrollScopeViewModel> PayrollScope_GetGlobalScopeAsync(int proposalId, System.Threading.CancellationToken cancellationToken)
         {
             if (proposalId == null)
                 throw new System.ArgumentNullException("proposalId");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("api/PayrollProductScope/{proposalId}");
+            urlBuilder_.Append("api/PayrollScope/{proposalId}");
             urlBuilder_.Replace("{proposalId}", System.Uri.EscapeDataString(ConvertToString(proposalId, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = _httpClient;
@@ -484,10 +484,10 @@ namespace Proposing.API.Client
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(PayrollProductViewModel); 
+                            var result_ = default(PayrollScopeViewModel); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<PayrollProductViewModel>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<PayrollScopeViewModel>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -532,7 +532,7 @@ namespace Proposing.API.Client
                             throw new Exception("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(PayrollProductViewModel);
+                        return default(PayrollScopeViewModel);
                     }
                     finally
                     {
@@ -547,20 +547,20 @@ namespace Proposing.API.Client
         }
     
         /// <exception cref="Exception">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<bool> PayrollProductScope_UpdateScopeAsync(int proposalId, UpdatePayrollProductScopeCommand command)
+        public System.Threading.Tasks.Task<bool> PayrollScope_UpdateScopeAsync(int proposalId, UpdatePayrollProductScopeCommand command)
         {
-            return PayrollProductScope_UpdateScopeAsync(proposalId, command, System.Threading.CancellationToken.None);
+            return PayrollScope_UpdateScopeAsync(proposalId, command, System.Threading.CancellationToken.None);
         }
     
         /// <exception cref="Exception">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<bool> PayrollProductScope_UpdateScopeAsync(int proposalId, UpdatePayrollProductScopeCommand command, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<bool> PayrollScope_UpdateScopeAsync(int proposalId, UpdatePayrollProductScopeCommand command, System.Threading.CancellationToken cancellationToken)
         {
             if (proposalId == null)
                 throw new System.ArgumentNullException("proposalId");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("api/PayrollProductScope/{proposalId}");
+            urlBuilder_.Append("api/PayrollScope/{proposalId}");
             urlBuilder_.Replace("{proposalId}", System.Uri.EscapeDataString(ConvertToString(proposalId, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = _httpClient;
@@ -658,20 +658,20 @@ namespace Proposing.API.Client
         }
     
         /// <exception cref="Exception">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<PayrollProductCountryViewModel>> PayrollProductScope_GetCountryScopeAsync(int proposalId, System.Collections.Generic.IEnumerable<int> countryId)
+        public System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<PayrollCountryScopeViewModel>> PayrollScope_GetCountryScopeAsync(int proposalId, System.Collections.Generic.IEnumerable<int> countryId)
         {
-            return PayrollProductScope_GetCountryScopeAsync(proposalId, countryId, System.Threading.CancellationToken.None);
+            return PayrollScope_GetCountryScopeAsync(proposalId, countryId, System.Threading.CancellationToken.None);
         }
     
         /// <exception cref="Exception">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<PayrollProductCountryViewModel>> PayrollProductScope_GetCountryScopeAsync(int proposalId, System.Collections.Generic.IEnumerable<int> countryId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<PayrollCountryScopeViewModel>> PayrollScope_GetCountryScopeAsync(int proposalId, System.Collections.Generic.IEnumerable<int> countryId, System.Threading.CancellationToken cancellationToken)
         {
             if (proposalId == null)
                 throw new System.ArgumentNullException("proposalId");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("api/PayrollProductScope/{proposalId}/countries?");
+            urlBuilder_.Append("api/PayrollScope/{proposalId}/countries?");
             urlBuilder_.Replace("{proposalId}", System.Uri.EscapeDataString(ConvertToString(proposalId, System.Globalization.CultureInfo.InvariantCulture)));
             if (countryId != null) 
             {
@@ -708,10 +708,10 @@ namespace Proposing.API.Client
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(System.Collections.Generic.IEnumerable<PayrollProductCountryViewModel>); 
+                            var result_ = default(System.Collections.Generic.IEnumerable<PayrollCountryScopeViewModel>); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.Generic.IEnumerable<PayrollProductCountryViewModel>>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.Generic.IEnumerable<PayrollCountryScopeViewModel>>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -756,7 +756,7 @@ namespace Proposing.API.Client
                             throw new Exception("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(System.Collections.Generic.IEnumerable<PayrollProductCountryViewModel>);
+                        return default(System.Collections.Generic.IEnumerable<PayrollCountryScopeViewModel>);
                     }
                     finally
                     {
@@ -1503,7 +1503,7 @@ namespace Proposing.API.Client
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.9.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class HrProductViewModel 
+    public partial class HrScopeViewModel 
     {
         [Newtonsoft.Json.JsonProperty("proposalId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int ProposalId { get; set; }
@@ -1512,16 +1512,16 @@ namespace Proposing.API.Client
         public ComponentViewModel Level { get; set; }
     
         [Newtonsoft.Json.JsonProperty("countries", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<HrProductCountryViewModel> Countries { get; set; }
+        public System.Collections.Generic.List<HrCountryScopeViewModel> Countries { get; set; }
     
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
     
-        public static HrProductViewModel FromJson(string data)
+        public static HrScopeViewModel FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<HrProductViewModel>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<HrScopeViewModel>(data);
         }
     
     }
@@ -1563,7 +1563,7 @@ namespace Proposing.API.Client
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.9.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class HrProductCountryViewModel 
+    public partial class HrCountryScopeViewModel 
     {
         [Newtonsoft.Json.JsonProperty("proposalId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int ProposalId { get; set; }
@@ -1579,9 +1579,9 @@ namespace Proposing.API.Client
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
     
-        public static HrProductCountryViewModel FromJson(string data)
+        public static HrCountryScopeViewModel FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<HrProductCountryViewModel>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<HrCountryScopeViewModel>(data);
         }
     
     }
@@ -1647,28 +1647,28 @@ namespace Proposing.API.Client
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.9.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class PayrollProductViewModel 
+    public partial class PayrollScopeViewModel 
     {
         [Newtonsoft.Json.JsonProperty("proposalId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int ProposalId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("countries", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<PayrollProductCountryViewModel> Countries { get; set; }
+        public System.Collections.Generic.List<PayrollCountryScopeViewModel> Countries { get; set; }
     
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
     
-        public static PayrollProductViewModel FromJson(string data)
+        public static PayrollScopeViewModel FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<PayrollProductViewModel>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<PayrollScopeViewModel>(data);
         }
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.9.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class PayrollProductCountryViewModel 
+    public partial class PayrollCountryScopeViewModel 
     {
         [Newtonsoft.Json.JsonProperty("proposalId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int ProposalId { get; set; }
@@ -1684,9 +1684,9 @@ namespace Proposing.API.Client
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
     
-        public static PayrollProductCountryViewModel FromJson(string data)
+        public static PayrollCountryScopeViewModel FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<PayrollProductCountryViewModel>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<PayrollCountryScopeViewModel>(data);
         }
     
     }

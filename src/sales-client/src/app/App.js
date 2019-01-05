@@ -12,7 +12,7 @@ import { QueryProgressProvider } from './QueryProgressContext';
 import Proposals from '../proposal/Proposals';
 import Proposal from '../proposal/Proposal';
 import ProposalCountries from '../proposal/ProposalCountries';
-import HrProduct from '../proposal/HrProduct';
+import HrScope from '../proposal/HrScope';
 import NotFound from './NotFound';
 import Locations from './Locations';
 import ErrorPage from './Error';
@@ -51,7 +51,7 @@ class App extends React.Component {
                                         {Locations.Proposals.toRoute({ component: Proposals, invalid: NotFound}, true)};
                                         {Locations.Proposal.toRoute({ component: Proposal, invalid: NotFound}, true)};
                                         {Locations.ProposalCountries.toRoute({ component: ProposalCountries, invalid: NotFound}, true)};
-                                        {Locations.ProposalHr.toRoute({ component: HrProduct, invalid: NotFound}, true)};
+                                        {Locations.HrScope.toRoute({ component: HrScope, invalid: NotFound}, true)};
                                         <Route component={NotFound} />
                                     </Switch>
                                 </QueryProgressProvider>

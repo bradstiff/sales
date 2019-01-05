@@ -12,9 +12,9 @@ namespace Proposing.API.Controllers
 {
     [Route("api/[controller]/{proposalId:int}")]
     [ApiController]
-    public class PayrollProductScopeController : ProductScopeController<PayrollProductQuery, PayrollProductViewModel, PayrollProductCountryQuery, PayrollProductCountryViewModel, UpdatePayrollProductScopeCommand>
+    public class PayrollScopeController : ProductScopeController<PayrollProductQuery, PayrollScopeViewModel, PayrollCountryScopeQuery, PayrollCountryScopeViewModel, UpdatePayrollProductScopeCommand>
     {
-        public PayrollProductScopeController(IMediator mediator) : base(mediator)
+        public PayrollScopeController(IMediator mediator) : base(mediator)
         {
         }
     }

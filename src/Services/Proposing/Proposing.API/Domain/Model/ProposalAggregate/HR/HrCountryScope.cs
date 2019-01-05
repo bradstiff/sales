@@ -5,16 +5,16 @@ using System.Text;
 
 namespace Proposing.API.Domain.Model.ProposalAggregate
 {
-    public class HrProductCountry : Entity, IProductCountry
+    public class HrCountryScope : Entity, IProductCountryScope
     {
         public int CountryId { get; private set; }
         public short? LevelId { get; private set; }
 
-        public HrProductCountry()
+        public HrCountryScope()
         {
         }
 
-        public HrProductCountry(int countryId)
+        public HrCountryScope(int countryId)
         {
             this.CountryId = countryId;
         }

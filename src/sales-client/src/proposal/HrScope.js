@@ -37,7 +37,7 @@ const query = gql`
                     }
                 }
             }
-            hr {
+            hrScope {
                 level {
                     id
                     name
@@ -46,7 +46,7 @@ const query = gql`
             countries {
                 countryId
                 name
-                hr {
+                hrScope {
                     level {
                         id
                     }
@@ -57,8 +57,8 @@ const query = gql`
 `;
 
 const mutation = gql`
-    mutation UpdateProposalHr($id: Int!, $countryIds: [Int!]!, $levelId: Int!) {
-        updateProposalHr(proposalId: $id, countryIds: $countryIds, levelId: $levelId) {
+    mutation UpdateHrScope($id: Int!, $countryIds: [Int!]!, $levelId: Int!) {
+        updateHrScope(proposalId: $id, countryIds: $countryIds, levelId: $levelId) {
             ...proposalFragment
         }
     }
@@ -72,11 +72,11 @@ const schema = Yup.object().shape({
 const HrProduct = ({ proposal, onSubmit, onClose, classes }) => {
     const canEdit = true;
     const initialValues = {
-        levelId: proposal.hr && proposal.hr.level.id,
+        levelId: proposal.hrScope && proposal.hrScope.level.id,
         countries: proposal.countries.map(c => ({
             id: c.countryId,
             name: c.name,
-            inScope: !!c.hr
+            inScope: !!c.hrScope
         }))
     }
     return (

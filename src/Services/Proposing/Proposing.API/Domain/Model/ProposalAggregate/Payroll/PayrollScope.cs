@@ -5,20 +5,20 @@ using System.Text;
 
 namespace Proposing.API.Domain.Model.ProposalAggregate.Payroll
 {
-    public class PayrollProduct : Entity, IProduct, IProductScopeUpdater<PayrollProductScopeDto>
+    public class PayrollScope : Entity, IProductScope, IProductScopeUpdater<PayrollScopeDto>
     {
         public bool? Reporting { get; private set; }
         public bool? PayslipStorage { get; private set; }
 
-        private readonly List<PayrollProductCountry> _productCountries;
-        public IReadOnlyCollection<PayrollProductCountry> ProductCountries => _productCountries;
+        private readonly List<PayrollCountryScope> _countryScopes;
+        public IReadOnlyCollection<PayrollCountryScope> CountryScopes => _countryScopes;
 
-        public PayrollProduct()
+        public PayrollScope()
         {
-            _productCountries = new List<PayrollProductCountry>();
+            _countryScopes = new List<PayrollCountryScope>();
         }
 
-        public void Update(PayrollProductScopeDto scope)
+        public void Update(PayrollScopeDto scope)
         {
             Reporting = scope.Reporting;
             PayslipStorage = scope.PayslipStorage;

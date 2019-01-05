@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Proposing.API.Application.Queries.ProductScope
 {
-    public class HrProductCountryViewModel
+    public class HrScopeViewModel
     {
         public int ProposalId { get; set; }
-        public int CountryId { get; set; }
         public ComponentViewModel Level { get; set; }
+        public IEnumerable<HrCountryScopeViewModel> Countries { get; set; }
     }
 }

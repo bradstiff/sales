@@ -16,9 +16,9 @@ namespace Proposing.API.Infrastructure.Context
         public DbSet<Proposal> Proposals { get; set; }
         public DbSet<ProposalCountry> ProposalCountries { get; set; }
         //public DbSet<PayrollProduct> PayrollProducts { get; set; }
-        public DbSet<PayrollProductCountry> PayrollProductCountries { get; set; }
+        public DbSet<PayrollCountryScope> PayrollProductCountries { get; set; }
         //public DbSet<HrProduct> HrProducts { get; set; }
-        public DbSet<HrProductCountry> HrProductCountries { get; set; }
+        public DbSet<HrCountryScope> HrProductCountries { get; set; }
 
         public DbSet<Component> Components { get; set; }
         public DbSet<ComponentType> ComponentTypes { get; set; }
@@ -39,11 +39,11 @@ namespace Proposing.API.Infrastructure.Context
             modelBuilder.ApplyConfiguration(new ProposalEntityConfiguration());
             modelBuilder.ApplyConfiguration(new ProposalCountryEntityConfiguration());
 
-            modelBuilder.ApplyConfiguration(new ProductEntityConfiguration<PayrollProduct>("PayrollProduct", p => p.PayrollProduct));
-            modelBuilder.ApplyConfiguration(new ProductCountryEntityConfiguration<PayrollProductCountry, PayrollProduct>("PayrollProductCountry"));
+            modelBuilder.ApplyConfiguration(new ProductScopeEntityConfiguration<PayrollScope>("PayrollScope", p => p.PayrollScope));
+            modelBuilder.ApplyConfiguration(new ProductCountryScopeEntityConfiguration<PayrollCountryScope, PayrollScope>("PayrollCountryScope"));
 
-            modelBuilder.ApplyConfiguration(new ProductEntityConfiguration<HrProduct>("HrProduct", p => p.HrProduct));
-            modelBuilder.ApplyConfiguration(new ProductCountryEntityConfiguration<HrProductCountry, HrProduct>("HrProductCountry"));
+            modelBuilder.ApplyConfiguration(new ProductScopeEntityConfiguration<HrScope>("HrScope", p => p.HrScope));
+            modelBuilder.ApplyConfiguration(new ProductCountryScopeEntityConfiguration<HrCountryScope, HrScope>("HrCountryScope"));
 
             modelBuilder.ApplyConfiguration(new ComponentEntityConfiguration());
             modelBuilder.ApplyConfiguration(new ComponentTypeEntityConfiguration());

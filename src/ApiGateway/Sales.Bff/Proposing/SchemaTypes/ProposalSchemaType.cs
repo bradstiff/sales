@@ -29,13 +29,13 @@ namespace Sales.Bff.Proposing.SchemaTypes
                         .Select(id => model.Products.First(p => p.Id == id));
                 }
             );
-            Field<PayrollProductSchemaType>(
-                "payroll",
-                resolve: context => client.PayrollProductScope_GetGlobalScopeAsync(context.Source.Id)
+            Field<PayrollScopeSchemaType>(
+                "payrollScope",
+                resolve: context => client.PayrollScope_GetGlobalScopeAsync(context.Source.Id)
             );
-            Field<HrProductSchemaType>(
-                "hr",
-                resolve: context => client.HrProductScope_GetGlobalScopeAsync(context.Source.Id)
+            Field<HrScopeSchemaType>(
+                "hrScope",
+                resolve: context => client.HrScope_GetGlobalScopeAsync(context.Source.Id)
             );
         }
     }

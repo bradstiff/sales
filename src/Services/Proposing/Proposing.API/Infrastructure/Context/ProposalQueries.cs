@@ -15,8 +15,8 @@ namespace Proposing.API.Infrastructure.Context
         {
             var proposal = await proposals
                 .Include(p => p.ProposalCountries)
-                .Include(p => p.PayrollProduct.ProductCountries)
-                .Include(p => p.HrProduct.ProductCountries)
+                .Include(p => p.PayrollScope.CountryScopes)
+                .Include(p => p.HrScope.CountryScopes)
                 .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
             if (proposal == null)
             {

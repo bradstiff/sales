@@ -23,16 +23,16 @@ namespace Sales.Bff.Proposing.SchemaTypes
                         .Select(id => model.Products.First(p => p.Id == id));
                 }
             );
-            Field<PayrollProductCountrySchemaType, PayrollProductCountryViewModel>()
-                .Name("payroll")
+            Field<PayrollCountryScopeSchemaType, PayrollCountryScopeViewModel>()
+                .Name("payrollScope")
                 .ResolveAsync(context => {
-                    var loader = accessor.Context.GetOrAddBatchLoader<Tuple<int, int>, PayrollProductCountryViewModel>(
-                        "GetPayrollProductCountries",
+                    var loader = accessor.Context.GetOrAddBatchLoader<Tuple<int, int>, PayrollCountryScopeViewModel>(
+                        "GetPayrollCountryScopes",
                         async keys =>
                         {
                             var countriesByProposal = await Task.WhenAll(keys
                                 .GroupBy(key => key.Item1)
-                                .Select(group => client.PayrollProductScope_GetCountryScopeAsync(group.Key, null)));
+                                .Select(group => client.PayrollScope_GetCountryScopeAsync(group.Key, null)));
                             return countriesByProposal
                                 .SelectMany(batch => batch)
                                 .ToDictionary(c => Tuple.Create(c.ProposalId, c.CountryId));
@@ -41,16 +41,16 @@ namespace Sales.Bff.Proposing.SchemaTypes
                     return loader.LoadAsync(Tuple.Create(context.Source.ProposalId, context.Source.CountryId));
                 }
             );
-            Field<HrProductCountrySchemaType, HrProductCountryViewModel>()
-                .Name("hr")
+            Field<HrCountryScopeSchemaType, HrCountryScopeViewModel>()
+                .Name("hrScope")
                 .ResolveAsync(context => {
-                    var loader = accessor.Context.GetOrAddBatchLoader<Tuple<int, int>, HrProductCountryViewModel>(
-                        "GetHrProductCountries",
+                    var loader = accessor.Context.GetOrAddBatchLoader<Tuple<int, int>, HrCountryScopeViewModel>(
+                        "GetHrCountryScopes",
                         async keys =>
                         {
                             var countriesByProposal = await Task.WhenAll(keys
                                 .GroupBy(key => key.Item1)
-                                .Select(group => client.HrProductScope_GetCountryScopeAsync(group.Key, null)));
+                                .Select(group => client.HrScope_GetCountryScopeAsync(group.Key, null)));
                             return countriesByProposal
                                 .SelectMany(batch => batch)
                                 .ToDictionary(c => Tuple.Create(c.ProposalId, c.CountryId));

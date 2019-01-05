@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Proposing.API.Application.Queries.ProductScope
 {
-    public class PayrollProductQuery : ProductScopeQueryBase<PayrollProductViewModel> { }
+    public class PayrollProductQuery : ProductScopeQueryBase<PayrollScopeViewModel> { }
 
-    public class PayrollProductQueryHandler: IRequestHandler<PayrollProductQuery, PayrollProductViewModel>
+    public class PayrollProductQueryHandler: IRequestHandler<PayrollProductQuery, PayrollScopeViewModel>
     {
         private readonly QueryConnectionFactory _connectionFactory;
 
@@ -20,11 +20,11 @@ namespace Proposing.API.Application.Queries.ProductScope
             _connectionFactory = connectionFactory;
         }
 
-        public async Task<PayrollProductViewModel> Handle(PayrollProductQuery request, CancellationToken cancellationToken)
+        public async Task<PayrollScopeViewModel> Handle(PayrollProductQuery request, CancellationToken cancellationToken)
         {
             using (var conn = _connectionFactory.Create())
             {
-                var result = await conn.QuerySingleOrDefaultAsync<PayrollProductViewModel>("select * from PayrollProduct where ProposalId = @proposalId", request);
+                var result = await conn.QuerySingleOrDefaultAsync<PayrollScopeViewModel>("select * from PayrollScope where ProposalId = @proposalId", request);
                 return result;
             }
         }

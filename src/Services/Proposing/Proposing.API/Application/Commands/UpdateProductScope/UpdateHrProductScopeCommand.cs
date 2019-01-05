@@ -45,10 +45,10 @@ namespace Proposing.API.Application.Commands.UpdateProductScope
             var hasLevel = command.LevelId > 0;
             var proposal = await _context.Proposals.FindByIdAsync(request.ResourceId, cancellationToken);
 
-            var productScope = new HrProductScopeDto
+            var productScope = new HrScopeDto
             {
                 LevelId = command.LevelId,
-                CountryScopes = command.CountryIds.Select(id => new HrProductCountryScopeDto
+                CountryScopes = command.CountryIds.Select(id => new HrCountryScopeDto
                 {
                     CountryId = id
                 })

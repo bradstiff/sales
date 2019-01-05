@@ -5,15 +5,15 @@ using System.Text;
 
 namespace Proposing.API.Domain.Model.ProposalAggregate
 {
-    public class PayrollProductCountry : Entity, IProductCountry
+    public class PayrollCountryScope : Entity, IProductCountryScope
     {
         public int CountryId { get; private set; }
 
-        public PayrollProductCountry()
+        public PayrollCountryScope()
         {
         }
 
-        public PayrollProductCountry(short? levelId, int? weeklyPayees, int? biWeeklyPayees, int? semiMonthlyPayees, int? monthlyPayees, bool? reporting, bool? payslipStorage)
+        public PayrollCountryScope(short? levelId, int? weeklyPayees, int? biWeeklyPayees, int? semiMonthlyPayees, int? monthlyPayees, bool? reporting, bool? payslipStorage)
         {
             LevelId = levelId;
             WeeklyPayees = weeklyPayees;

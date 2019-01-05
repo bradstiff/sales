@@ -36,12 +36,12 @@
         }
       }
     },
-    "/api/HrProductScope/{proposalId}": {
+    "/api/HrScope/{proposalId}": {
       "get": {
         "tags": [
-          "HrProductScope"
+          "HrScope"
         ],
-        "operationId": "HrProductScope_GetGlobalScope",
+        "operationId": "HrScope_GetGlobalScope",
         "parameters": [
           {
             "name": "proposalId",
@@ -63,7 +63,7 @@
                   "nullable": true,
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/HrProductViewModel"
+                      "$ref": "#/components/schemas/HrScopeViewModel"
                     }
                   ]
                 }
@@ -104,9 +104,9 @@
       },
       "put": {
         "tags": [
-          "HrProductScope"
+          "HrScope"
         ],
-        "operationId": "HrProductScope_UpdateScope",
+        "operationId": "HrScope_UpdateScope",
         "parameters": [
           {
             "name": "proposalId",
@@ -175,12 +175,12 @@
         }
       }
     },
-    "/api/HrProductScope/{proposalId}/countries": {
+    "/api/HrScope/{proposalId}/countries": {
       "get": {
         "tags": [
-          "HrProductScope"
+          "HrScope"
         ],
-        "operationId": "HrProductScope_GetCountryScope",
+        "operationId": "HrScope_GetCountryScope",
         "parameters": [
           {
             "name": "proposalId",
@@ -216,7 +216,7 @@
                   "type": "array",
                   "nullable": true,
                   "items": {
-                    "$ref": "#/components/schemas/HrProductCountryViewModel"
+                    "$ref": "#/components/schemas/HrCountryScopeViewModel"
                   }
                 }
               }
@@ -255,12 +255,12 @@
         }
       }
     },
-    "/api/PayrollProductScope/{proposalId}": {
+    "/api/PayrollScope/{proposalId}": {
       "get": {
         "tags": [
-          "PayrollProductScope"
+          "PayrollScope"
         ],
-        "operationId": "PayrollProductScope_GetGlobalScope",
+        "operationId": "PayrollScope_GetGlobalScope",
         "parameters": [
           {
             "name": "proposalId",
@@ -282,7 +282,7 @@
                   "nullable": true,
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/PayrollProductViewModel"
+                      "$ref": "#/components/schemas/PayrollScopeViewModel"
                     }
                   ]
                 }
@@ -323,9 +323,9 @@
       },
       "put": {
         "tags": [
-          "PayrollProductScope"
+          "PayrollScope"
         ],
-        "operationId": "PayrollProductScope_UpdateScope",
+        "operationId": "PayrollScope_UpdateScope",
         "parameters": [
           {
             "name": "proposalId",
@@ -394,12 +394,12 @@
         }
       }
     },
-    "/api/PayrollProductScope/{proposalId}/countries": {
+    "/api/PayrollScope/{proposalId}/countries": {
       "get": {
         "tags": [
-          "PayrollProductScope"
+          "PayrollScope"
         ],
-        "operationId": "PayrollProductScope_GetCountryScope",
+        "operationId": "PayrollScope_GetCountryScope",
         "parameters": [
           {
             "name": "proposalId",
@@ -435,7 +435,7 @@
                   "type": "array",
                   "nullable": true,
                   "items": {
-                    "$ref": "#/components/schemas/PayrollProductCountryViewModel"
+                    "$ref": "#/components/schemas/PayrollCountryScopeViewModel"
                   }
                 }
               }
@@ -888,7 +888,7 @@
           }
         }
       },
-      "HrProductViewModel": {
+      "HrScopeViewModel": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -908,7 +908,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/HrProductCountryViewModel"
+              "$ref": "#/components/schemas/HrCountryScopeViewModel"
             }
           }
         }
@@ -945,7 +945,7 @@
           }
         }
       },
-      "HrProductCountryViewModel": {
+      "HrCountryScopeViewModel": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -1013,7 +1013,7 @@
           }
         }
       },
-      "PayrollProductViewModel": {
+      "PayrollScopeViewModel": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -1025,12 +1025,12 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/PayrollProductCountryViewModel"
+              "$ref": "#/components/schemas/PayrollCountryScopeViewModel"
             }
           }
         }
       },
-      "PayrollProductCountryViewModel": {
+      "PayrollCountryScopeViewModel": {
         "type": "object",
         "additionalProperties": false,
         "properties": {

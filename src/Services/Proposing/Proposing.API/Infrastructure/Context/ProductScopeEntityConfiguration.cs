@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace Proposing.API.Infrastructure.Context
 {
-    public class ProductEntityConfiguration<T> : IEntityTypeConfiguration<T>
-        where T:Entity, IProduct
+    public class ProductScopeEntityConfiguration<T> : IEntityTypeConfiguration<T>
+        where T:Entity, IProductScope
     {
         private string _tableName;
         private Expression<Func<Proposal, T>> _property;
-        public ProductEntityConfiguration(string tableName, Expression<Func<Proposal, T>> property)
+        public ProductScopeEntityConfiguration(string tableName, Expression<Func<Proposal, T>> property)
         {
             _tableName = tableName;
             _property = property;
@@ -30,7 +30,7 @@ namespace Proposing.API.Infrastructure.Context
             builder.Ignore(p => p.DomainEvents);
 
             builder.Metadata
-                .FindNavigation("ProductCountries")
+                .FindNavigation("CountryScopes")
                 .SetPropertyAccessMode(PropertyAccessMode.Field);
         }
     }

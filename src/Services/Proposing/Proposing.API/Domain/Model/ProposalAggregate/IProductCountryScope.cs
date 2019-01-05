@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Proposing.API.Domain.Model.ProposalAggregate
 {
-    public interface IProductCountry
+    public interface IProductCountryScope
     {
         int CountryId { get; }
     }

@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace Proposing.API.Application.Queries.ProductScope
 {
-    public class PayrollProductViewModel
+    public class PayrollScopeViewModel
     {
         public int ProposalId { get; set; }
-        public IEnumerable<PayrollProductCountryViewModel> Countries { get; set; }
+        public IEnumerable<PayrollCountryScopeViewModel> Countries { get; set; }
     }
 }

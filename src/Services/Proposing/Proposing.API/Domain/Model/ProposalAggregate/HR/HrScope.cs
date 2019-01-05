@@ -7,39 +7,39 @@ using System.Text;
 
 namespace Proposing.API.Domain.Model.ProposalAggregate
 {
-    public class HrProduct : Entity, IProduct, IProductScopeUpdater<HrProductScopeDto>
+    public class HrScope : Entity, IProductScope, IProductScopeUpdater<HrScopeDto>
     {
         public short? LevelId { get; private set; }
 
-        private readonly List<HrProductCountry> _productCountries;
-        public IReadOnlyCollection<HrProductCountry> ProductCountries => _productCountries;
+        private readonly List<HrCountryScope> _countryScopes;
+        public IReadOnlyCollection<HrCountryScope> CountryScopes => _countryScopes;
 
         public ProductType ProductType => ProductType.HR;
 
-        public HrProduct()
+        public HrScope()
         {
-            _productCountries = new List<HrProductCountry>();
+            _countryScopes = new List<HrCountryScope>();
         }
 
-        public void Update(HrProductScopeDto scope)
+        public void Update(HrScopeDto scope)
         {
             LevelId = scope.LevelId;
-            this.ProductCountries
+            this.CountryScopes
                 .Where(pc => !scope.CountryScopes.Any(countryScope => pc.CountryId == countryScope.CountryId))
                 .ToList()
                 .ForEach(country =>
                 {
-                    _productCountries.Remove(country);
+                    _countryScopes.Remove(country);
                 });
             foreach (var countryScope in scope.CountryScopes)
             {
-                var productCountry = this.ProductCountries.FirstOrDefault(pc => pc.CountryId == countryScope.CountryId);
-                if (productCountry == null)
+                var productCountryScope = this.CountryScopes.FirstOrDefault(pc => pc.CountryId == countryScope.CountryId);
+                if (productCountryScope == null)
                 {
-                    productCountry = new HrProductCountry(countryScope.CountryId);
-                    _productCountries.Add(productCountry);
+                    productCountryScope = new HrCountryScope(countryScope.CountryId);
+                    _countryScopes.Add(productCountryScope);
                 }
-                productCountry.SetScopeValues(scope.LevelId);
+                productCountryScope.SetScopeValues(scope.LevelId);
             }
         }
 
