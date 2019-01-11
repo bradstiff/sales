@@ -12,6 +12,7 @@ import { QueryProgressProvider } from './QueryProgressContext';
 import Proposals from '../proposal/Proposals';
 import Proposal from '../proposal/Proposal';
 import ProposalCountries from '../proposal/ProposalCountries';
+import PayrollScope from '../proposal/PayrollScope';
 import HrScope from '../proposal/HrScope';
 import NotFound from './NotFound';
 import Locations from './Locations';
@@ -51,6 +52,7 @@ class App extends React.Component {
                                         {Locations.Proposals.toRoute({ component: Proposals, invalid: NotFound}, true)};
                                         {Locations.Proposal.toRoute({ component: Proposal, invalid: NotFound}, true)};
                                         {Locations.ProposalCountries.toRoute({ component: ProposalCountries, invalid: NotFound}, true)};
+                                        {Locations.PayrollScope.toRoute({ component: PayrollScope, invalid: NotFound }, true)};
                                         {Locations.HrScope.toRoute({ component: HrScope, invalid: NotFound}, true)};
                                         <Route component={NotFound} />
                                     </Switch>

@@ -18,7 +18,8 @@ namespace SchemaTypeCodeGenerator
 
             var overrides = new Dictionary<string, string>
             {
-                { "ProposalCountryDto", "ProposalCountryInput" }
+                { "ProposalCountryDto", "ProposalCountryInput" },
+                { "UpdatePayrollCountryScopeDto", "UpdatePayrollCountryScope" },
             };
             var assemblyPath = @"C:\Users\Brad\Source\Repos\sales\src\ApiGateway\Sales.Bff\bin\Debug\netcoreapp2.2\Sales.Bff.dll";
             var dtos = AssemblyScanner.Scan(assemblyPath, t => t.Namespace.EndsWith("API.Client") && (t.Name.EndsWith("ViewModel") || t.Name.EndsWith("Command")), overrides.Keys);

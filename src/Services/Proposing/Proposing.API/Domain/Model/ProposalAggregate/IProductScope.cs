@@ -13,8 +13,10 @@ namespace Proposing.API.Domain.Model.ProposalAggregate
         void GetStuffForPriceModel();
     }
 
-    public interface IProductScopeUpdater<T> : IProductScope where T:ProductScopeDto
+    public interface IProductScopeUpdater<TScopeDto, TCountryScopeDto> : IProductScope 
+        where TScopeDto : ProductScopeDto<TCountryScopeDto>
+        where TCountryScopeDto: ProductCountryScopeDto
     {
-        void Update(T scope);
+        void Update(TScopeDto scopeDto);
     }
 }

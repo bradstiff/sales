@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Proposing.API.Domain.Model.ProposalAggregate
 {
-    public abstract class ProductScopeDto
+    public abstract class ProductScopeDto<TCountryScopeDto> where TCountryScopeDto: ProductCountryScopeDto
     {
-        public IEnumerable<ProductCountryScopeDto> CountryScopes { get; set; }
+        public IEnumerable<TCountryScopeDto> CountryScopes { get; set; }
     }
 
     public abstract class ProductCountryScopeDto

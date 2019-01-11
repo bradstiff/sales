@@ -143,7 +143,9 @@ namespace Proposing.API.Domain.Model.ProposalAggregate
             return this.GetProduct(productType) != null;
         }
 
-        public void SetProductScope<T>(ProductType productType, T scopeData) where T: ProductScopeDto
+        public void SetProductScope<TScopeDto, TCountryScopeDto>(ProductType productType, TScopeDto scopeData) 
+            where TScopeDto: ProductScopeDto<TCountryScopeDto>
+            where TCountryScopeDto: ProductCountryScopeDto
         {
             //validate that a ProposalCountry exists for every ProductCountry and that there are no duplicates
             var productCountries = (from countryScope in scopeData.CountryScopes
@@ -157,12 +159,12 @@ namespace Proposing.API.Domain.Model.ProposalAggregate
                             
             if (this.HasProduct(productType))
             {
-                var product = (IProductScopeUpdater<T>)this.GetProduct(productType);
+                var product = (IProductScopeUpdater<TScopeDto, TCountryScopeDto>)this.GetProduct(productType);
                 product.Update(scopeData);
             }
             else
             {
-                var product = (IProductScopeUpdater<T>)this.NewProduct(productType);
+                var product = (IProductScopeUpdater<TScopeDto, TCountryScopeDto>)this.NewProduct(productType);
                 product.Update(scopeData);
                 this.SetProduct(productType, product);
                 this.ProductIds |= productType.Value;

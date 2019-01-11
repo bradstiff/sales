@@ -37,6 +37,24 @@ namespace Sales.Bff.Schema
             );
 
             FieldAsync<ProposalSchemaType>(
+                "UpdatePayrollScope",
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<IntGraphType>> { Name = "proposalId" },
+                    new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<UpdatePayrollCountryScopeSchemaType>>>> { Name = "countryScopes" }
+                    ),
+                resolve: async context =>
+                {
+                    var command = new UpdatePayrollScopeCommand
+                    {
+                        CountryScopes = context.GetArgument<List<UpdatePayrollCountryScopeDto>>("countryScopes"),
+                    };
+                    var proposalId = context.GetArgument<int>("proposalId");
+                    await client.PayrollScope_UpdateScopeAsync(proposalId, command);
+                    return await client.Proposals_GetProposalAsync(proposalId);
+                }
+            );
+
+            FieldAsync<ProposalSchemaType>(
                 "UpdateHrScope",
                 arguments: new QueryArguments(
                     new QueryArgument<NonNullGraphType<IntGraphType>> { Name = "proposalId" },
@@ -45,7 +63,7 @@ namespace Sales.Bff.Schema
                     ),
                 resolve: async context =>
                 {
-                    var command = new UpdateHrProductScopeCommand
+                    var command = new UpdateHrScopeCommand
                     {
                         LevelId = context.GetArgument<short>("levelId"),
                         CountryIds = context.GetArgument<List<int>>("countryIds"),

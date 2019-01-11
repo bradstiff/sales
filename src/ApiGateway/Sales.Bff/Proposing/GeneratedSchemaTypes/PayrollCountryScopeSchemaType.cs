@@ -13,6 +13,12 @@ namespace Sales.Bff.Proposing.SchemaTypes
 			Field(x => x.ProposalId, nullable: true);
 			Field(x => x.CountryId, nullable: true);
 			Field(x => x.Level, nullable: true, type:typeof(ComponentSchemaType));
+			Field(x => x.MonthlyPayees, nullable: true);
+			Field(x => x.SemiMonthlyPayees, nullable: true);
+			Field(x => x.BiWeeklyPayees, nullable: true);
+			Field(x => x.WeeklyPayees, nullable: true);
+			Field(x => x.Reporting, nullable: true);
+			Field(x => x.PayslipStorage, nullable: true);
 			this.Extend(client, cache, accessor);
 		}
 

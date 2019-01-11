@@ -215,14 +215,14 @@ namespace Proposing.API.Client
         }
     
         /// <exception cref="Exception">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<bool> HrScope_UpdateScopeAsync(int proposalId, UpdateHrProductScopeCommand command)
+        public System.Threading.Tasks.Task<bool> HrScope_UpdateScopeAsync(int proposalId, UpdateHrScopeCommand command)
         {
             return HrScope_UpdateScopeAsync(proposalId, command, System.Threading.CancellationToken.None);
         }
     
         /// <exception cref="Exception">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<bool> HrScope_UpdateScopeAsync(int proposalId, UpdateHrProductScopeCommand command, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<bool> HrScope_UpdateScopeAsync(int proposalId, UpdateHrScopeCommand command, System.Threading.CancellationToken cancellationToken)
         {
             if (proposalId == null)
                 throw new System.ArgumentNullException("proposalId");
@@ -547,14 +547,14 @@ namespace Proposing.API.Client
         }
     
         /// <exception cref="Exception">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<bool> PayrollScope_UpdateScopeAsync(int proposalId, UpdatePayrollProductScopeCommand command)
+        public System.Threading.Tasks.Task<bool> PayrollScope_UpdateScopeAsync(int proposalId, UpdatePayrollScopeCommand command)
         {
             return PayrollScope_UpdateScopeAsync(proposalId, command, System.Threading.CancellationToken.None);
         }
     
         /// <exception cref="Exception">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<bool> PayrollScope_UpdateScopeAsync(int proposalId, UpdatePayrollProductScopeCommand command, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<bool> PayrollScope_UpdateScopeAsync(int proposalId, UpdatePayrollScopeCommand command, System.Threading.CancellationToken cancellationToken)
         {
             if (proposalId == null)
                 throw new System.ArgumentNullException("proposalId");
@@ -1626,7 +1626,7 @@ namespace Proposing.API.Client
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.9.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class UpdateHrProductScopeCommand 
+    public partial class UpdateHrScopeCommand 
     {
         [Newtonsoft.Json.JsonProperty("levelId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int LevelId { get; set; }
@@ -1639,9 +1639,9 @@ namespace Proposing.API.Client
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
     
-        public static UpdateHrProductScopeCommand FromJson(string data)
+        public static UpdateHrScopeCommand FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateHrProductScopeCommand>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateHrScopeCommand>(data);
         }
     
     }
@@ -1679,6 +1679,24 @@ namespace Proposing.API.Client
         [Newtonsoft.Json.JsonProperty("level", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public ComponentViewModel Level { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("monthlyPayees", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int MonthlyPayees { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("semiMonthlyPayees", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int SemiMonthlyPayees { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("biWeeklyPayees", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int BiWeeklyPayees { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("weeklyPayees", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int WeeklyPayees { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("reporting", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Reporting { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("payslipStorage", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? PayslipStorage { get; set; }
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
@@ -1692,22 +1710,58 @@ namespace Proposing.API.Client
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.9.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class UpdatePayrollProductScopeCommand 
+    public partial class UpdatePayrollScopeCommand 
     {
-        [Newtonsoft.Json.JsonProperty("levelId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int LevelId { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("countryIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<int> CountryIds { get; set; }
+        [Newtonsoft.Json.JsonProperty("countryScopes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<UpdatePayrollCountryScopeDto> CountryScopes { get; set; }
     
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
     
-        public static UpdatePayrollProductScopeCommand FromJson(string data)
+        public static UpdatePayrollScopeCommand FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdatePayrollProductScopeCommand>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdatePayrollScopeCommand>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.9.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class UpdatePayrollCountryScopeDto 
+    {
+        [Newtonsoft.Json.JsonProperty("countryId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int CountryId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("levelId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int LevelId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("weeklyPayees", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int WeeklyPayees { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("biWeeklyPayees", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int BiWeeklyPayees { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("semiMonthlyPayees", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int SemiMonthlyPayees { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("monthlyPayees", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int MonthlyPayees { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("reporting", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Reporting { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("payslipStorage", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? PayslipStorage { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static UpdatePayrollCountryScopeDto FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdatePayrollCountryScopeDto>(data);
         }
     
     }

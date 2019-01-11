@@ -20,7 +20,8 @@ const Locations = {
     Proposal: new Location('/proposals/:id', {id: identity}),
     ProposalCountries: new Location('/proposals/:id/countries', {id: identity}),
     ProposalPayroll: new Location('/proposals/:id/payroll', { id: identity }),
-    HrScope: new Location('/proposals/:id/hr', {id: identity}),
+    PayrollScope: new Location('/proposals/:id/payroll', {id: identity}),
+    HrScope: new Location('/proposals/:id/hr', { id: identity }),
 };
 
 export default Locations;

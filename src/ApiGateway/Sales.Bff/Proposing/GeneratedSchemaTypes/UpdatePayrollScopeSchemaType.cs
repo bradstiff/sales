@@ -5,13 +5,12 @@ using Sales.Bff.Infrastructure;
 
 namespace Sales.Bff.Proposing.SchemaTypes
 {
-	public partial class UpdatePayrollScopeSchemaType: InputObjectGraphType<UpdatePayrollProductScopeCommand>
+	public partial class UpdatePayrollScopeSchemaType: InputObjectGraphType<UpdatePayrollScopeCommand>
 	{
 		public UpdatePayrollScopeSchemaType(ProposingClient client, ReferenceDataCache cache, IDataLoaderContextAccessor accessor)
 		{
 			Name = "UpdatePayrollScope";
-			Field(x => x.LevelId, nullable: true);
-			Field(x => x.CountryIds, nullable: true, type:typeof(ListGraphType<IntGraphType>));
+			Field(x => x.CountryScopes, nullable: true, type:typeof(ListGraphType<UpdatePayrollCountryScopeSchemaType>));
 			this.Extend(client, cache, accessor);
 		}
 

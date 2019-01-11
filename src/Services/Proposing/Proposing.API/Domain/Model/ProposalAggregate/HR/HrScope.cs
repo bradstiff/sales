@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Proposing.API.Domain.Model.ProposalAggregate
 {
-    public class HrScope : Entity, IProductScope, IProductScopeUpdater<HrScopeDto>
+    public class HrScope : Entity, IProductScope, IProductScopeUpdater<HrScopeDto, HrCountryScopeDto>
     {
         public short? LevelId { get; private set; }
 

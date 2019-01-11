@@ -25,7 +25,7 @@ import FlexRightAligned from '../common/FlexRightAligned';
 import ToggleCountry from './ToggleCountry';
 
 const query = gql`
-    query ProposalHr($id: Int!) {
+    query HrScope($id: Int!) {
         proposal(id: $id) {
             id
             name
@@ -69,7 +69,7 @@ const schema = Yup.object().shape({
     levelId: Yup.number().integer()
 });
 
-const HrProduct = ({ proposal, onSubmit, onClose, classes }) => {
+const HrScope = ({ proposal, onSubmit, onClose, classes }) => {
     const canEdit = true;
     const initialValues = {
         levelId: proposal.hrScope && proposal.hrScope.level.id,
@@ -141,18 +141,18 @@ export default compose(
         selector: 'proposal',
     }, NotFound),
     graphql(mutation, {
-        name: 'updateProposalHr',
-        props: ({updateProposalHr, ownProps: {history, id}}) => ({
+        name: 'updateHrScope',
+        props: ({ updateHrScope, ownProps: {history, id}}) => ({
             onSubmit: rawValues => {
                 //validation has already ocurred...this is necessary to get typecast values
                 const values = schema.validateSync(rawValues);
                 const countryIds = values.countries
                     .filter(country => country.inScope)
                     .map(country => country.id);
-                updateProposalHr({variables: {id, countryIds, levelId: values.levelId}})
+                updateHrScope({variables: {id, countryIds, levelId: values.levelId}})
                     .then(() => history.push(Locations.Proposal.toUrl({id})));
             },
             onClose: () => history.push(Locations.Proposal.toUrl({id}))
         }),
     }),
-)(HrProduct);
+)(HrScope);

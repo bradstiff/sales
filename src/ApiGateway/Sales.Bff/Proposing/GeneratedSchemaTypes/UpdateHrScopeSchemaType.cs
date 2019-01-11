@@ -5,7 +5,7 @@ using Sales.Bff.Infrastructure;
 
 namespace Sales.Bff.Proposing.SchemaTypes
 {
-	public partial class UpdateHrScopeSchemaType: InputObjectGraphType<UpdateHrProductScopeCommand>
+	public partial class UpdateHrScopeSchemaType: InputObjectGraphType<UpdateHrScopeCommand>
 	{
 		public UpdateHrScopeSchemaType(ProposingClient client, ReferenceDataCache cache, IDataLoaderContextAccessor accessor)
 		{

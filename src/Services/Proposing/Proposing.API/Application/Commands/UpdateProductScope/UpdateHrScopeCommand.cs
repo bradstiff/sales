@@ -11,13 +11,13 @@ using System.Threading;
 
 namespace Proposing.API.Application.Commands.UpdateProductScope
 {
-    public class UpdatePayrollProductScopeCommand : IRequest<bool>
+    public class UpdateHrScopeCommand : IRequest<bool>
     {
-        public UpdatePayrollProductScopeCommand()
+        public UpdateHrScopeCommand()
         {
         }
 
-        public UpdatePayrollProductScopeCommand(List<int> countryIds, short levelId)
+        public UpdateHrScopeCommand(List<int> countryIds, short levelId)
         {
             CountryIds = countryIds;
             LevelId = levelId;
@@ -28,33 +28,33 @@ namespace Proposing.API.Application.Commands.UpdateProductScope
         public List<int> CountryIds { get; set; }
     }
 
-    public class UpdatePayrollProductScopeCommandHandler : IRequestHandler<CommandWithResourceId<int, UpdatePayrollProductScopeCommand, bool>, bool>
+    public class UpdateHrScopeCommandHandler : IRequestHandler<CommandWithResourceId<int, UpdateHrScopeCommand, bool>, bool>
     {
         private readonly ProposingContext _context;
         private readonly IMediator _mediator;
 
-        public UpdatePayrollProductScopeCommandHandler(ProposingContext context, IMediator mediator)
+        public UpdateHrScopeCommandHandler(ProposingContext context, IMediator mediator)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
-        public async Task<bool> Handle(CommandWithResourceId<int, UpdatePayrollProductScopeCommand, bool> request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(CommandWithResourceId<int, UpdateHrScopeCommand, bool> request, CancellationToken cancellationToken)
         {
             var command = request.InnerCommand;
             var hasLevel = command.LevelId > 0;
             var proposal = await _context.Proposals.FindByIdAsync(request.ResourceId, cancellationToken);
 
-            //var productScope = new PayrollProductScopeDto
-            //{
-            //    LevelId = command.LevelId,
-            //    CountryScopes = command.CountryIds.Select(id => new PayrollProductCountryScopeDto
-            //    {
-            //        CountryId = id
-            //    })
-            //};
+            var productScope = new HrScopeDto
+            {
+                LevelId = command.LevelId,
+                CountryScopes = command.CountryIds.Select(id => new HrCountryScopeDto
+                {
+                    CountryId = id
+                })
+            };
 
-            //proposal.SetProductScope(ProductType.HR, productScope);
+            proposal.SetProductScope<HrScopeDto,HrCountryScopeDto>(ProductType.HR, productScope);
 
             await _context.SaveChangesAsync(cancellationToken);
             return true;

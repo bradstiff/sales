@@ -124,7 +124,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateHrProductScopeCommand"
+                "$ref": "#/components/schemas/UpdateHrScopeCommand"
               }
             }
           },
@@ -343,7 +343,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdatePayrollProductScopeCommand"
+                "$ref": "#/components/schemas/UpdatePayrollScopeCommand"
               }
             }
           },
@@ -996,7 +996,7 @@
           }
         }
       },
-      "UpdateHrProductScopeCommand": {
+      "UpdateHrScopeCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -1049,23 +1049,80 @@
                 "$ref": "#/components/schemas/ComponentViewModel"
               }
             ]
+          },
+          "monthlyPayees": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "semiMonthlyPayees": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "biWeeklyPayees": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "weeklyPayees": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reporting": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "payslipStorage": {
+            "type": "boolean",
+            "nullable": true
           }
         }
       },
-      "UpdatePayrollProductScopeCommand": {
+      "UpdatePayrollScopeCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "levelId": {
-            "type": "integer"
-          },
-          "countryIds": {
+          "countryScopes": {
             "type": "array",
             "nullable": true,
             "items": {
-              "type": "integer",
-              "format": "int32"
+              "$ref": "#/components/schemas/UpdatePayrollCountryScopeDto"
             }
+          }
+        }
+      },
+      "UpdatePayrollCountryScopeDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "countryId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "levelId": {
+            "type": "integer"
+          },
+          "weeklyPayees": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "biWeeklyPayees": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "semiMonthlyPayees": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "monthlyPayees": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reporting": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "payslipStorage": {
+            "type": "boolean",
+            "nullable": true
           }
         }
       },
