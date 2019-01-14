@@ -75,8 +75,7 @@ const schema = Yup.object().shape({
     )
 });
 
-const PayrollScope = ({ proposal, onSubmit, onClose, classes }) => {
-    const canEdit = true;
+const PayrollScope = ({ proposal, onSubmit, onClose }) => {
     const initialValues = {
         countries: proposal.countries.map(c => {
             const scope = c.payrollScope || {};
@@ -90,78 +89,15 @@ const PayrollScope = ({ proposal, onSubmit, onClose, classes }) => {
                 weeklyPayees: scope.weeklyPayees,
             });
         })
-    }
+    };
     return (
         <Paper>
-            <Formik
+            <PayrollScopeForm
+                name={proposal.name}
                 initialValues={initialValues}
-                validationSchema={schema}
+                payrollLevels={proposal.productModel.payroll.levels}
                 onSubmit={onSubmit}
-                render={({ values, errors, handleChange, isSubmitting }) => {
-                    console.log(errors);
-                    return (
-                        <Form>
-                            <Toolbar>
-                                <Typography variant='h5'>{proposal.name} Payroll Scope</Typography>
-                                <FlexRightAligned>
-                                    <Button color='primary' disabled={isSubmitting} onClick={onClose}>{canEdit ? 'Cancel' : 'Close'}</Button>
-                                    {canEdit && <Button color='primary' variant='outlined' type='submit' disabled={isSubmitting}>Save</Button>}
-                                </FlexRightAligned>
-                            </Toolbar>
-                            <Table>
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell />
-                                        <TableCell>Country</TableCell>
-                                        <TableCell>Level</TableCell>
-                                        <TableCell>Monthly</TableCell>
-                                        <TableCell>Semi-monthly</TableCell>
-                                        <TableCell>Bi-weekly</TableCell>
-                                        <TableCell>Weekly</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {values.countries.map((country, index) => (
-                                        <TableRow key={index}>
-                                            <TableCell />
-                                            <TableCell>{country.name}</TableCell>
-                                            <TableCell>
-                                                <Select
-                                                    value={country.levelId}
-                                                    onChange={handleChange}
-                                                    inputProps={{
-                                                        name: `countries.${index}.levelId`
-                                                    }}
-                                                >
-                                                    <MenuItem value=""><em>Select</em></MenuItem>
-                                                    <MenuItem value="0">None</MenuItem>
-                                                    {proposal.productModel.payroll.levels.map(level => <MenuItem value={level.id}>{level.name}</MenuItem>)}
-                                                </Select>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Field name={`countries.${index}.monthlyPayees`} />
-                                                <ErrorMessage name={`countries[${index}].monthlyPayees`} />
-                                            </TableCell>
-                                            <TableCell>
-                                                <Field name={`countries.${index}.semiMonthlyPayees`} />
-                                                <ErrorMessage name={`countries[${index}].semiMonthlyPayees`} />
-                                            </TableCell>
-                                            <TableCell>
-                                                <Field name={`countries.${index}.biWeeklyPayees`} />
-                                                <ErrorMessage name={`countries[${index}].biWeeklyPayees`} />
-                                            </TableCell>
-                                            <TableCell>
-                                                <Field name={`countries.${index}.weeklyPayees`} />
-                                                <ErrorMessage name={`countries[${index}].weeklyPayees`} />
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                            {errors && <div>{errors[0]}</div>}
-                        </Form>
-                    );
-                }}
+                onClose={onClose}
             />
         </Paper>
     );
@@ -186,9 +122,127 @@ export default compose(
                         ...values
                     }));
                 updatePayrollScope({variables: {id, countryScopes}})
-                    .then(() => history.push(Locations.Proposal.toUrl({id})));
+                    .then(() => history.push(Locations.Proposal.toUrl({ id })));
             },
             onClose: () => history.push(Locations.Proposal.toUrl({id}))
         }),
     }),
 )(PayrollScope);
+
+class PayrollScopeForm extends React.Component {
+    state = {}
+
+    handleChange = (name, value, index) => {
+        const countries = this.state.countries.map((country, i) => {
+            if (i === index) {
+                return {
+                    ...country,
+                    [name]: value
+                };
+            };
+            return country;
+        });
+        this.setState({
+            countries
+        })
+    }
+
+    handleSubmit = event => {
+        this.props.onSubmit({
+            countries: this.state.countries
+        });
+        event.preventDefault();
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        if (state.countries === undefined) {
+            const { countries } = props.initialValues;
+            return { countries };
+        }
+        return null;
+    }
+
+    render() {
+        const { name, payrollLevels, onClose, classes } = this.props;
+        const countries = this.state.countries || [];
+        const isSubmitting = false;
+        const canEdit = true;
+        return (
+            <form onSubmit={this.handleSubmit.bind(this)}>
+                <Toolbar>
+                    <Typography variant='h5'>{name} Payroll Scope</Typography>
+                    <FlexRightAligned>
+                        <Button color='primary' disabled={isSubmitting} onClick={onClose}>{canEdit ? 'Cancel' : 'Close'}</Button>
+                        {canEdit && <Button color='primary' variant='outlined' type='submit' disabled={isSubmitting}>Save</Button>}
+                    </FlexRightAligned>
+                </Toolbar>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell />
+                            <TableCell>Country</TableCell>
+                            <TableCell>Level</TableCell>
+                            <TableCell>Monthly</TableCell>
+                            <TableCell>Semi-monthly</TableCell>
+                            <TableCell>Bi-weekly</TableCell>
+                            <TableCell>Weekly</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {countries.map((country, index) => (
+                            <PayrollCountryScope
+                                key={index}
+                                country={country}
+                                index={index}
+                                levels={payrollLevels}
+                                onChange={this.handleChange}
+                            />
+                        ))}
+                    </TableBody>
+                </Table>
+            </form>
+        );
+
+    }
+}
+
+class PayrollCountryScope extends React.PureComponent {
+    handleChange = event => {
+        const { index, onChange } = this.props;
+        onChange(event.target.name, event.target.value, index);
+    }
+    render() {
+        const { country, levels} = this.props;
+        return (
+            <TableRow key={country.id}>
+                <TableCell />
+                <TableCell>{country.name}</TableCell>
+                <TableCell>
+                    <Select
+                        value={country.levelId}
+                        onChange={this.handleChange}
+                        inputProps={{
+                            name: 'levelId'
+                        }}
+                    >
+                        <MenuItem value=""><em>Select</em></MenuItem>
+                        <MenuItem value="0">None</MenuItem>
+                        {levels.map(level => <MenuItem value={level.id}>{level.name}</MenuItem>)}
+                    </Select>
+                </TableCell>
+                <TableCell>
+                    <input name='monthlyPayees' value={country.monthlyPayees} onChange={this.handleChange} />
+                </TableCell>
+                <TableCell>
+                    <input name='semiMonthlyPayees' value={country.semiMonthlyPayees} onChange={this.handleChange} />
+                </TableCell>
+                <TableCell>
+                    <input name='biWeeklyPayees' value={country.biWeeklyPayees} onChange={this.handleChange} />
+                </TableCell>
+                <TableCell>
+                    <input name='weeklyPayees' value={country.weeklyPayees} onChange={this.handleChange} />
+                </TableCell>
+            </TableRow>
+        );
+    }
+}
