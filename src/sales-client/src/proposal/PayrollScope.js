@@ -10,7 +10,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
@@ -21,7 +23,23 @@ import { proposalPageFragment } from './Proposal';
 import Locations from '../app/Locations';
 import NotFound from '../app/NotFound';
 import withQuery from '../common/withQuery';
+import NumericInput from '../common/NumericInput';
 import FlexRightAligned from '../common/FlexRightAligned';
+
+const setIn = (obj, keyPath, value) => {
+    const lastKeyIndex = keyPath.length-1;
+    let currentObj = obj;
+    for (let i = 0; i < lastKeyIndex; ++ i) {
+        const key = keyPath[i];
+        if (!(key in currentObj))
+        currentObj[key] = {}
+        currentObj = currentObj[key];
+    }
+    currentObj[keyPath[lastKeyIndex]] = value;
+    return obj;
+}
+
+const isEmptyObject = obj =>  Object.keys(obj).length === 0 && obj.constructor === Object;
 
 const query = gql`
     query PayrollScope($id: Int!) {
@@ -62,39 +80,45 @@ const mutation = gql`
     ${proposalPageFragment}
 `;
 
-const emptyToZero = Yup.number().transform((cv, ov) => ov === '' ? 0 : cv);
-const schema = Yup.object().shape({
-    countries: Yup.array().of(
-        Yup.object().shape({
-            levelId: Yup.number().integer(),
-            weeklyPayees: emptyToZero.integer(),
-            biWeeklyPayees: emptyToZero.integer(),
-            semiMonthlyPayees: emptyToZero.integer(),
-            monthlyPayees: emptyToZero.integer(),
-        })
-    )
-});
+//const emptyToZero = Yup.number().transform((cv, ov) => ov === '' ? 0 : cv);
+const wholeNumber = Yup.number().typeError('Enter a number').integer('Enter an integer').min(0, 'Enter a non-negative number');
+const countryPopulationSchema = Yup.object().shape({
+    weeklyPayees: wholeNumber,
+    biWeeklyPayees: wholeNumber,
+    semiMonthlyPayees: wholeNumber,
+    monthlyPayees: wholeNumber,
+})
+const countrySchema = countryPopulationSchema
+    .concat(Yup.object().shape({
+        levelId: Yup.number().typeError('Select a payroll level or None'),
+    }));
 
 const PayrollScope = ({ proposal, onSubmit, onClose }) => {
-    const initialValues = {
-        countries: proposal.countries.map(c => {
-            const scope = c.payrollScope || {};
-            return ({
-                id: c.countryId,
-                name: c.name,
-                levelId: scope.level ? scope.level.id : 0, //todo:how to identify new countries
-                monthlyPayees: scope.monthlyPayees,
-                semiMonthlyPayees: scope.semiMonthlyPayees,
-                biWeeklyPayees: scope.biWeeklyPayees,
-                weeklyPayees: scope.weeklyPayees,
-            });
-        })
-    };
+    const countries = proposal.countries.reduce((acc, country) => {
+        const scope = country.payrollScope || {};
+        acc[country.countryId] = {
+            id: country.countryId,
+            name: country.name,
+            levelId: scope.level ? scope.level.id : 0, //todo:how to identify new countries
+            monthlyPayees: scope.monthlyPayees,
+            semiMonthlyPayees: scope.semiMonthlyPayees,
+            biWeeklyPayees: scope.biWeeklyPayees,
+            weeklyPayees: scope.weeklyPayees,
+        }
+        return acc;
+    }, {});
+    const schema = Yup.object().shape({
+        countries: Yup.object().shape(proposal.countries.reduce((acc, country) => {
+            acc[country.countryId] = countrySchema;
+            return acc;
+        }, {}))
+    });
     return (
         <Paper>
             <PayrollScopeForm
                 name={proposal.name}
-                initialValues={initialValues}
+                initialValues={{ countries }}
+                schema={schema}
                 payrollLevels={proposal.productModel.payroll.levels}
                 onSubmit={onSubmit}
                 onClose={onClose}
@@ -111,10 +135,8 @@ export default compose(
     graphql(mutation, {
         name: 'updatePayrollScope',
         props: ({ updatePayrollScope, ownProps: {history, id}}) => ({
-            onSubmit: rawValues => {
-                //validation has already ocurred...this is necessary to get typecast values
-                const values = schema.validateSync(rawValues);
-                const countryScopes = values.countries
+            onSubmit: values => {
+                const countryScopes = Object.values(values.countries)
                     .filter(country => country.levelId > 0)
                     .map(({ id, name, ...values }) => ({
                         //throw away country.name
@@ -132,43 +154,117 @@ export default compose(
 class PayrollScopeForm extends React.Component {
     state = {}
 
-    handleChange = (name, value, index) => {
-        const countries = this.state.countries.map((country, i) => {
-            if (i === index) {
-                return {
-                    ...country,
-                    [name]: value
-                };
+    mutateCountry(id, mutateFn) {
+        this.setState((state, props) => {
+            const mutableCountry = Object.assign({}, state.values.countries[id]);
+            const values = {
+                ...state.values,
+                countries: {
+                    ...state.values.countries,
+                    [id]: mutableCountry
+                }
             };
-            return country;
+            mutateFn(mutableCountry);
+            return { values }
         });
+    }
+
+    validate() {
+        try{
+            const values = this.props.schema.validateSync(this.state.values, {abortEarly: false});
+            this.setState({ errors: { countries: {} }});
+            return values;
+        }
+        catch(err) {
+            if (err.name === 'ValidationError') {
+                const errors = err.inner.reduce((acc, error) => setIn(acc, error.path.split('.'), error.message), {});
+                this.setState({ errors });
+            }
+            return null;
+        }
+    }
+
+    handleToggleSelectAll = selected => {
+        const { countries } = this.state;
         this.setState({
-            countries
-        })
+            selected,
+            countries: countries.map(country => ({
+                ...country,
+                selected
+            }))
+        });
+    }
+
+    handleCountrySelectedChange = (id, selected) => {
+        this.mutateCountry(id, country => country.selected = selected);
+    }
+
+    handleCountryLevelChange = (id, levelId) => {
+        this.mutateCountry(id, country => {
+            const removed = country.levelId > 0 && !(levelId > 0);
+            const added = levelId > 0 && !(country.levelId > 0);
+            country.levelId = levelId;
+            if (removed) {
+                country.monthlyPayees = country.semiMonthlyPayees = country.biWeeklyPayees = country.weeklyPayees = null;
+            } else if (added) {
+                country.monthlyPayees = country.semiMonthlyPayees = country.biWeeklyPayees = country.weeklyPayees = 0;
+            }
+        });
+    }
+
+    handleCountryPopulationChange = (id, populationField, payees) => {
+        this.mutateCountry(id, country => country[populationField] = payees);
+    }
+
+    handleCountryFieldBlur = (id, field) => {
+        this.setState(state => { 
+            const touched = {
+                ...state.touched,
+                countries: {
+                    ...state.touched.countries,
+                    [id]: {
+                        ...state.touched.countries[id],
+                        [field]: true,
+                    }
+                }
+            }
+            return { touched };
+        });
+        this.validate();
     }
 
     handleSubmit = event => {
-        this.props.onSubmit({
-            countries: this.state.countries
-        });
+        const values = this.validate();
+        if (values) {
+            this.props.onSubmit(values);
+        }
         event.preventDefault();
     }
 
     static getDerivedStateFromProps(props, state) {
-        if (state.countries === undefined) {
-            const { countries } = props.initialValues;
-            return { countries };
+        if (isEmptyObject(state)) {
+            return { 
+                values: {
+                    countries: props.initialValues.countries
+                },
+                touched: {
+                    countries: {}
+                },
+                errors:  {
+                    countries: {}
+                },
+                isSubmitting: false,
+            };
         }
         return null;
     }
 
     render() {
         const { name, payrollLevels, onClose, classes } = this.props;
-        const countries = this.state.countries || [];
-        const isSubmitting = false;
+        const { values: {countries}, touched, errors, isSubmitting } = this.state;
         const canEdit = true;
         return (
-            <form onSubmit={this.handleSubmit.bind(this)}>
+            <form onSubmit={this.handleSubmit} autoComplete="off">
                 <Toolbar>
                     <Typography variant='h5'>{name} Payroll Scope</Typography>
                     <FlexRightAligned>
@@ -186,16 +282,21 @@ class PayrollScopeForm extends React.Component {
                             <TableCell>Semi-monthly</TableCell>
                             <TableCell>Bi-weekly</TableCell>
                             <TableCell>Weekly</TableCell>
+                            <TableCell>Total</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {countries.map((country, index) => (
+                        {Object.keys(countries).map(id => (
                             <PayrollCountryScope
-                                key={index}
-                                country={country}
-                                index={index}
+                                key={id}
+                                country={countries[id]}
                                 levels={payrollLevels}
-                                onChange={this.handleChange}
+                                onSelectedChange={this.handleCountrySelectedChange}
+                                onLevelChange={this.handleCountryLevelChange}
+                                onPopulationChange={this.handleCountryPopulationChange}
+                                onFieldBlur={this.handleCountryFieldBlur}
+                                touched={touched.countries[id]}
+                                errors={errors.countries[id]}
                             />
                         ))}
                     </TableBody>
@@ -207,41 +308,68 @@ class PayrollScopeForm extends React.Component {
 }
 
 class PayrollCountryScope extends React.PureComponent {
-    handleChange = event => {
-        const { index, onChange } = this.props;
-        onChange(event.target.name, event.target.value, index);
+    handleLevelChange = event => {
+        const { country, onLevelChange } = this.props;
+        onLevelChange(country.id, event.target.value);
+    }
+    handlePopulationChange = event => {
+        const { country, onPopulationChange } = this.props;
+        onPopulationChange(country.id, event.target.name, event.target.value);
+    }
+    handleSelectedChange = event => {
+        const { country, onSelectedChange } = this.props;
+        onSelectedChange(country.id, event.target.checked);
+    }
+    handleBlur = event => {
+        const { country, onFieldBlur } = this.props;
+        onFieldBlur(country.id, event.target.name);
     }
     render() {
-        const { country, levels} = this.props;
+        const { country, levels, touched = {}, errors = {}} = this.props;
+        const isInScope = country.levelId > 0;
+        const totalPayees = isInScope && countryPopulationSchema.isValidSync(country)
+            ? country.monthlyPayees + country.semiMonthlyPayees + country.biWeeklyPayees + country.weeklyPayees 
+            : '';
+        const fieldProps = name => ({
+            name,
+            value: country[name],
+            error: touched[name] && errors[name] ? errors[name] : '',
+            onBlur: this.handleBlur,
+        })
         return (
             <TableRow key={country.id}>
-                <TableCell />
+                <TableCell>
+                    <input type='checkbox' name='selected' checked={country.selected} onChange={this.handleSelectedChange} />
+                </TableCell>
                 <TableCell>{country.name}</TableCell>
                 <TableCell>
-                    <Select
-                        value={country.levelId}
-                        onChange={this.handleChange}
-                        inputProps={{
-                            name: 'levelId'
-                        }}
-                    >
-                        <MenuItem value=""><em>Select</em></MenuItem>
-                        <MenuItem value="0">None</MenuItem>
-                        {levels.map(level => <MenuItem value={level.id}>{level.name}</MenuItem>)}
-                    </Select>
+                    <FormControl error={touched.levelId && errors.levelId}>
+                        <Select
+                            value={country.levelId}
+                            onChange={this.handleLevelChange}
+                            onBlur={this.handleBlur}
+                            name='levelId'
+                        >
+                            <MenuItem key="" value=""><em>Select</em></MenuItem>
+                            <MenuItem key="0" value={0}>None</MenuItem>
+                            {levels.map(level => <MenuItem key={level.id} value={level.id}>{level.name}</MenuItem>)}
+                        </Select>
+                        {touched.levelId && errors.levelId && <FormHelperText>{errors.levelId}</FormHelperText>}
+                    </FormControl>
                 </TableCell>
                 <TableCell>
-                    <input name='monthlyPayees' value={country.monthlyPayees} onChange={this.handleChange} />
+                    <NumericInput {...fieldProps('monthlyPayees')} onChange={this.handlePopulationChange} disabled={!isInScope} />
                 </TableCell>
                 <TableCell>
-                    <input name='semiMonthlyPayees' value={country.semiMonthlyPayees} onChange={this.handleChange} />
+                    <NumericInput {...fieldProps('semiMonthlyPayees')} onChange={this.handlePopulationChange} disabled={!isInScope} />
                 </TableCell>
                 <TableCell>
-                    <input name='biWeeklyPayees' value={country.biWeeklyPayees} onChange={this.handleChange} />
+                    <NumericInput {...fieldProps('biWeeklyPayees')} onChange={this.handlePopulationChange} disabled={!isInScope} />
                 </TableCell>
                 <TableCell>
-                    <input name='weeklyPayees' value={country.weeklyPayees} onChange={this.handleChange} />
+                    <NumericInput {...fieldProps('weeklyPayees')} onChange={this.handlePopulationChange} disabled={!isInScope} />
                 </TableCell>
+                <TableCell>{totalPayees}</TableCell>
             </TableRow>
         );
     }
