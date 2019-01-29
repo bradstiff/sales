@@ -16,7 +16,7 @@ export default class NumericInput extends React.PureComponent {
     }
     render() {
         const {value, error, helperText, onChange, ...inputProps} = this.props;
-        const hasError = error.length > 0;
+        const hasError = error && error.length > 0;
         return <TextField 
             value={this.state.value} 
             error={hasError}
