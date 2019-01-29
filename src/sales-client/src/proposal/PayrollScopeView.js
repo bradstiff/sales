@@ -17,6 +17,8 @@ import TableRow from '@material-ui/core/TableRow';
 import NumericInput from '../common/NumericInput';
 import FlexRightAligned from '../common/FlexRightAligned';
 
+import { isCountryInScope, countryTotalPayees } from './PayrollScope';
+
 export default class PayrollScopeView extends React.Component {
     handleCountryBlur = (countryId, field) => {
         this.props.onBlur(`countries.${countryId}.${field}`);
@@ -59,7 +61,7 @@ export default class PayrollScopeView extends React.Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {values.countries.map(country => (
+                            {Object.values(values.countries).map(country => (
                                 <PayrollCountryScopeView
                                     key={country.id}
                                     country={country}
@@ -104,6 +106,7 @@ class PayrollCountryScopeView extends React.PureComponent {
             error: errors[name],
             onBlur: this.handleBlur,
         })
+        const isInScope = isCountryInScope(country);
         return (
             <TableRow key={country.id}>
                 <TableCell>
@@ -126,18 +129,18 @@ class PayrollCountryScopeView extends React.PureComponent {
                     </FormControl>
                 </TableCell>
                 <TableCell>
-                    <NumericInput {...fieldProps('monthlyPayees')} onChange={this.handlePopulationChange} disabled={!country.isInScope} />
+                    <NumericInput {...fieldProps('monthlyPayees')} onChange={this.handlePopulationChange} disabled={!isInScope} />
                 </TableCell>
                 <TableCell>
-                    <NumericInput {...fieldProps('semiMonthlyPayees')} onChange={this.handlePopulationChange} disabled={!country.isInScope} />
+                    <NumericInput {...fieldProps('semiMonthlyPayees')} onChange={this.handlePopulationChange} disabled={!isInScope} />
                 </TableCell>
                 <TableCell>
-                    <NumericInput {...fieldProps('biWeeklyPayees')} onChange={this.handlePopulationChange} disabled={!country.isInScope} />
+                    <NumericInput {...fieldProps('biWeeklyPayees')} onChange={this.handlePopulationChange} disabled={!isInScope} />
                 </TableCell>
                 <TableCell>
-                    <NumericInput {...fieldProps('weeklyPayees')} onChange={this.handlePopulationChange} disabled={!country.isInScope} />
+                    <NumericInput {...fieldProps('weeklyPayees')} onChange={this.handlePopulationChange} disabled={!isInScope} />
                 </TableCell>
-                <TableCell>{country.totalPayees}</TableCell>
+                <TableCell>{countryTotalPayees(country)}</TableCell>
             </TableRow>
         );
     }

@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 
 import * as Yup from 'yup';
 import { setWith, clone, pick, isObject } from 'lodash';
+import { createSelector } from 'reselect'
 
 import { proposalPageFragment } from './Proposal';
 import PayrollScopeView from './PayrollScopeView';
@@ -89,22 +90,28 @@ const countrySchema = countryPopulationSchema
         levelId: Yup.number().typeError('Select a payroll level or None'),
     }));
 
-const isCountryInScope = country => country.levelId > 0;
-const countryTotalPayees = country => isCountryInScope(country) &&  countryPopulationSchema.isValidSync(country)
+export const isCountryInScope = country => country.levelId > 0;
+export const countryTotalPayees = country => isCountryInScope(country) &&  countryPopulationSchema.isValidSync(country)
     ? country.monthlyPayees + country.semiMonthlyPayees + country.biWeeklyPayees + country.weeklyPayees 
     : '';
 
+const errorsSelector = state => state.errors;
+const touchedSelector = state => state.touched;
+const showAllErrorsSelector = state => state.showAllErrors;
+
+const visibleErrors = createSelector(
+    errorsSelector,
+    touchedSelector,
+    showAllErrorsSelector,
+    (errors, touched, showAllErrors) => showAllErrors
+        ? errors
+        : deepPickBy(errors, touched)
+);
+
 class PayrollScope extends React.Component {
     state = {
-        values: {
-            countries: {}
-        },
-        touched: {
-            countries: {}
-        },
-        errors:  {
-            countries: {}
-        },
+        values: { countries: {} },
+        touched: {},
         isSubmitting: false,
     }
 
@@ -178,7 +185,7 @@ class PayrollScope extends React.Component {
     validate() {
         try{
             const values = this.schema.validateSync(this.state.values, {abortEarly: false});
-            this.setState({ errors: { countries: {} }});
+            this.setState({ errors: undefined});
             return values;
         }
         catch(err) {
@@ -222,23 +229,13 @@ class PayrollScope extends React.Component {
 
     render() {
         const { proposal, onClose} = this.props;
-        const {values, errors, showAllErrors, touched, isSubmitting} = this.state;
-        const viewModel = { 
-            countries: Object.values(values.countries).map(country => ({
-                ...country,
-                isInScope: isCountryInScope(country),
-                totalPayees: countryTotalPayees(country),
-            }))
-        }
-        const visibleErrors = showAllErrors
-            ? errors
-            : deepPickBy(errors, touched);
+        const {values, isSubmitting} = this.state;
 
         return <PayrollScopeView
             name={proposal.name}
             payrollLevels={proposal.productModel.payroll.levels}
-            values={viewModel}
-            errors={visibleErrors}
+            values={values}
+            errors={visibleErrors(this.state)}
             isSubmitting={isSubmitting} 
             canEdit={true} 
             onCountryLevelChange={this.handleCountryLevelChange}
