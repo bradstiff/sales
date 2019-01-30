@@ -142,17 +142,42 @@ class PayrollScope extends React.Component {
         this.mutateCountry(id, country => country.selected = selected);
     }
 
-    handleCountryLevelChange = (id, levelId) => {
-        this.mutateCountry(id, country => {
-            const removed = country.isInScope() > 0 && !(levelId > 0);
-            const added = levelId > 0 && !country.isInScope();
-            country.levelId = levelId;
-            if (removed) {
-                country.monthlyPayees = country.semiMonthlyPayees = country.biWeeklyPayees = country.weeklyPayees = null;
-            } else if (added) {
-                country.monthlyPayees = country.semiMonthlyPayees = country.biWeeklyPayees = country.weeklyPayees = 0;
+    handleAssignLevelToSelected = levelId => {
+        this.setState(state => ({
+            values: {
+                ...state.values,
+                countries: keyBy(
+                    Object
+                        .values(state.values.countries)
+                        .map(country => {
+                            if (country.selected) {
+                                const newCountry = {...country, selected: false};
+                                this.setCountryLevel(newCountry, levelId);
+                                return newCountry;
+                            } else {
+                                return country;
+                            }
+                        }
+                    ),
+                    'id'
+                )
             }
-        });
+        }));
+    }
+
+    handleCountryLevelChange = (id, levelId) => {
+        this.mutateCountry(id, country => this.setCountryLevel(country, levelId));
+    }
+
+    setCountryLevel(country, levelId) {
+        const removed = country.isInScope() > 0 && !(levelId > 0);
+        const added = levelId > 0 && !country.isInScope();
+        country.levelId = levelId;
+        if (removed) {
+            country.monthlyPayees = country.semiMonthlyPayees = country.biWeeklyPayees = country.weeklyPayees = null;
+        } else if (added) {
+            country.monthlyPayees = country.semiMonthlyPayees = country.biWeeklyPayees = country.weeklyPayees = 0;
+        }
     }
 
     handleCountryPopulationChange = (id, populationField, payees) => {
@@ -232,6 +257,7 @@ class PayrollScope extends React.Component {
             onCountrySelectedChange={this.handleCountrySelectedChange}
             onBlur={this.handleBlur}
             onSelectAllChange={this.handleSelectAllChange}
+            onAssignLevelToSelected={this.handleAssignLevelToSelected}
             onSubmit={this.handleSubmit}
             onClose={onClose}
         />
@@ -272,7 +298,7 @@ export default compose(
             onSubmit: values => {
                 const countryScopes = Object.values(values.countries)
                     .filter(country => country.levelId > 0)
-                    .map(({ id, name, ...values }) => ({
+                    .map(({ id, name, selected, ...values }) => ({
                         //throw away country.name
                         countryId: id,
                         ...values

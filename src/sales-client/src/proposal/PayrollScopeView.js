@@ -14,6 +14,8 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import TextField from '@material-ui/core/TextField';
+
+import SelectMenu from '../common/SelectMenu';
 import NumericInput from '../common/NumericInput';
 import FlexRightAligned from '../common/FlexRightAligned';
 
@@ -31,12 +33,18 @@ export default class PayrollScopeView extends React.Component {
             isSubmitting, 
             canEdit, 
             onSelectAllChange,
+            onAssignLevelToSelected,
             onCountryLevelChange,
             onCountryPopulationChange,
             onCountrySelectedChange,
             onSubmit,
             onClose,
         } = this.props;
+        
+        const assignLevelOptions = [
+            {value: 0, text: 'None'}
+        ].concat(payrollLevels.map(level => ({value: level.id, text: level.name})));
+
         return (
             <Paper>
                 <form onSubmit={onSubmit} autoComplete="off">
@@ -47,6 +55,13 @@ export default class PayrollScopeView extends React.Component {
                             {canEdit && <Button color='primary' variant='outlined' type='submit' disabled={isSubmitting}>Save</Button>}
                         </FlexRightAligned>
                     </Toolbar>
+                    <div>
+                        <SelectMenu
+                            id='assignLevel'
+                            onSelect={onAssignLevelToSelected}
+                            options={assignLevelOptions}
+                        />
+                    </div>
                     <Table>
                         <TableHead>
                             <TableRow>
