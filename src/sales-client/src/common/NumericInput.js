@@ -15,12 +15,9 @@ export default class NumericInput extends React.PureComponent {
         this.props.onChange(event);
     }
     render() {
-        const {value, error, helperText, onChange, ...inputProps} = this.props;
-        const hasError = error && error.length > 0;
+        const {value, onChange, ...inputProps} = this.props;
         return <TextField 
             value={this.state.value} 
-            error={hasError}
-            helperText={error || helperText}
             onChange={this.handleChange} 
             {...inputProps} 
         />;
@@ -60,7 +57,7 @@ export default class NumericInput extends React.PureComponent {
     }
     static defaultProps() {
         return {
-            error: '',
+            error: false,
             helperText: '',
         };
     }

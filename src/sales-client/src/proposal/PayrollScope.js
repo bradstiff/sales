@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { withRouter } from 'react-router-dom';
 
 import * as Yup from 'yup';
-import { setWith, clone, pick, isObject } from 'lodash';
+import { setWith, sortBy } from 'lodash';
 import { createSelector } from 'reselect'
 
 import { proposalPageFragment } from './Proposal';
@@ -12,26 +12,10 @@ import PayrollScopeView from './PayrollScopeView';
 import Locations from '../app/Locations';
 import NotFound from '../app/NotFound';
 import withQuery from '../common/withQuery';
+import { immutableUpdate, immutableSet, deepPickBy } from '../common/Utils'
+import { reflect } from 'async';
 
-const setIn = (obj, path, value) => setWith(obj, path, value, (value, key, object) => {
-    return value === undefined
-        ? {} //override creation of arrays for numeric keys
-        : clone(value);
-});
-
-const deepPaths = (obj = {}, basePath) => Object.entries(obj).reduce(
-    (result, [key, value]) => { 
-        const path = basePath
-            ? [basePath, key].join('.')
-            : key;
-        return isObject(value) 
-            ? result.concat(deepPaths(value, path)) 
-            : result.concat(path)}, 
-    []
-);
-
-const deepPickBy = (object, pickBy) => pick(object, deepPaths(pickBy));
-
+//GraphQL queries
 const query = gql`
     query PayrollScope($id: Int!) {
         proposal(id: $id) {
@@ -71,13 +55,21 @@ const mutation = gql`
     ${proposalPageFragment}
 `;
 
-//const emptyToZero = Yup.number().transform((cv, ov) => ov === '' ? 0 : cv);
+//Validation schema
 const wholeNumber = Yup.number().typeError('Enter a number').integer('Enter an integer').min(0, 'Enter a non-negative number');
-const wholeNumberWhenInScope = Yup.mixed().when('levelId', 
+const whenCountryInScope = (inScopeSchema, notInScopeSchema) => Yup.mixed().when(
+    'levelId', 
     (levelId, schema) => levelId > 0
-        ? wholeNumber 
-        : Yup.mixed().test('isNullWhenNotInScope', 'Should be null', value => value === null || value === undefined)
+        ? inScopeSchema
+        : notInScopeSchema
 );
+
+const wholeNumberWhenInScope = whenCountryInScope(
+    wholeNumber,
+    Yup.mixed().test('isNullWhenNotInScope', 'Should be null', value => value === null || value === undefined)
+);
+
+//const emptyToZero = Yup.number().transform((cv, ov) => ov === '' ? 0 : cv);
 
 const countryPopulationSchema = Yup.object().shape({
     weeklyPayees: wholeNumberWhenInScope,
@@ -85,49 +77,45 @@ const countryPopulationSchema = Yup.object().shape({
     semiMonthlyPayees: wholeNumberWhenInScope,
     monthlyPayees: wholeNumberWhenInScope,
 })
-const countrySchema = countryPopulationSchema
-    .concat(Yup.object().shape({
-        levelId: Yup.number().typeError('Select a payroll level or None'),
-    }));
 
-export const isCountryInScope = country => country.levelId > 0;
-export const countryTotalPayees = country => isCountryInScope(country) &&  countryPopulationSchema.isValidSync(country)
-    ? country.monthlyPayees + country.semiMonthlyPayees + country.biWeeklyPayees + country.weeklyPayees 
-    : '';
+const countrySchema = Yup.object()
+    .shape({
+        levelId: Yup.number().typeError("Select a level or 'None'"),
+    })
+    .concat(countryPopulationSchema)
+    .test(
+        'hasPayeesWhenInScope', 
+        function(value) {
+            return !value.isInScope() || value.totalPayees() > 0 || this.createError({
+                path: `countries.${value.id}.totalPayees`,
+                message: 'Total payees must be greater than zero'
+            });
+        }
+    );
 
-const errorsSelector = state => state.errors;
-const touchedSelector = state => state.touched;
-const showAllErrorsSelector = state => state.showAllErrors;
-
+//Memoized selectors
 const visibleErrors = createSelector(
-    errorsSelector,
-    touchedSelector,
-    showAllErrorsSelector,
+    state => state.errors,
+    state => state.touched,
+    state => state.showAllErrors,
     (errors, touched, showAllErrors) => showAllErrors
         ? errors
         : deepPickBy(errors, touched)
 );
+
+const viewValues = createSelector(
+    state => state.values,
+    values => ({
+        ...values,
+        countries: sortBy(Object.values(values.countries), 'name'),
+    })
+)
 
 class PayrollScope extends React.Component {
     state = {
         values: { countries: {} },
         touched: {},
         isSubmitting: false,
-    }
-
-    mutateCountry(id, mutateFn) {
-        this.setState((state, props) => {
-            const mutableCountry = Object.assign({}, state.values.countries[id]);
-            const values = {
-                ...state.values,
-                countries: {
-                    ...state.values.countries,
-                    [id]: mutableCountry
-                }
-            };
-            mutateFn(mutableCountry);
-            return { values }
-        });
     }
 
     handleToggleSelectAll = selected => {
@@ -147,8 +135,8 @@ class PayrollScope extends React.Component {
 
     handleCountryLevelChange = (id, levelId) => {
         this.mutateCountry(id, country => {
-            const removed = country.levelId > 0 && !(levelId > 0);
-            const added = levelId > 0 && !(country.levelId > 0);
+            const removed = country.isInScope() > 0 && !(levelId > 0);
+            const added = levelId > 0 && !country.isInScope();
             country.levelId = levelId;
             if (removed) {
                 country.monthlyPayees = country.semiMonthlyPayees = country.biWeeklyPayees = country.weeklyPayees = null;
@@ -163,7 +151,9 @@ class PayrollScope extends React.Component {
     }
 
     handleBlur = path => {
-        this.setState(state => setIn(state.touched, path, true));
+        this.setState(state => ({
+            touched: immutableSet(state.touched, path, true)
+        }));
         this.validate();
     }
 
@@ -182,23 +172,6 @@ class PayrollScope extends React.Component {
         event.preventDefault();
     }
 
-    validate() {
-        try{
-            const values = this.schema.validateSync(this.state.values, {abortEarly: false});
-            this.setState({ errors: undefined});
-            return values;
-        }
-        catch(err) {
-            if (err.name === 'ValidationError') {
-                const errors = err.inner.reduce(
-                    (result, error) => setWith(result, error.path, error.message, Object), //override array creation for numeric keys
-                    {});
-                this.setState({ errors });
-            }
-            return null;
-        }
-    }
-
     componentDidMount() {
         const { proposal } = this.props;
         const countries = proposal.countries.reduce((acc, country) => {
@@ -211,6 +184,12 @@ class PayrollScope extends React.Component {
                 semiMonthlyPayees: scope.semiMonthlyPayees,
                 biWeeklyPayees: scope.biWeeklyPayees,
                 weeklyPayees: scope.weeklyPayees,
+                isInScope: function() { return this.levelId > 0; },
+                totalPayees: function() {
+                    return this.isInScope() && countryPopulationSchema.isValidSync(this) 
+                        ? this.monthlyPayees + this.semiMonthlyPayees + this.biWeeklyPayees + this.weeklyPayees 
+                        : undefined;
+                },
             }
             return acc;
         }, {});
@@ -229,12 +208,12 @@ class PayrollScope extends React.Component {
 
     render() {
         const { proposal, onClose} = this.props;
-        const {values, isSubmitting} = this.state;
+        const { isSubmitting } = this.state;
 
         return <PayrollScopeView
             name={proposal.name}
             payrollLevels={proposal.productModel.payroll.levels}
-            values={values}
+            values={viewValues(this.state)}
             errors={visibleErrors(this.state)}
             isSubmitting={isSubmitting} 
             canEdit={true} 
@@ -245,6 +224,29 @@ class PayrollScope extends React.Component {
             onSubmit={this.handleSubmit}
             onClose={onClose}
         />
+    }
+
+    mutateCountry(id, mutateFn) {
+        this.setState(state => ({
+            values: immutableUpdate(state.values, `countries.${id}`, mutateFn)
+        }));
+    }
+
+    validate() {
+        try{
+            const values = this.schema.validateSync(this.state.values, {abortEarly: false});
+            this.setState({ errors: undefined });
+            return values;
+        }
+        catch(err) {
+            if (err.name === 'ValidationError') {
+                const errors = err.inner.reduce(
+                    (result, error) => setWith(result, error.path, error.message, Object), //override array creation for numeric keys
+                    {});
+                this.setState({ errors });
+            }
+            return null;
+        }
     }
 }
 
