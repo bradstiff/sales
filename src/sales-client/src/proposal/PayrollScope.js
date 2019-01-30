@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { withRouter } from 'react-router-dom';
 
 import * as Yup from 'yup';
-import { setWith, sortBy } from 'lodash';
+import { setWith, sortBy, keyBy } from 'lodash';
 import { createSelector } from 'reselect'
 
 import { proposalPageFragment } from './Proposal';
@@ -13,7 +13,6 @@ import Locations from '../app/Locations';
 import NotFound from '../app/NotFound';
 import withQuery from '../common/withQuery';
 import { immutableUpdate, immutableSet, deepPickBy } from '../common/Utils'
-import { reflect } from 'async';
 
 //GraphQL queries
 const query = gql`
@@ -109,7 +108,12 @@ const viewValues = createSelector(
         ...values,
         countries: sortBy(Object.values(values.countries), 'name'),
     })
-)
+);
+
+const hasSelected = createSelector(
+    state => state.values.countries,
+    countries => Object.values(countries).some(country => country.selected)
+);
 
 class PayrollScope extends React.Component {
     state = {
@@ -118,15 +122,20 @@ class PayrollScope extends React.Component {
         isSubmitting: false,
     }
 
-    handleToggleSelectAll = selected => {
-        const { countries } = this.state;
-        this.setState({
-            selected,
-            countries: countries.map(country => ({
-                ...country,
-                selected
-            }))
-        });
+    handleSelectAllChange = event => {
+        const selected = event.target.checked;
+        this.setState(state => ({
+            values: {
+                ...state.values,
+                countries: keyBy(
+                    Object.values(state.values.countries).map(country => ({
+                        ...country,
+                        selected
+                    })),
+                    'id'
+                )
+            }
+        }));
     }
 
     handleCountrySelectedChange = (id, selected) => {
@@ -215,12 +224,14 @@ class PayrollScope extends React.Component {
             payrollLevels={proposal.productModel.payroll.levels}
             values={viewValues(this.state)}
             errors={visibleErrors(this.state)}
+            hasSelected={hasSelected(this.state)}
             isSubmitting={isSubmitting} 
             canEdit={true} 
             onCountryLevelChange={this.handleCountryLevelChange}
             onCountryPopulationChange={this.handleCountryPopulationChange}
             onCountrySelectedChange={this.handleCountrySelectedChange}
             onBlur={this.handleBlur}
+            onSelectAllChange={this.handleSelectAllChange}
             onSubmit={this.handleSubmit}
             onClose={onClose}
         />

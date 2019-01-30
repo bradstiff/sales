@@ -27,8 +27,10 @@ export default class PayrollScopeView extends React.Component {
             payrollLevels, 
             values,
             errors, 
+            hasSelected,
             isSubmitting, 
             canEdit, 
+            onSelectAllChange,
             onCountryLevelChange,
             onCountryPopulationChange,
             onCountrySelectedChange,
@@ -48,7 +50,9 @@ export default class PayrollScopeView extends React.Component {
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell />
+                                <TableCell>
+                                    <input type='checkbox' name='selectAll' checked={hasSelected} onChange={onSelectAllChange} />
+                                </TableCell>
                                 <TableCell>Country</TableCell>
                                 <TableCell>Level</TableCell>
                                 <TableCell>Monthly</TableCell>
