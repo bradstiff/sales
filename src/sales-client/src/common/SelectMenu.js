@@ -27,16 +27,20 @@ class SelectMenu extends React.Component {
 
     render() {
         const { anchorEl } = this.state;
-        const { id, options, value } = this.props;
-        const selected = options.find(option => option.value === value) || {};
+        const { id, options, value, defaultCaption, disabled } = this.props;
+        const selected = options.find(option => option.value === value);
+        const caption = selected 
+            ? selected.text 
+            : defaultCaption || '';
         return (
             <span>
                 <Button
                     aria-owns={anchorEl ? id : null}
                     aria-haspopup="true"
                     onClick={this.handleOpen}
+                    disabled={disabled}
                 >
-                    {selected.text}
+                    {caption}
                 </Button>
                 <Menu
                     id={id}
@@ -47,7 +51,7 @@ class SelectMenu extends React.Component {
                     {options.map(option => (
                         <MenuItem
                             key={option.text}
-                            selected={selected.value === option.value}
+                            selected={option.value === value}
                             onClick={event => this.handleMenuItemClick(event, option)}
                         >
                             {option.text}
@@ -68,6 +72,8 @@ class SelectMenu extends React.Component {
             }))
             .isRequired,
         value: PropTypes.any,
+        defaultCaption: PropTypes.string,
+        disabled: PropTypes.bool,
     };
 }
 

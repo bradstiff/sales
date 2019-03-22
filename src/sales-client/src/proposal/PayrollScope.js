@@ -151,6 +151,7 @@ class PayrollScope extends React.Component {
                         .values(state.values.countries)
                         .map(country => {
                             if (country.selected) {
+                                //can this be improved?
                                 const newCountry = {...country, selected: false};
                                 this.setCountryLevel(newCountry, levelId);
                                 return newCountry;

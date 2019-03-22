@@ -60,6 +60,8 @@ export default class PayrollScopeView extends React.Component {
                             id='assignLevel'
                             onSelect={onAssignLevelToSelected}
                             options={assignLevelOptions}
+                            defaultCaption='Assign level to selected countries'
+                            disabled={!hasSelected}
                         />
                     </div>
                     <Table>

@@ -110,20 +110,3 @@ create table HrCountryScope
 	constraint PK_HrCountryScope primary key (Id),
 	constraint FK_HrCountryScope_Proposal foreign key (ProposalId) references Proposal (Id),
 )
-
-/*
-create table ProposalPrice
-(
-	Id int not null identity,
-	ProposalId int not null,
-	PriceItemId int not null,
-	CountryId int null,
-	TypeId tinyint not null,
-	Book decimal(9,2) not null,
-	Cost decimal(9,2) not null,
-	Net decimal(9,2) not null,
-	DiscountPct decimal(9,8) not null,
-	Headcount int not null,
-)
-*/
-
